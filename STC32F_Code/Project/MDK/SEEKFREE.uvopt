@@ -10,9 +10,9 @@
     <aExt>*.s*; *.src; *.a*</aExt>
     <oExt>*.obj; *.o</oExt>
     <lExt>*.lib</lExt>
-    <tExt>*.txt; *.h; *.inc; *.md</tExt>
+    <tExt>*.txt; *.h; *.inc</tExt>
     <pExt>*.plm</pExt>
-    <CppX>*.cpp; *.cc; *.cxx</CppX>
+    <CppX>*.cpp</CppX>
     <nMigrate>0</nMigrate>
   </Extensions>
 
@@ -244,7 +244,7 @@
 
   <Group>
     <GroupName>seekfree_libraries</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1024,7 +1024,7 @@
 
   <Group>
     <GroupName>user_h</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

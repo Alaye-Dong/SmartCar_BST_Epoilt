@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"KeilAssistant.Keil.HOME": {
+			"C251": "C:\\Keil_v5"
+		},
+		"files.encoding": "gb2312",
+		"C_Cpp.errorSquiggles": "enabled",
+		"Codegeex.OnlyKeyControl": true,
+		"C_Cpp.intelliSenseEngineFallback": "enabled",
+		"files.associations": {
+			"headfile.h": "c"
+		}
+	}
+}
