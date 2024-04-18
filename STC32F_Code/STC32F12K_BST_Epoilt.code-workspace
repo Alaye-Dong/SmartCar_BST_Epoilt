@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.encoding": "gb2312",
+		"files.associations": {
+			"headfile.h": "c"
+		}
+	}
+}

@@ -1,0 +1,47 @@
+{
+    "configurations": [
+        {
+            "name": "STC32F12K",
+            "includePath": [
+                "d:\\Alaye\\GitHubDesktop\\STC32F12K_BST_Epoilt\\STC32F_Code\\Libraries\\libraries",
+                "d:\\Alaye\\GitHubDesktop\\STC32F12K_BST_Epoilt\\STC32F_Code\\Libraries\\seekfree_libraries",
+                "d:\\Alaye\\GitHubDesktop\\STC32F12K_BST_Epoilt\\STC32F_Code\\Libraries\\seekfree_peripheral",
+                "d:\\Alaye\\GitHubDesktop\\STC32F12K_BST_Epoilt\\STC32F_Code\\Project\\CODE",
+                "d:\\Alaye\\GitHubDesktop\\STC32F12K_BST_Epoilt\\STC32F_Code\\Project\\USER\\inc",
+                "d:\\Alaye\\GitHubDesktop\\STC32F12K_BST_Epoilt\\STC32F_Code\\Project\\USER\\src",
+                "d:\\Alaye\\GitHubDesktop\\STC32F12K_BST_Epoilt\\STC32F_Code\\Libraries\\seekfree_components",
+                "d:\\Alaye\\GitHubDesktop\\STC32F12K_BST_Epoilt\\STC32F_Code\\Libraries\\doc",
+                "${default}",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__C251__",
+                "__VSCODE_C251__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "edata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "far=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}
