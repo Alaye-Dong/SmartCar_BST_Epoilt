@@ -68,28 +68,11 @@ void Cursor(void)
                 menuNextFlag = -1;
                 break;                    
     }
-    //箭头限位
-    if (cursorRow < RowsMin)
+    //箭头限位打印
+    for (i = RowsMin; i <= RowsMax; i++)
     {
-        cursorRow= RowsMin;
+        lcd_showstr(0, i, (i == cursorRow) ? ">" : " ");
     }
-    else if (cursorRow > RowsMax)
-    {
-        cursorRow= RowsMin;
-    } 
-    //箭头打印
-    for (i = 0; i <= 7; i++)
-    {
-        if(i == cursorRow)
-        {
-            lcd_showstr(0, cursorRow, ">");
-        }
-        else
-        {
-            lcd_showstr(0, i, " ");
-        }
-    }
-
 }
 
 //菜单上下级跳转
