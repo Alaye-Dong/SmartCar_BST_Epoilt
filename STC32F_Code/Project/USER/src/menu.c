@@ -56,10 +56,10 @@ void Cursor(void)
     switch(keystrokeLabel)
     {
         case 1:
-                cursorRow--;
+                cursorRow = (cursorRow > RowsMin) ? cursorRow - 1 : RowsMax;    //光标行上移，如果cursorRow达到最上层，再上则回归最下层
                 break;                   
         case 2:
-                cursorRow++;
+                cursorRow = (cursorRow < RowsMax) ? cursorRow + 1 : RowsMin;    //光标行下移，如果cursorRow达到最下层，再下则回归最上层
                 break;                    
         case 3:
                 menuNextFlag = 1;
@@ -68,17 +68,9 @@ void Cursor(void)
                 menuNextFlag = -1;
                 break;                    
     }
-    //箭头限位
-    if (cursorRow < RowsMin)
-    {
-        cursorRow= RowsMin;
-    }
-    else if (cursorRow > RowsMax)
-    {
-        cursorRow= RowsMin;
-    } 
+
     //箭头打印
-    for (i = 0; i <= 7; i++)
+    for (i = RowsMin; i <= RowsMax; i++)
     {
         if(i == cursorRow)
         {
