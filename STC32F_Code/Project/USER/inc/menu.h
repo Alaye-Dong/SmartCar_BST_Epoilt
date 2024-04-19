@@ -3,8 +3,8 @@
 
 #include "headfile.h"
 
-extern int Display_Codename;       //显示页面代号
-extern uint8 CursorRow; //光标所在行号
+extern int displayCodename;       //显示页面代号
+extern uint8 cursorRow; //光标所在行号
 
 extern int Start_Flag, garage_out_direction;
 extern float PID_P, PID_D;

@@ -27,11 +27,11 @@
 #define CenterColumn 10*8   //中央列
 #define EEPROM_MODE 1 //eeporm读写开启则为1
 
-int Display_Codename = 0;    //显示页面代号
-uint8 KeystrokeLabel = 0;   //按压状态
-uint8 CursorRow= 0; //光标所在行号
-uint8 MenuNextFlag = 0; //光标所指菜单进入标志位
-float change_unit = 0;  //单次修改的单位值
+int displayCodename = 0;    //显示页面代号
+uint8 keystrokeLabel = 0;   //按压状态
+uint8 cursorRow = 0; //光标所在行号
+uint8 menuNextFlag = 0; //光标所指菜单进入标志位
+float changeUnit = 0;  //单次修改的单位值
 
 //需要被修改的参数示例
 int Start_Flag = 0,garage_out_direction = 0;
@@ -49,40 +49,40 @@ int menu_have_sub[] =  {
 void Cursor(void)
 {		
     uint8 i;
-    MenuNextFlag = 0;
+    menuNextFlag = 0;
 
     Keystroke_Scan();
 
-    switch(KeystrokeLabel)
+    switch(keystrokeLabel)
     {
         case 1:
-                CursorRow--;
+                cursorRow--;
                 break;                   
         case 2:
-                CursorRow++;
+                cursorRow++;
                 break;                    
         case 3:
-                MenuNextFlag = 1;
+                menuNextFlag = 1;
                 break;
         case 4:
-                MenuNextFlag = -1;
+                menuNextFlag = -1;
                 break;                    
     }
     //箭头限位
-    if (CursorRow < RowsMin)
+    if (cursorRow < RowsMin)
     {
-        CursorRow= RowsMin;
+        cursorRow= RowsMin;
     }
-    else if (CursorRow > RowsMax)
+    else if (cursorRow > RowsMax)
     {
-        CursorRow= RowsMin;
+        cursorRow= RowsMin;
     } 
     //箭头打印
     for (i = 0; i <= 7; i++)
     {
-        if(i == CursorRow)
+        if(i == cursorRow)
         {
-            lcd_showstr(0, CursorRow, ">");
+            lcd_showstr(0, cursorRow, ">");
         }
         else
         {
@@ -95,28 +95,28 @@ void Cursor(void)
 //菜单上下级跳转
 void Menu_Next_Back()
 {
-    switch(MenuNextFlag)
+    switch(menuNextFlag)
     {
         case 0:
                 break;
         
         case -1:    //返回上一级
-                Display_Codename = Display_Codename / 10;
-                CursorRow = 0;
+                displayCodename = displayCodename / 10;
+                cursorRow = 0;
                 lcd_clear(WHITE);
                 break;
         case 1:     //进入下一级
-                if(have_sub_menu(Display_Codename*10 + CursorRow))
+                if(have_sub_menu(displayCodename*10 + cursorRow))
                 {
-                    Display_Codename = Display_Codename*10 + CursorRow;
-                    CursorRow = 0;
+                    displayCodename = displayCodename*10 + cursorRow;
+                    cursorRow = 0;
                     lcd_clear(WHITE);
                 }
 
                 break;
     }
     
-    MenuNextFlag = 0;   //切换完页面，标志位归0
+    menuNextFlag = 0;   //切换完页面，标志位归0
 }
 
 // 检查本行是否存在子菜单
@@ -137,37 +137,37 @@ int have_sub_menu(int menu_id)
 //整型参数修改
 void Keystroke_int(int* parameter, int change_unit_MIN)
 {
-    change_unit = change_unit_MIN;  //修改单位值 = 最小修改单位值
+    changeUnit = change_unit_MIN;  //修改单位值 = 最小修改单位值
     Keystroke_Scan();
     
     //通过两个拨码开关来切换修改单位值
     if (sw1_status == 0)
     {
-        change_unit = change_unit_MIN * 10; 
+        changeUnit = change_unit_MIN * 10; 
         if (sw2_status == 0)
         {
-            change_unit = change_unit_MIN * 100; 
+            changeUnit = change_unit_MIN * 100; 
         }        
     }
     
-    switch(KeystrokeLabel)
+    switch(keystrokeLabel)
     {
         case 0 :
                 break;
                     
         case KeystrokeONE :
-                *parameter += change_unit;	
+                *parameter += changeUnit;	
                 break;
         case KeystrokeTWO :
-                *parameter -= change_unit;			
+                *parameter -= changeUnit;			
                 break;
                     
         case KeystrokeTHREE :
-                Display_Codename /= 10; //返回上一页
+                displayCodename /= 10; //返回上一页
                 lcd_clear(WHITE);
                 break;
         case KeystrokeFOUR :
-                Display_Codename = 0;	//返回第0页
+                displayCodename = 0;	//返回第0页
                 lcd_clear(WHITE);
                 break;
     }
@@ -177,37 +177,37 @@ void Keystroke_int(int* parameter, int change_unit_MIN)
 //浮点型参数修改
 void Keystroke_float(float* parameter, float change_unit_MIN)
 {
-    change_unit = change_unit_MIN;  //修改单位值 = 最小修改单位值
+    changeUnit = change_unit_MIN;  //修改单位值 = 最小修改单位值
     Keystroke_Scan();
     
     //通过两个拨码开关来切换修改的单位值
     if (sw1_status == 0)
     {
-        change_unit = change_unit_MIN * 10; 
+        changeUnit = change_unit_MIN * 10; 
         if (sw2_status == 0)
         {
-            change_unit = change_unit_MIN * 100; 
+            changeUnit = change_unit_MIN * 100; 
         }        
     }
     
-    switch(KeystrokeLabel)
+    switch(keystrokeLabel)
     {
         case 0 :
                 break;
                     
         case KeystrokeONE :
-                *parameter += change_unit;	
+                *parameter += changeUnit;	
                 break;
         case KeystrokeTWO :
-                *parameter -= change_unit;			
+                *parameter -= changeUnit;			
                 break;
                     
         case KeystrokeTHREE :
-                Display_Codename /= 10; //返回上一页
+                displayCodename /= 10; //返回上一页
                 lcd_clear(WHITE);
                 break;
         case KeystrokeFOUR :
-                Display_Codename = 0;	//返回第0页
+                displayCodename = 0;	//返回第0页
                 lcd_clear(WHITE);
                 break;
     }
@@ -219,7 +219,7 @@ void Keystroke_float(float* parameter, float change_unit_MIN)
 void Keystroke_Special_Value(int* parameter)
 {
     Keystroke_Scan();
-    switch(KeystrokeLabel)
+    switch(keystrokeLabel)
     {                
         case KeystrokeONE :
                 *parameter = -1;	
@@ -229,11 +229,11 @@ void Keystroke_Special_Value(int* parameter)
                 break;
                 
         case KeystrokeTHREE :
-                Display_Codename /= 10; //返回上一页
+                displayCodename /= 10; //返回上一页
                 lcd_clear(WHITE);
                 break;
         case KeystrokeFOUR :
-                Display_Codename = 0;	//返回第0页
+                displayCodename = 0;	//返回第0页
                 lcd_clear(WHITE);
                 break;
     }
@@ -250,7 +250,7 @@ void Keystroke_Special_Value(int* parameter)
 //-------------------------------------------------------------------------------------------------------------------
 void Keystroke_Menu(void)
 {
-    switch(Display_Codename)
+    switch(displayCodename)
     {
         case 0:
             Keystroke_Menu_HOME();
@@ -293,7 +293,7 @@ void Keystroke_Menu(void)
 //-------------------------------------------------------------------------------------------------------------------
 void Keystroke_Menu_HOME(void)    //0
 {
-    while(MenuNextFlag == 0)
+    while(menuNextFlag == 0)
     {
         lcd_showstr(CenterColumn - 2*8,0,"MENU");
         lcd_showstr(1*8,1,"STRAT");
@@ -302,14 +302,14 @@ void Keystroke_Menu_HOME(void)    //0
         Cursor(); 
     }
     
-    if(MenuNextFlag == 1 && have_sub_menu(CursorRow))   //进入下一级菜单
+    if(menuNextFlag == 1 && have_sub_menu(cursorRow))   //进入下一级菜单
     {
-        Display_Codename = CursorRow;
-        CursorRow = 0;
+        displayCodename = cursorRow;
+        cursorRow = 0;
         lcd_clear(WHITE);
     }
     
-    else if(MenuNextFlag == -1 && EEPROM_MODE == 1) //在主菜单时按下回退键（按键4）来进行eeprom确认刷写
+    else if(menuNextFlag == -1 && EEPROM_MODE == 1) //在主菜单时按下回退键（按键4）来进行eeprom确认刷写
     {
         eeprom_flash();
         
@@ -325,7 +325,7 @@ void Keystroke_Menu_HOME(void)    //0
         lcd_clear(WHITE);
     }
     
-    MenuNextFlag = 0;   //切换完页面，标志位归0
+    menuNextFlag = 0;   //切换完页面，标志位归0
 }
 
 /*///////////////////////////////////////
@@ -345,7 +345,7 @@ void Menu_ONE_Display(uint8 control_line)
 
 void Keystroke_Menu_ONE(void) //1
 {	
-    while(MenuNextFlag == 0)
+    while(menuNextFlag == 0)
     {
         Menu_ONE_Display(-1);
         Cursor();
@@ -384,7 +384,7 @@ void Menu_TWO_Display(uint8 control_line)
 
 void Keystroke_Menu_TWO(void) //2
 {	
-    while(MenuNextFlag == 0)
+    while(menuNextFlag == 0)
     {
         Menu_TWO_Display(-1);
         Cursor();

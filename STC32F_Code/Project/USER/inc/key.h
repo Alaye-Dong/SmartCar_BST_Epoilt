@@ -7,7 +7,7 @@
 extern uint8 sw1_status;
 extern uint8 sw2_status;
 
-extern uint8 KeystrokeLabel;
+extern uint8 keystrokeLabel;
 
 void Keystroke_Scan(void);
 
