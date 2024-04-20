@@ -13,7 +13,8 @@
 		"Codegeex.OnlyKeyControl": true,
 		"C_Cpp.intelliSenseEngineFallback": "enabled",
 		"files.associations": {
-			"headfile.h": "c"
+			"headfile.h": "c",
+			"menu.h": "c"
 		},
 		"Codegeex.CompletionModel": "CodeGeeX Pro[Beta]"
 	}
