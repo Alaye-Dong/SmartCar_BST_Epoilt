@@ -16,7 +16,16 @@
 
 #include "menu.h"
 
+//定义按键代号
+#define KeystrokeONE 1
+#define KeystrokeTWO 2
+#define KeystrokeTHREE 3
+#define KeystrokeFOUR 4
 
+#define RowsMax 7 //光标在屏幕上可移动至的最大行数
+#define RowsMin 1 //光标在屏幕上可移动至的最小行数
+#define CenterColumn 10*8   //中央列
+#define EEPROM_MODE 1 //eeporm读写开启则为1
 
 int displayCodename = 0;    //显示页面代号
 uint8 keystrokeLabel = 0;   //按压状态
