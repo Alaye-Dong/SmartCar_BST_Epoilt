@@ -41,7 +41,7 @@ int normal_speed = 0;
 int menu_have_sub[] =  {
                             0,
                             1, 11, 12,
-                            2, 21 ,22, 23
+                            2, 21, 22, 23
                        };
 
 //菜单箭头标识                       
@@ -125,112 +125,66 @@ int Have_Sub_Menu(int menu_id)
     return 0;
 }
 
-//整型参数修改
-void Keystroke_int(int* parameter, int change_unit_MIN)
-{
-    change_unit = change_unit_MIN;  //修改单位值 = 最小修改单位值
-    Keystroke_Scan();
-    
-    // //通过两个拨码开关来切换修改单位值
-    // if (sw1_status == 0)
-    // {
-    //     change_unit = change_unit_MIN * 10; 
-    //     if (sw2_status == 0)
-    //     {
-    //         change_unit = change_unit_MIN * 100; 
-    //     }        
-    // }
-    
-    switch(keystroke_label)
-    {
-        case 0 :
-                break;
-                    
-        case KEYSTROKE_ONE :
-                *parameter += change_unit;	
-                break;
-        case KEYSTROKE_TWO :
-                *parameter -= change_unit;			
-                break;
-                    
-        case KEYSTROKE_THREE :
-                display_codename /= 10; //返回上一页
-                lcd_clear(WHITE);
-                break;
-        case KEYSTROKE_FOUR :
-                display_codename = 0;	//返回第0页
-                lcd_clear(WHITE);
-                break;
-    }
-
-}
-
-//浮点型参数修改
-void Keystroke_float(float* parameter, float change_unit_MIN)
-{
-    change_unit = change_unit_MIN;  //修改单位值 = 最小修改单位值
-    Keystroke_Scan();
-    
-    // //通过两个拨码开关来切换修改的单位值
-    // if (sw1_status == 0)
-    // {
-    //     change_unit = change_unit_MIN * 10; 
-    //     if (sw2_status == 0)
-    //     {
-    //         change_unit = change_unit_MIN * 100; 
-    //     }        
-    // }
-    
-    switch(keystroke_label)
-    {
-        case 0 :
-                break;
-                    
-        case KEYSTROKE_ONE :
-                *parameter += change_unit;	
-                break;
-        case KEYSTROKE_TWO :
-                *parameter -= change_unit;			
-                break;
-                    
-        case KEYSTROKE_THREE :
-                display_codename /= 10; //返回上一页
-                lcd_clear(WHITE);
-                break;
-        case KEYSTROKE_FOUR :
-                display_codename = 0;	//返回第0页
-                lcd_clear(WHITE);
-                break;
-    }
-
-}
-
-
-//整型特值修改，-1或1
-void Keystroke_Special_Value(int* parameter)
-{
-    Keystroke_Scan();
-    switch(keystroke_label)
-    {                
-        case KEYSTROKE_ONE :
-                *parameter = -1;	
-                break;
-        case KEYSTROKE_TWO :
-                *parameter = 1;	
-                break;
-                
-        case KEYSTROKE_THREE :
-                display_codename /= 10; //返回上一页
-                lcd_clear(WHITE);
-                break;
-        case KEYSTROKE_FOUR :
-                display_codename = 0;	//返回第0页
-                lcd_clear(WHITE);
-                break;
+//处理按键扫描返回页逻辑
+void HandleKeystroke(int keystroke_label) {
+    switch(keystroke_label) {
+        case KEYSTROKE_THREE:
+            display_codename /= 10; // 返回上一页
+            lcd_clear(WHITE);
+            break;
+        case KEYSTROKE_FOUR:
+            display_codename = 0; // 返回第0页
+            lcd_clear(WHITE);
+            break;
     }
 }
 
+// 整型参数修改
+void Keystroke_int(int* parameter, int change_unit_MIN) {
+    int change_unit = change_unit_MIN;
+    Keystroke_Scan();
+    HandleKeystroke(keystroke_label);
 
+    switch(keystroke_label) {
+        case KEYSTROKE_ONE:
+            *parameter += change_unit;
+            break;
+        case KEYSTROKE_TWO:
+            *parameter -= change_unit;
+            break;
+    }
+}
+
+// 浮点型参数修改
+void Keystroke_float(float* parameter, float change_unit_MIN) {
+    float change_unit = change_unit_MIN;
+    Keystroke_Scan();
+    HandleKeystroke(keystroke_label);
+
+    switch(keystroke_label) {
+        case KEYSTROKE_ONE:
+            *parameter += change_unit;
+            break;
+        case KEYSTROKE_TWO:
+            *parameter -= change_unit;
+            break;
+    }
+}
+
+// 整型特值修改，-1或1
+void Keystroke_Special_Value(int* parameter) {
+    Keystroke_Scan();
+    HandleKeystroke(keystroke_label);
+
+    switch(keystroke_label) {
+        case KEYSTROKE_ONE:
+            *parameter = -1;
+            break;
+        case KEYSTROKE_TWO:
+            *parameter = 1;
+            break;
+    }
+}
 
 //-------------------------------------------------------------------------------------------------------------------
 //  @brief      菜单目录

@@ -16,6 +16,7 @@ void Cursor(void);
 void Menu_Next_Back(void);
 int Have_Sub_Menu(int menu_id); // 查看是否存在子菜单
 
+void HandleKeystroke(int keystroke_label);
 void Keystroke_Special_Value(int* parameter);
 void Keystroke_int(int* parameter, int change_unit_MIN);
 void Keystroke_float(float* parameter, float change_unit_MIN);
