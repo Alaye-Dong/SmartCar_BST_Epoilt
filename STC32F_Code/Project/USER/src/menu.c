@@ -19,6 +19,7 @@
 
 
 int displayCodename = 0;    //显示页面代号
+uint8 keystrokeLabel = 0;   //按压状态
 uint8 cursorRow = 0; //光标所在行号
 uint8 menuNextFlag = 0; //光标所指菜单进入标志位
 float changeUnit = 0;  //单次修改的单位值

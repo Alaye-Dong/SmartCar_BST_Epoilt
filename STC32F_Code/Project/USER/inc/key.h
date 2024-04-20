@@ -13,11 +13,10 @@
 #define SW2_PIN     P75
 
 //拨码开关状态变量
-extern uint8 keystrokeLabel;
 extern uint8 sw1_status;
 extern uint8 sw2_status;
 
-
+extern uint8 keystrokeLabel;
 
 void Keystroke_Scan(void);
 
