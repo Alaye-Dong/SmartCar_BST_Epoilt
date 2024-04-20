@@ -207,13 +207,15 @@ void Keystroke_Menu(void)
         break;
 
     case 1:
-        Keystroke_Menu_ONE();
-        break;
     case 11:
-        Keystroke_Menu_ONE_One();
-        break;
     case 12:
-        Keystroke_Menu_ONE_Two();
+        Keystroke_Menu_ONE();
+        // break;
+    
+        // Keystroke_Menu_ONE_One();
+        // break;
+    
+        // Keystroke_Menu_ONE_Two();
         break;
 
     case 2:
@@ -298,22 +300,32 @@ void Keystroke_Menu_ONE(void) // 1
     while (menu_next_flag == 0)
     {
         Menu_ONE_Display(-1);
-        Cursor();
+        Cursor();   //Cursor()中调用了按键扫描可以脱离循环
     }
     Menu_Next_Back();
+    switch (display_codename)
+    {
+    case 11:
+        Menu_ONE_Display(1);
+        Keystroke_Special_Value(&start_flag);
+        break;
+    case 12:
+        Menu_ONE_Display(2);
+        Keystroke_Special_Value(&garage_out_direction);
+    default:
+        break;
+    }
 }
 
-void Keystroke_Menu_ONE_One(void) // 11
-{
-    Menu_ONE_Display(1);
-    Keystroke_Special_Value(&start_flag);
-}
+// void Keystroke_Menu_ONE_One(void) // 11
+// {
 
-void Keystroke_Menu_ONE_Two(void) // 12
-{
-    Menu_ONE_Display(2);
-    Keystroke_Special_Value(&garage_out_direction);
-}
+// }
+
+// void Keystroke_Menu_ONE_Two(void) // 12
+// {
+
+// }
 
 /*////////////////////////////////////
     PD
