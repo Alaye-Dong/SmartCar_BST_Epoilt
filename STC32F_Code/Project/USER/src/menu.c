@@ -289,7 +289,7 @@ void Menu_ONE_Display(uint8 control_line)
     lcd_showstr(1 * 8, 1, "Start_Flag");
     lcd_showstr(1 * 8, 2, "Out_Direction");
 
-    lcd_showint32(14 * 8, 1, start_flag, 3);
+    lcd_showint32(14 * 8, 1, start_flag, 3);    // “1” 应该与该函数被调用时control_line参数一致，才能正确显示&表示在调整的变量
     lcd_showint32(14 * 8, 2, garage_out_direction, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
