@@ -28,7 +28,6 @@
 #define EEPROM_MODE 1 //eeporm读写开启则为1
 
 int display_codename = 0;    //显示页面代号
-uint8 keystroke_label = 0;   //按压状态
 uint8 cursor_row = 0; //光标所在行号
 uint8 menu_next_flag = 0; //光标所指菜单进入标志位
 float change_unit = 0;  //单次修改的单位值

@@ -10,10 +10,11 @@
 // #define SW1_PIN     P76
 // #define SW2_PIN     P75
 
-//拨码开关状态变?? ON??0
-uint8 sw1_status;
-uint8 sw2_status;
+// //拨码开关状态变?? ON??0
+// uint8 sw1_status;
+// uint8 sw2_status;
 
+uint8 keystroke_label = 0;   //按压状态
 uint8 key_last_status[5]={0};
 uint8 key_status[5]={0};
 uint8 key_flag[5]={0};
