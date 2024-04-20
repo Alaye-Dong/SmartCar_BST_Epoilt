@@ -5,9 +5,10 @@
 #define KEY2_PIN    P51
 #define KEY3_PIN    P16
 #define KEY4_PIN    P17
-//定义拨码开关引??
-#define SW1_PIN     P76
-#define SW2_PIN     P75
+
+// //定义拨码开关引??
+// #define SW1_PIN     P76
+// #define SW2_PIN     P75
 
 //拨码开关状态变?? ON??0
 uint8 sw1_status;
@@ -19,15 +20,14 @@ uint8 key_flag[5]={0};
 
 void Keystroke_Scan(void)
 {
-
     uint8 i = 0;
     keystroke_label = 0;
     
-    //获取拨码开关状??
-    sw1_status = SW1_PIN;
-    sw2_status = SW2_PIN;
+    // //获取拨码开关状态
+    // sw1_status = SW1_PIN;
+    // sw2_status = SW2_PIN;
     
-    // 保存按键状??
+    // 保存按键状态
     for ( i = 0; i < 4; i++) {
         key_last_status[i] = key_status[i];
     }
@@ -48,5 +48,4 @@ void Keystroke_Scan(void)
             BEEP = 0;
         }
     }
-    
 }

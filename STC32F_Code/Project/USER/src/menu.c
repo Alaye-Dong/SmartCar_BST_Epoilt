@@ -132,15 +132,15 @@ void Keystroke_int(int* parameter, int change_unit_MIN)
     change_unit = change_unit_MIN;  //修改单位值 = 最小修改单位值
     Keystroke_Scan();
     
-    //通过两个拨码开关来切换修改单位值
-    if (sw1_status == 0)
-    {
-        change_unit = change_unit_MIN * 10; 
-        if (sw2_status == 0)
-        {
-            change_unit = change_unit_MIN * 100; 
-        }        
-    }
+    // //通过两个拨码开关来切换修改单位值
+    // if (sw1_status == 0)
+    // {
+    //     change_unit = change_unit_MIN * 10; 
+    //     if (sw2_status == 0)
+    //     {
+    //         change_unit = change_unit_MIN * 100; 
+    //     }        
+    // }
     
     switch(keystroke_label)
     {
@@ -172,15 +172,15 @@ void Keystroke_float(float* parameter, float change_unit_MIN)
     change_unit = change_unit_MIN;  //修改单位值 = 最小修改单位值
     Keystroke_Scan();
     
-    //通过两个拨码开关来切换修改的单位值
-    if (sw1_status == 0)
-    {
-        change_unit = change_unit_MIN * 10; 
-        if (sw2_status == 0)
-        {
-            change_unit = change_unit_MIN * 100; 
-        }        
-    }
+    // //通过两个拨码开关来切换修改的单位值
+    // if (sw1_status == 0)
+    // {
+    //     change_unit = change_unit_MIN * 10; 
+    //     if (sw2_status == 0)
+    //     {
+    //         change_unit = change_unit_MIN * 100; 
+    //     }        
+    // }
     
     switch(keystroke_label)
     {

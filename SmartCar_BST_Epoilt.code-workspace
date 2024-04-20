@@ -16,6 +16,7 @@
 			"headfile.h": "c",
 			"menu.h": "c"
 		},
-		"Codegeex.CompletionModel": "CodeGeeX Pro[Beta]"
+		"Codegeex.CompletionModel": "CodeGeeX Pro[Beta]",
+		"files.autoSave": "onFocusChange"
 	}
 }
