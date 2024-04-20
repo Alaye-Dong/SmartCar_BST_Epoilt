@@ -3,10 +3,7 @@
 
 #include "headfile.h"
 
-
-
-extern int display_codename;       //显示页面代号
-extern uint8 cursor_row; //光标所在行号
+extern int display_codename; // 显示页面代号
 
 extern int start_flag, garage_out_direction;
 extern float PID_P, PID_D;
@@ -17,9 +14,9 @@ void Menu_Next_Back(void);
 int Have_Sub_Menu(int menu_id); // 查看是否存在子菜单
 
 void HandleKeystroke(int keystroke_label);
-void Keystroke_Special_Value(int* parameter);
-void Keystroke_int(int* parameter, int change_unit_MIN);
-void Keystroke_float(float* parameter, float change_unit_MIN);
+void Keystroke_Special_Value(int *parameter);
+void Keystroke_int(int *parameter, int change_unit_MIN);
+void Keystroke_float(float *parameter, float change_unit_MIN);
 
 void Keystroke_Menu(void);
 void Keystroke_Menu_HOME(void);
@@ -27,7 +24,7 @@ void Keystroke_Menu_HOME(void);
 void Menu_ONE_Display(uint8 control_line);
 void Keystroke_Menu_ONE(void);
 // void Keystroke_Menu_ONE_One(void);
-// void Keystroke_Menu_ONE_Two(void); 
+// void Keystroke_Menu_ONE_Two(void);
 
 void Menu_TWO_Display(uint8 control_line);
 void Keystroke_Menu_TWO(void);

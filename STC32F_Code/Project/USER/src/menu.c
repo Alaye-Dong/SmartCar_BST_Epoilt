@@ -29,6 +29,7 @@
 
 int display_codename = 0; // 显示页面代号
 uint8 cursor_row = 0;     // 光标所在行号
+uint8 previous_cursor_row = 0;  // 上一次光标所在列号
 uint8 menu_next_flag = 0; // 光标所指菜单进入标志位
 float change_unit = 0;    // 单次修改的单位值
 
@@ -46,7 +47,6 @@ int menu_have_sub[] = {
 // 菜单箭头标识
 void Cursor(void)
 {
-    uint8 i;
     menu_next_flag = 0;
 
     Keystroke_Scan();
@@ -67,17 +67,13 @@ void Cursor(void)
         break;
     }
 
-    // 箭头打印
-    for (i = ROWS_MIN; i <= ROWS_MAX; i++)
+    lcd_showstr(0, cursor_row, ">");  // 在 cursor_row 对应位置打印箭头
+
+    // 清除之前箭头位置的显示，避免残留
+    if (previous_cursor_row != cursor_row)
     {
-        if (i == cursor_row)
-        {
-            lcd_showstr(0, cursor_row, ">");
-        }
-        else
-        {
-            lcd_showstr(0, i, " ");
-        }
+        lcd_showstr(0, previous_cursor_row, " ");  // 在 previous_cursor_row 对应位置打印空格
+        previous_cursor_row = cursor_row;
     }
 }
 
