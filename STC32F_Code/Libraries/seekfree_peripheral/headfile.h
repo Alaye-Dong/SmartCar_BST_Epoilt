@@ -1,8 +1,8 @@
 #ifndef __HEADFILE_H_
 #define __HEADFILE_H_
 
-// #define PWM1 PWMA_CH4P_P66  //×óÂÖ
-// #define PWM2 PWMA_CH2P_P62  //ÓÒÂÖ
+// #define PWM1        PWMA_CH4P_P66  //×óÂÖ
+// #define PWM2        PWMA_CH2P_P62  //ÓÒÂÖ
 // #define DIR2        P60  // DIR1=1 Õı×ª
 // #define DIR1        P64  
 #define BEEP        P32   //·äÃùÆ÷
