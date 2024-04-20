@@ -21,7 +21,7 @@ void Keystroke_Scan(void)
 {
 
     uint8 i = 0;
-    keystrokeLabel = 0;
+    keystroke_label = 0;
     
     //获取拨码开关状??
     sw1_status = SW1_PIN;
@@ -42,7 +42,7 @@ void Keystroke_Scan(void)
         }
         if (key_flag[i]) {
             key_flag[i] = 0; // 使用按键之后，应该清除标志位
-            keystrokeLabel = i + 1;
+            keystroke_label = i + 1;
             BEEP = 1;
             delay_ms(5);
             BEEP = 0;

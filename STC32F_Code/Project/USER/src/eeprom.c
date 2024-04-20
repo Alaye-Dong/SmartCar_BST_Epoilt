@@ -19,7 +19,7 @@ void eeprom_init()
     {
         save_int(1,0);
         
-        save_int(Start_Flag,1);
+        save_int(start_flag,1);
         save_int(garage_out_direction,2);
         save_float(PID_P,3);
         save_float(PID_D,4);
@@ -27,7 +27,7 @@ void eeprom_init()
     }
     
     //eeprom读取
-    Start_Flag = read_int(1);
+    start_flag = read_int(1);
     garage_out_direction = read_int(2);
 	PID_P = read_float(3);
     PID_D = read_float(4);
@@ -37,7 +37,7 @@ void eeprom_init()
 void eeprom_flash()
 {
     //需要保存的参数
-    save_int(Start_Flag,1);
+    save_int(start_flag,1);
     save_int(garage_out_direction,2);
     save_float(PID_P,3);
     save_float(PID_D,4);
