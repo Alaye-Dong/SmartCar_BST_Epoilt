@@ -10,6 +10,7 @@
 #define SW2_PIN     P75
 
 //拨码开关状态变?? ON??0
+uint8 keystrokeLabel;   //按压状态
 uint8 sw1_status;
 uint8 sw2_status;
 
