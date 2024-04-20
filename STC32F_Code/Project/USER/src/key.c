@@ -1,10 +1,10 @@
 #include "key.h"
 
 //定义按键引脚
-#define KEY1_PIN    P71
-#define KEY2_PIN    P70	
-#define KEY3_PIN    P72
-#define KEY4_PIN    P73
+#define KEY1_PIN    P50
+#define KEY2_PIN    P51
+#define KEY3_PIN    P16
+#define KEY4_PIN    P17
 //定义拨码开关引??
 #define SW1_PIN     P76
 #define SW2_PIN     P75

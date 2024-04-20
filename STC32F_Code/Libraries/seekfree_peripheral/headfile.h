@@ -5,18 +5,18 @@
 // #define PWM2 PWMA_CH2P_P62  //ÓÒÂÖ
 // #define DIR2        P60  // DIR1=1 Õı×ª
 // #define DIR1        P64  
-#define BEEP        P67   //·äÃùÆ÷
+#define BEEP        P32   //·äÃùÆ÷
 // #define HALL_PIN    P33    //Í£³µ»ô¶û
 // #define DIRL        P53 //±àÂëÆ÷×óÂÖ
 // #define DIRR        P35 //±àÂëÆ÷ÓÒÂÖ
 
 //¿ª¹Ø°´¼ü ²¦Âë¿ª¹Ø
-#define KEY1_PIN    P71
-#define KEY2_PIN    P70
-#define KEY3_PIN    P72
-#define KEY4_PIN    P73
-#define SW1_PIN     P76
-#define SW2_PIN     P75
+// #define KEY1_PIN    P71
+// #define KEY2_PIN    P70
+// #define KEY3_PIN    P72
+// #define KEY4_PIN    P73
+// #define SW1_PIN     P76
+// #define SW2_PIN     P75
 
 
 
