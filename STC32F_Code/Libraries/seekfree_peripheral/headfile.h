@@ -10,13 +10,6 @@
 // #define DIRL        P53 //编码器左轮
 // #define DIRR        P35 //编码器右轮
 
-//开关按键 拨码开关
-// #define KEY1_PIN    P71
-// #define KEY2_PIN    P70
-// #define KEY3_PIN    P72
-// #define KEY4_PIN    P73
-// #define SW1_PIN     P76
-// #define SW2_PIN     P75
 
 
 

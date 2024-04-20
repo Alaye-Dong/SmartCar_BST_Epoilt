@@ -64,7 +64,7 @@ void main()
     // }
 
     //dl1a_init();    //TOF DL1A 初始化
-	//eeprom_init();	//eeprom初始化
+	eeprom_init();	//eeprom初始化
     
     pit_timer_ms(TIM_4, 5);     //设置中断定时
 	gpio_mode(P3_2, GPO_PP);    //蜂鸣器
