@@ -12,8 +12,8 @@ void eeprom_init()
     eeprom_init_time = read_int(0);
     if (eeprom_init_time != 1)
     {
-        eeprom_init_time++;
-        save_int(eeprom_init_time, 0);
+        eeprom_init_time = 1;
+        save_int(eeprom_init_time,0);
 
         eeprom_flash();
     }
