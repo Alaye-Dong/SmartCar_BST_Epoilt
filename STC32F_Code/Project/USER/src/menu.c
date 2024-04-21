@@ -148,6 +148,8 @@ void HandleKeystroke(int keystroke_label)
 void Keystroke_int(int *parameter, int change_unit_MIN)
 {
     int change_unit = change_unit_MIN * change_unit_multiplier;
+    lcd_showint32(15 * 8, 0, change_unit, 3);
+
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);
 
@@ -166,6 +168,8 @@ void Keystroke_int(int *parameter, int change_unit_MIN)
 void Keystroke_float(float *parameter, float change_unit_MIN)
 {
     float change_unit = change_unit_MIN * change_unit_multiplier;
+    lcd_showfloat(14 * 8, 0, change_unit, 2, 3);
+    
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);
 
@@ -280,8 +284,8 @@ void Keystroke_Menu_HOME(void) // 0
 ///////////////////////////////////////
 void Menu_ONE_Display(uint8 control_line)
 {
-    lcd_showstr(CENTER_COLUMN - 2 * 8, 0, "STRAT");
-    lcd_showint32(15 * 8, 0, change_unit_multiplier, 3);
+    lcd_showstr(0 * 8, 0, "<<STRAT");
+
     lcd_showstr(1 * 8, 1, "Start_Flag");
     lcd_showstr(1 * 8, 2, "Out_Direction");
 
@@ -319,8 +323,8 @@ void Keystroke_Menu_ONE(void) // 1 11 12
 
 void Menu_TWO_Display(uint8 control_line)
 {
-    lcd_showstr(CENTER_COLUMN - 4 * 8, 0, "PID_SPEED");
-    lcd_showint32(15 * 8, 0, change_unit_multiplier, 3);
+    lcd_showstr(0 * 8, 0, "<<PID_SPEED");
+
     lcd_showstr(1 * 8, 1, "P");
     lcd_showstr(1 * 8, 2, "D");
     lcd_showstr(1 * 8, 3, "normal_speed");
