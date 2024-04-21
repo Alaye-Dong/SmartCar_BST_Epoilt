@@ -32,7 +32,7 @@ uint8 cursor_row = 0;     // 光标所在行号
 uint8 previous_cursor_row = 0;  // 上一次光标所在列号
 uint8 menu_next_flag = 0; // 光标所指菜单进入标志位
 float change_unit = 0;    // 单次修改的单位值
-int change_unit_multiplier = 1;
+int change_unit_multiplier = 1; // 修改单位倍数
 int keystroke_three_count = 0; // 定义一个全局变量记录KEYSTROKE_THREE的触发次数
 
 // 需要被修改的参数示例
@@ -116,7 +116,7 @@ int Have_Sub_Menu(int menu_id)
     return 0;
 }
 
-// 处理按键扫描返回页逻辑
+// 处理按键扫描返回页与参数修改倍数逻辑
 void HandleKeystroke(int keystroke_label)
 {
     switch (keystroke_label)
@@ -267,11 +267,9 @@ void Keystroke_Menu_HOME(void) // 0
         lcd_clear(WHITE);
         lcd_showstr(1 * 8, 1, "EEPROM_SAVED");
         lcd_showstr(1 * 8, 4, "@author Alaye_Dong"); // 用了就别删.doge！！！
-
         delay_ms(400);
-        BEEP = 1;
-        delay_ms(100);
-        BEEP = 0;
+
+        BEEP_ON_ms(100);
         lcd_clear(WHITE);
     }
 

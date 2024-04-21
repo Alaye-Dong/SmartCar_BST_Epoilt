@@ -31,9 +31,7 @@ void Keystroke_Scan(void)
         if (key_status[i] && !key_last_status[i])
         {
             keystroke_label = i + 1;
-            BEEP = 1;
-            delay_ms(5);
-            BEEP = 0;
+            BEEP_ON_ms(5);
             break;  // 一次只响应一个按键，所以有一个按键响应则可以跳出循环
         }
     }
