@@ -23,8 +23,8 @@ void Keystroke_Menu_HOME(void);
 
 void Menu_ONE_Display(uint8 control_line);
 void Keystroke_Menu_ONE(void);
-// void Keystroke_Menu_ONE_One(void);
-// void Keystroke_Menu_ONE_Two(void);
+void Keystroke_Menu_ONE_One(void);
+void Keystroke_Menu_ONE_Two(void);
 
 void Menu_TWO_Display(uint8 control_line);
 void Keystroke_Menu_TWO(void);
