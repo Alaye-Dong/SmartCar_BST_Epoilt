@@ -84,7 +84,7 @@ void Menu_Next_Back()
 
     case -1: // 返回上一级
         display_codename = display_codename / 10;
-        cursor_row = 0;
+        cursor_row = ROWS_MIN;
         lcd_clear(WHITE);
         break;
     case 1: // 进入下一级
@@ -247,7 +247,7 @@ void Keystroke_Menu_HOME(void) // 0
     if (menu_next_flag == 1 && Have_Sub_Menu(cursor_row)) // 进入下一级菜单
     {
         display_codename = cursor_row;
-        cursor_row = 0;
+        cursor_row = ROWS_MIN;
         lcd_clear(WHITE);
     }
 
