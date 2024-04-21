@@ -65,5 +65,6 @@
 #include "key.h"
 #include "menu.h"
 #include "eeprom.h"
+#include "beep.h"
 
 #endif
