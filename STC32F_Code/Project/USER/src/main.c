@@ -23,7 +23,7 @@
 // 关于内核频率的设定，可以查看board.h文件
 // 在board_init中,已经将P54引脚设置为复位
 // 如果需要使用P54引脚,可以在board.c文件中的board_init()函数中删除SET_P54_RESRT即可
-
+//int test_tims = 0;
 void main()
 {
 	clock_init(SYSTEM_CLOCK_52M);	// 初始化系统频率,勿删除此句代码。
@@ -77,7 +77,13 @@ void main()
 		// 此处编写需要循环执行的代码
         
         // 此处编写需要循环执行的代码
-        Keystroke_Scan();
+        // if (test_tims == 0)
+        // {
+        //    Keystroke_Scan();
+        //    test_tims++;
+        // }
+        
+        
         Keystroke_Menu();
     }
 }

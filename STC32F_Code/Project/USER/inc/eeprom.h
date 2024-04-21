@@ -1,8 +1,7 @@
-#include  "headfile.h"
-
 #ifndef __EEPROM_H
 #define __EEPROM_H
 
+#include  "headfile.h"
 
 extern uint8 date_buff[100]; //eeprom数据数组
 //extern uint8 eeprom_init_time;
