@@ -48,7 +48,6 @@ int menu_have_sub[] = {
 void Cursor(void)
 {
     menu_next_flag = 0;
-    
     switch (keystroke_label)
     {
     case KEYSTROKE_ONE:
@@ -92,7 +91,6 @@ void Menu_Next_Back()
         if (Have_Sub_Menu(display_codename * 10 + cursor_row))
         {
             display_codename = display_codename * 10 + cursor_row;
-            cursor_row = 0;
             lcd_clear(WHITE);
         }
         break;
