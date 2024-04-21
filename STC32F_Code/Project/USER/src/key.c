@@ -6,7 +6,7 @@
 #define KEY3_PIN P16
 #define KEY4_PIN P17
 
-uint8 keystroke_label = 0; // 按压状态
+uint8 keystroke_label = 0; // 按下的是哪个键
 uint8 key_last_status[4] = {0};
 uint8 key_status[4] = {0};
 uint8 key_flag[4] = {0};
@@ -21,7 +21,7 @@ void Keystroke_Scan(void)
     {
         key_last_status[i] = key_status[i];
     }
-    key_status[0] = KEY1_PIN;
+    key_status[0] = KEY1_PIN; // 按键按下则值为1
     key_status[1] = KEY2_PIN;
     key_status[2] = KEY3_PIN;
     key_status[3] = KEY4_PIN;
@@ -30,15 +30,11 @@ void Keystroke_Scan(void)
     {
         if (key_status[i] && !key_last_status[i])
         {
-            key_flag[i] = 1;
-        }
-        if (key_flag[i])
-        {
-            key_flag[i] = 0; // 使用按键之后，应该清除标志位
             keystroke_label = i + 1;
             BEEP = 1;
             delay_ms(5);
             BEEP = 0;
+            break;  // 一次只响应一个按键，所以有一个按键响应则可以跳出循环
         }
     }
 }
