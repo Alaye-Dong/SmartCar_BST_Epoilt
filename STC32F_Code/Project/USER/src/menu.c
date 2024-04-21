@@ -48,9 +48,7 @@ int menu_have_sub[] = {
 void Cursor(void)
 {
     menu_next_flag = 0;
-
     
-
     switch (keystroke_label)
     {
     case KEYSTROKE_ONE:
