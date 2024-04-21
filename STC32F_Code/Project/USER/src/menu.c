@@ -199,26 +199,16 @@ void Keystroke_Menu(void)
         break;
 
     case 1:
-        Keystroke_Menu_ONE();
-        break;
     case 11:
-        Keystroke_Menu_ONE_One();
-        break;
     case 12:
-        Keystroke_Menu_ONE_Two();
+        Keystroke_Menu_ONE();
         break;
 
     case 2:
-        Keystroke_Menu_TWO();
-        break;
     case 21:
-        Keystroke_Menu_TWO_One();
-        break;
     case 22:
-        Keystroke_Menu_TWO_Two();
-        break;
     case 23:
-        Keystroke_Menu_TWO_Three();
+        Keystroke_Menu_TWO();
         break;
 
     default:
@@ -288,31 +278,30 @@ void Menu_ONE_Display(uint8 control_line)
 
 void Keystroke_Menu_ONE(void) // 1
 {
-    while (menu_next_flag == 0)
+    switch (display_codename)
     {
-        Menu_ONE_Display(-1);
-        Keystroke_Scan();
-        Cursor();   //Cursor()中调用了按键扫描可以脱离循环
+    case 1:
+        while (menu_next_flag == 0)
+        {
+            Menu_ONE_Display(-1);
+            Keystroke_Scan();
+            Cursor();   //Cursor()中调用了按键扫描可以脱离循环
+        }
+        Menu_Next_Back();
+        break;
+
+    case 11:
+        Menu_ONE_Display(1);
+        Keystroke_Special_Value(&start_flag);
+        break;
+    case 12:
+        Menu_ONE_Display(2);
+        Keystroke_Special_Value(&garage_out_direction);
+        break;
     }
-    Menu_Next_Back();
+
 }
 
-void Keystroke_Menu_ONE_One(void) // 11
-{
-    Menu_ONE_Display(1);
-    Keystroke_Special_Value(&start_flag);
-}
-
-void Keystroke_Menu_ONE_Two(void) // 12
-{
-    Menu_ONE_Display(2);
-    Keystroke_Special_Value(&garage_out_direction);
-}
-
-/*////////////////////////////////////
-    PD
-*/
-///////////////////////////////////
 void Menu_TWO_Display(uint8 control_line)
 {
     lcd_showstr(CENTER_COLUMN - 4 * 8, 0, "PID_SPEED");
@@ -329,27 +318,29 @@ void Menu_TWO_Display(uint8 control_line)
 
 void Keystroke_Menu_TWO(void) // 2
 {
-    while (menu_next_flag == 0)
+    switch (display_codename)
     {
-        Menu_TWO_Display(-1);
-        Keystroke_Scan();
-        Cursor();
-    }
-    Menu_Next_Back();
-}
+    case 2:
+        while (menu_next_flag == 0)
+        {
+            Menu_TWO_Display(-1);
+            Keystroke_Scan();
+            Cursor();
+        }
+        Menu_Next_Back();
+        break;
 
-void Keystroke_Menu_TWO_One(void) // 21
-{
-    Menu_TWO_Display(1);
-    Keystroke_float(&PID_P, 0.001);
-}
-void Keystroke_Menu_TWO_Two(void) // 22
-{
-    Menu_TWO_Display(2);
-    Keystroke_float(&PID_D, 0.001);
-}
-void Keystroke_Menu_TWO_Three(void) // 23
-{
-    Menu_TWO_Display(3);
-    Keystroke_int(&normal_speed, 1);
+    case 21:
+        Menu_TWO_Display(1);
+        Keystroke_float(&PID_P, 0.001);
+        break;
+    case 22:
+        Menu_TWO_Display(2);
+        Keystroke_float(&PID_D, 0.001);
+        break;
+    case 23:
+        Menu_TWO_Display(3);
+        Keystroke_int(&normal_speed, 1);
+        break;
+    }
 }
