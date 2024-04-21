@@ -32,6 +32,8 @@ uint8 cursor_row = 0;     // 光标所在行号
 uint8 previous_cursor_row = 0;  // 上一次光标所在列号
 uint8 menu_next_flag = 0; // 光标所指菜单进入标志位
 float change_unit = 0;    // 单次修改的单位值
+int change_unit_multiplier = 1;
+int keystroke_three_count = 0; // 定义一个全局变量记录KEYSTROKE_THREE的触发次数
 
 // 需要被修改的参数示例
 int start_flag = 0, garage_out_direction = 0;
@@ -119,21 +121,33 @@ void HandleKeystroke(int keystroke_label)
 {
     switch (keystroke_label)
     {
-    case KEYSTROKE_THREE:
+    case KEYSTROKE_FOUR:
         display_codename /= 10; // 返回上一页
         lcd_clear(WHITE);
         break;
-    case KEYSTROKE_FOUR:
-        display_codename = 0; // 返回第0页
-        lcd_clear(WHITE);
-        break;
+    case KEYSTROKE_THREE:
+        keystroke_three_count++;
+        switch (keystroke_three_count % 3)
+        {
+        case 0:
+            change_unit_multiplier = 1;
+            keystroke_three_count = 0;
+            break;
+        case 1:
+            change_unit_multiplier = 10;
+            break;
+        case 2:
+            change_unit_multiplier = 100;
+            break;
+        }
+    break;
     }
 }
 
 // 整型参数修改
 void Keystroke_int(int *parameter, int change_unit_MIN)
 {
-    int change_unit = change_unit_MIN;
+    int change_unit = change_unit_MIN * change_unit_multiplier;
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);
 
@@ -151,7 +165,7 @@ void Keystroke_int(int *parameter, int change_unit_MIN)
 // 浮点型参数修改
 void Keystroke_float(float *parameter, float change_unit_MIN)
 {
-    float change_unit = change_unit_MIN;
+    float change_unit = change_unit_MIN * change_unit_multiplier;
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);
 
@@ -267,6 +281,7 @@ void Keystroke_Menu_HOME(void) // 0
 void Menu_ONE_Display(uint8 control_line)
 {
     lcd_showstr(CENTER_COLUMN - 2 * 8, 0, "STRAT");
+    lcd_showint32(15 * 8, 0, change_unit_multiplier, 3);
     lcd_showstr(1 * 8, 1, "Start_Flag");
     lcd_showstr(1 * 8, 2, "Out_Direction");
 
@@ -285,7 +300,7 @@ void Keystroke_Menu_ONE(void) // 1 11 12
         {
             Menu_ONE_Display(-1);
             Keystroke_Scan();
-            Cursor();   //Cursor()中调用了按键扫描可以脱离循环
+            Cursor();   
         }
         Menu_Next_Back();
         break;
@@ -305,6 +320,7 @@ void Keystroke_Menu_ONE(void) // 1 11 12
 void Menu_TWO_Display(uint8 control_line)
 {
     lcd_showstr(CENTER_COLUMN - 4 * 8, 0, "PID_SPEED");
+    lcd_showint32(15 * 8, 0, change_unit_multiplier, 3);
     lcd_showstr(1 * 8, 1, "P");
     lcd_showstr(1 * 8, 2, "D");
     lcd_showstr(1 * 8, 3, "normal_speed");

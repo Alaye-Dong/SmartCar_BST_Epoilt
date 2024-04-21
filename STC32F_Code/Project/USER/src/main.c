@@ -74,16 +74,7 @@ void main()
 	
     while(1)
     {
-		// 此处编写需要循环执行的代码
-        
-        // 此处编写需要循环执行的代码
-        // if (test_tims == 0)
-        // {
-        //    Keystroke_Scan();
-        //    test_tims++;
-        // }
-        
-        
+		// 此处编写需要循环执行的代码 
         Keystroke_Menu();
     }
 }
