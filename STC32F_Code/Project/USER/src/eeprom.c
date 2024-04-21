@@ -2,24 +2,24 @@
 
 uint8 date_buff[100]; // eeprom数据数组
 uint8 eeprom_init_time = 0;
+
 void eeprom_init()
 {
     iap_init(); // 初始化EEPROM;
 
     iap_read_bytes(0x00, date_buff, 100); // 从EEPROM中读取数据
 
-    // 刷写程序后初次启动,使用源码初始化的值填充eeprom
-    eeprom_init_time = read_int(0);
-    if (eeprom_init_time != 1)
+    eeprom_init_time = read_int(0); // eepeom没有被填充，则会读到垃圾值
+
+    if (eeprom_init_time != 1) // 初次启动，eeprom_init_time为垃圾值，if成立
     {
         eeprom_init_time = 1;
-        save_int(eeprom_init_time,0);
+        save_int(eeprom_init_time, 0);  // 填充eeprom_init_time的值到eeprom
 
-        eeprom_flash();
+        eeprom_flash(); // 填充源码变量初始化的值到eeprom
     }
-    else
+    else // 非初次启动，读取eeprom用于赋值变量
     {
-        // eeprom读取,用eeprom赋值变量
         start_flag = read_int(1);
         garage_out_direction = read_int(2);
         PID_P = read_float(3);
