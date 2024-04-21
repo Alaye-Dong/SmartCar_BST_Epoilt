@@ -7,9 +7,9 @@
 #define KEY4_PIN P17
 
 uint8 keystroke_label = 0; // °´Ñ¹×´Ì¬
-uint8 key_last_status[5] = {0};
-uint8 key_status[5] = {0};
-uint8 key_flag[5] = {0};
+uint8 key_last_status[4] = {0};
+uint8 key_status[4] = {0};
+uint8 key_flag[4] = {0};
 
 void Keystroke_Scan(void)
 {
