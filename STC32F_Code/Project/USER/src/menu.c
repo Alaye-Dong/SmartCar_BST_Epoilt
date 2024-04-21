@@ -276,7 +276,7 @@ void Menu_ONE_Display(uint8 control_line)
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
 
-void Keystroke_Menu_ONE(void) // 1
+void Keystroke_Menu_ONE(void) // 1 11 12
 {
     switch (display_codename)
     {
@@ -316,7 +316,7 @@ void Menu_TWO_Display(uint8 control_line)
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
 
-void Keystroke_Menu_TWO(void) // 2
+void Keystroke_Menu_TWO(void) // 2 21 22 23
 {
     switch (display_codename)
     {
