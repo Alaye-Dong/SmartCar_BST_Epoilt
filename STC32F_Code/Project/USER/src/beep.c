@@ -1,10 +1,10 @@
 #include "headfile.h"
 
-//#define BEEP        P32   已经在headfile.h中定义
+#define BEEP P32
 
 void BEEP_Init(void)
 {
-    gpio_mode(P3_2, GPO_PP);    //蜂鸣器
+    gpio_mode(P3_2, GPO_PP); // 蜂鸣器
 }
 
 void BEEP_ON_ms(int ms)

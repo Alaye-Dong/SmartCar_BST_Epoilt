@@ -1,9 +1,6 @@
 #ifndef __HEADFILE_H_
 #define __HEADFILE_H_
 
-
-
-#define BEEP P32 // 蜂鸣器
 // #define HALL_PIN P33 // 停车霍尔
 // #define DIRL P53     // 编码器左轮
 // #define DIRR P35     // 编码器右轮
@@ -51,7 +48,6 @@
 #include "SEEKFREE_DL1A.h"
 #include "SEEKFREE_DL1B.h"
 #include "SEEKFREE_IPS200_SPI.h"
-
 
 //------逐飞科技组件层头文件
 #include "seekfree_assistant.h"
