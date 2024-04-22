@@ -4,6 +4,7 @@
 #include "headfile.h"
 
 void Motor_PWM_Init(void);
+void Control(void);
 
 
 
