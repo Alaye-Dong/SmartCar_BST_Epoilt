@@ -97,10 +97,10 @@
 
 
 //定义写字笔的颜色
-#define TFT_PENCOLOR    RED
+#define TFT_PENCOLOR    YELLOW//RED
 
 //定义背景颜色
-#define TFT_BGCOLOR	    WHITE
+#define TFT_BGCOLOR	    BLACK//WHITE
 
      
      
