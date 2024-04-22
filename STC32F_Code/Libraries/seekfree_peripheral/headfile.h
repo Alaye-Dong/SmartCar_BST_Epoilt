@@ -66,5 +66,6 @@
 #include "menu.h"
 #include "eeprom.h"
 #include "beep.h"
+#include "motor.h"
 
 #endif
