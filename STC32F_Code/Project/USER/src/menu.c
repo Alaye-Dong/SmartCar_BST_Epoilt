@@ -29,7 +29,7 @@
 
 int display_codename = 0; // 显示页面代号
 uint8 cursor_row = 0;     // 光标所在行号
-uint8 previous_cursor_row = 0;  // 上一次光标所在列号
+uint8 previous_cursor_row = -1;  // 上一次光标所在列号
 uint8 menu_next_flag = 0; // 光标所指菜单进入标志位
 float change_unit = 0;    // 单次修改的单位值
 int change_unit_multiplier = 1; // 修改单位倍数

@@ -3,4 +3,8 @@
 
 #include "headfile.h"
 
+void Motor_PWM_Init(void);
+
+
+
 #endif

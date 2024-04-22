@@ -18,7 +18,8 @@
 			"zf_uart.h": "c",
 			"board.h": "c",
 			"seekfree_18tft.h": "c",
-			"seekfree_icm20602.h": "c"
+			"seekfree_icm20602.h": "c",
+			"zf_pwm.h": "c"
 		},
 		"Codegeex.CompletionModel": "CodeGeeX Pro[Beta]",
 		"files.autoSave": "off"
