@@ -42,9 +42,7 @@ void main()
 
     // pwm_init(PWMB_CH1_P74, 50, 692);//舵机 最大765   最小625
 
-    // 编码器计数器初始化
-    ctimer_count_init(CTIM0_P34);
-    ctimer_count_init(CTIM3_P04);
+    Encoder_Init();
 
     // 六轴陀螺仪初始化
     //  while(imu660ra_init())

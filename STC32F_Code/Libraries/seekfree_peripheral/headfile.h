@@ -2,8 +2,6 @@
 #define __HEADFILE_H_
 
 // #define HALL_PIN P33 // Í£³µ»ô¶û
-// #define DIRL P53     // ±àÂëÆ÷×óÂÖ
-// #define DIRR P35     // ±àÂëÆ÷ÓÒÂÖ
 
 #include "isr.h"
 #include <string.h>
