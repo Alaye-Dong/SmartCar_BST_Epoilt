@@ -729,6 +729,11 @@
               <FileType>5</FileType>
               <FilePath>..\USER\inc\menu.h</FilePath>
             </File>
+            <File>
+              <FileName>beep.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\inc\beep.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -758,6 +763,11 @@
               <FileName>menu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>beep.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\src\beep.c</FilePath>
             </File>
           </Files>
         </Group>

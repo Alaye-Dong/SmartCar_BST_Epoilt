@@ -64,26 +64,17 @@ void main()
     // }
 
     //dl1a_init();    //TOF DL1A 初始化
+    BEEP_Init();    
 	eeprom_init();	//eeprom初始化
-    
+
     pit_timer_ms(TIM_4, 5);     //设置中断定时
-	gpio_mode(P3_2, GPO_PP);    //蜂鸣器
-    BEEP = 1;
-    delay_ms(10);
-    BEEP = 0;
+	
+
+    BEEP_ON_ms(100);
 	
     while(1)
     {
-		// 此处编写需要循环执行的代码
-        
-        // 此处编写需要循环执行的代码
-        // if (test_tims == 0)
-        // {
-        //    Keystroke_Scan();
-        //    test_tims++;
-        // }
-        
-        
+		// 此处编写需要循环执行的代码 
         Keystroke_Menu();
     }
 }
