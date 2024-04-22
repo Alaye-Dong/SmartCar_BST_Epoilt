@@ -4,8 +4,8 @@
 #include "headfile.h"
 
 void Motor_PWM_Init(void);
-void Control(void);
-
+void Motor_PWM_Write(void);
+int Limit(int x, int min, int max);
 
 
 #endif
