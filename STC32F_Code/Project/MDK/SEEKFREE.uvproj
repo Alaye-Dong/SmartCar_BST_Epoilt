@@ -734,16 +734,6 @@
               <FileType>5</FileType>
               <FilePath>..\USER\inc\beep.h</FilePath>
             </File>
-            <File>
-              <FileName>motor.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\motor.h</FilePath>
-            </File>
-            <File>
-              <FileName>encoder.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\encoder.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -778,16 +768,6 @@
               <FileName>beep.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\beep.c</FilePath>
-            </File>
-            <File>
-              <FileName>motor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\motor.c</FilePath>
-            </File>
-            <File>
-              <FileName>encoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\encoder.c</FilePath>
             </File>
           </Files>
         </Group>

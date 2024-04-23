@@ -38,11 +38,11 @@ void main()
     //  adc_init(ADC_P11,ADC_SYSclk_DIV_2);
     //  adc_init(ADC_P13,ADC_SYSclk_DIV_2);
 
-    Motor_PWM_Init();
+    //Motor_PWM_Init();
 
     // pwm_init(PWMB_CH1_P74, 50, 692);//舵机 最大765   最小625
 
-    Encoder_Init();
+    //Encoder_Init();
 
     // 六轴陀螺仪初始化
     //  while(imu660ra_init())
