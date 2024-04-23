@@ -20,10 +20,7 @@
 			"seekfree_18tft.h": "c",
 			"seekfree_icm20602.h": "c",
 			"zf_pwm.h": "c",
-			"seekfree_bluetooth_ch9141.h": "c",
-			"seekfree_font.h": "c",
-			"math.h": "c",
-			"MATH.H": "cpp"
+			"seekfree_bluetooth_ch9141.h": "c"
 		},
 		"Codegeex.CompletionModel": "CodeGeeX Pro[Beta]",
 		"files.autoSave": "off"

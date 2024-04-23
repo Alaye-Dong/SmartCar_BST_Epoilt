@@ -149,7 +149,7 @@ void TM4_Isr() interrupt 20
 {
 	TIM4_CLEAR_FLAG; //清除中断标志
 
-    //Motor_PWM_Write();
+    Motor_PWM_Write();
 }
 
 //void  INT0_Isr()  interrupt 0;

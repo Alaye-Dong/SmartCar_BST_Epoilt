@@ -55,6 +55,7 @@
 #include "menu.h"
 #include "eeprom.h"
 #include "beep.h"
-
+#include "motor.h"
+#include "encoder.h"
 
 #endif
