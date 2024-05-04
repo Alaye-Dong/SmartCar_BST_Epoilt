@@ -24,7 +24,9 @@
 
 #define ROWS_MAX 7           // 光标在屏幕上可移动至的最大行数
 #define ROWS_MIN 1           // 光标在屏幕上可移动至的最小行数
-#define CENTER_COLUMN 10 * 8 // 中央列
+#define CHAR_SCREEN_WIDTH 8 //一个字符的宽度
+#define CENTER_COLUMN 10 // 中央列
+
 #define EEPROM_MODE 1        // eeporm读写开启则为1
 
 int display_codename = 0; // 显示页面代号
@@ -33,7 +35,7 @@ uint8 previous_cursor_row = -1;  // 上一次光标所在列号
 uint8 menu_next_flag = 0; // 光标所指菜单进入标志位
 float change_unit = 0;    // 单次修改的单位值
 int change_unit_multiplier = 1; // 修改单位倍数
-int keystroke_three_count = 0; // 定义一个全局变量记录KEYSTROKE_THREE的触发次数
+uint8 keystroke_three_count = 0; // 定义一个全局变量记录KEYSTROKE_THREE的触发次数
 
 // 需要被修改的参数示例
 int start_flag = 0, garage_out_direction = 0;
@@ -148,7 +150,7 @@ void HandleKeystroke(int keystroke_label)
 void Keystroke_int(int *parameter, int change_unit_MIN)
 {
     int change_unit = change_unit_MIN * change_unit_multiplier;
-    lcd_showint32(15 * 8, 0, change_unit, 3);
+    lcd_showint32(15 * CHAR_SCREEN_WIDTH, 0, change_unit, 3);
 
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);
@@ -168,7 +170,7 @@ void Keystroke_int(int *parameter, int change_unit_MIN)
 void Keystroke_float(float *parameter, float change_unit_MIN)
 {
     float change_unit = change_unit_MIN * change_unit_multiplier;
-    lcd_showfloat(14 * 8, 0, change_unit, 2, 3);
+    lcd_showfloat(14 * CHAR_SCREEN_WIDTH, 0, change_unit, 2, 3);
     
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);
@@ -244,9 +246,9 @@ void Keystroke_Menu_HOME(void) // 0
 {
     while (menu_next_flag == 0)
     {
-        lcd_showstr(CENTER_COLUMN - 2 * 8, 0, "MENU");
+        lcd_showstr((CENTER_COLUMN - 2 ) * CHAR_SCREEN_WIDTH, 0, "MENU");
         lcd_showstr(1 * 8, 1, "STRAT");
-        lcd_showstr(1 * 8, 2, "PID_SPEED");
+        lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "PID_SPEED");
 
         Keystroke_Scan();
         Cursor();
@@ -265,8 +267,8 @@ void Keystroke_Menu_HOME(void) // 0
 
         // 刷写完成提示
         lcd_clear(WHITE);
-        lcd_showstr(1 * 8, 1, "EEPROM_SAVED");
-        lcd_showstr(1 * 8, 4, "@author Alaye_Dong"); // 用了就别删.doge！！！
+        lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "EEPROM_SAVED");
+        lcd_showstr(1 * CHAR_SCREEN_WIDTH, 4, "@author Alaye_Dong"); // 用了就别删.doge！！！
         delay_ms(400);
 
         BEEP_ON_ms(100);
@@ -282,13 +284,13 @@ void Keystroke_Menu_HOME(void) // 0
 ///////////////////////////////////////
 void Menu_ONE_Display(uint8 control_line)
 {
-    lcd_showstr(0 * 8, 0, "<<STRAT");
+    lcd_showstr(0 * CHAR_SCREEN_WIDTH, 0, "<<STRAT");
 
-    lcd_showstr(1 * 8, 1, "Start_Flag");
-    lcd_showstr(1 * 8, 2, "Out_Direction");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "Start_Flag");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "Out_Direction");
 
-    lcd_showint32(14 * 8, 1, start_flag, 3);    // “1” 应该与该函数被调用时control_line参数一致，才能正确显示&表示在调整的变量
-    lcd_showint32(14 * 8, 2, garage_out_direction, 3);
+    lcd_showint32(14 * CHAR_SCREEN_WIDTH, 1, start_flag, 3);    // “1” 应该与该函数被调用时control_line参数一致，才能正确显示&表示在调整的变量
+    lcd_showint32(14 * CHAR_SCREEN_WIDTH, 2, garage_out_direction, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
@@ -321,15 +323,15 @@ void Keystroke_Menu_ONE(void) // 1 11 12
 
 void Menu_TWO_Display(uint8 control_line)
 {
-    lcd_showstr(0 * 8, 0, "<<PID_SPEED");
+    lcd_showstr(0 * CHAR_SCREEN_WIDTH, 0, "<<PID_SPEED");
 
-    lcd_showstr(1 * 8, 1, "P");
-    lcd_showstr(1 * 8, 2, "D");
-    lcd_showstr(1 * 8, 3, "normal_speed");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "P");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "D");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 3, "normal_speed");
 
-    lcd_showfloat(14 * 8, 1, PID_P, 2, 3);
-    lcd_showfloat(14 * 8, 2, PID_D, 2, 3);
-    lcd_showint32(14 * 8, 3, normal_speed, 3);
+    lcd_showfloat(14 * CHAR_SCREEN_WIDTH, 1, PID_P, 2, 3);
+    lcd_showfloat(14 * CHAR_SCREEN_WIDTH, 2, PID_D, 2, 3);
+    lcd_showint32(14 * CHAR_SCREEN_WIDTH, 3, normal_speed, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
