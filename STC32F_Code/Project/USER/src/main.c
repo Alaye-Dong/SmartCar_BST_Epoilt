@@ -31,12 +31,7 @@ void main()
     // 此处编写用户代码 例如外设初始化代码等
 
     // ADC初始化
-    //  adc_init(ADC_P00,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P01,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P05,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P06,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P11,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P13,ADC_SYSclk_DIV_2);
+
 
     Motor_PWM_Init();
 
