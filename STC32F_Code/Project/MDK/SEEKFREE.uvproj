@@ -744,6 +744,11 @@
               <FileType>5</FileType>
               <FilePath>..\USER\inc\encoder.h</FilePath>
             </File>
+            <File>
+              <FileName>magnet.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\inc\magnet.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -788,6 +793,11 @@
               <FileName>encoder.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\encoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>magnet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\src\magnet.c</FilePath>
             </File>
           </Files>
         </Group>

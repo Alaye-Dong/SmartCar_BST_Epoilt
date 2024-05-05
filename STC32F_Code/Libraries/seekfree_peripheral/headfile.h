@@ -57,5 +57,6 @@
 #include "beep.h"
 #include "motor.h"
 #include "encoder.h"
+#include "magnet.h"
 
 #endif
