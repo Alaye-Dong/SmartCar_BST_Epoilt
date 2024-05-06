@@ -99,3 +99,49 @@ void Bubble_Sort_ADC(void)
         }
     }
 }
+//横S 斜V 竖V 
+unsigned int data diangan[9];
+short leftP = 0, leftV = 0, rightV = 0, rightP = 0, leftS = 0, rightS = 0, middle = 0, second_leftp = 0, second_rightp = 0;
+void Inductor_Normal(void)
+{
+    Magnet_ADC_Read();
+    Magnet_ADC_Filter();
+    
+    diangan[0]=ADC_filtered_value[0];    	
+    diangan[1]=ADC_filtered_value[1];			
+    diangan[2]=ADC_filtered_value[2]; 		
+    diangan[3]=ADC_filtered_value[3];
+    diangan[4]=ADC_filtered_value[4];
+    diangan[5]=ADC_filtered_value[5];	
+//	  diangan[6]=ADC_filtered_value[6];	
+//	  diangan[7]=ADC_filtered_value[7];
+//    diangan[8]=ADC_filtered_value[8];	
+		rightS = (float)(diangan[5] - 1.0) / (1640.0 - 10.0) * 100.0;	
+		leftP =  (float)(diangan[0] - 1.0) / (1730.0 - 10.0) * 100.0;		// 电感归一化
+				
+		leftV = (float)(diangan[2] - 1.0) / (2150.0 - 10.0) * 100.0;		// 电感归一化!!!2500
+		rightV = (float)(diangan[3] - 1.0) / (2400.0 - 10.0) * 100.0;		// 电感归一化	除数越大越往左 右值变小 2400 3150
+		
+    leftS = (float)(diangan[4] - 1.0) / (2280.0 - 10.0) * 100.0; //xie (3200 OK)
+		rightP =  (float)(diangan[1] - 1.0) / (2280.0 - 10.0) * 100.0;		// 电感归一化xie(3200 OK)
+
+		
+	  (ADC_filtered_value[0]) = (leftP < 0) ? 0 : leftP;           //归一化后限制输出幅度
+		(ADC_filtered_value[0]) = (leftP > 100) ? 100 : leftP;				//归一化后限制输出幅度
+		(ADC_filtered_value[2]) = (rightV < 0) ? 0 : rightV;					//归一化后限制输出幅度
+		(ADC_filtered_value[2]) = (rightV > 100) ? 100 : rightV;			//归一化后限制输出幅度
+	  (ADC_filtered_value[3]) = (leftV < 0) ? 0 : leftV;						//归一化后限制输出幅度
+		(ADC_filtered_value[3]) = (leftV > 100) ? 100 : leftV;				//归一化后限制输出幅度
+		(ADC_filtered_value[1]) = (rightP < 0) ? 0 : rightP;					//归一化后限制输出幅度
+		(ADC_filtered_value[1]) = (rightP > 100) ? 100 : rightP;			//归一化后限制输出幅度		
+    (ADC_filtered_value[4]) = (leftS < 0) ? 0 : leftS;
+	  (ADC_filtered_value[4]) = (leftS > 100) ? 100 : leftS;
+		(ADC_filtered_value[5]) = (rightS < 0) ? 0 : rightS;
+	  (ADC_filtered_value[5]) = (rightS > 100) ? 100 : rightS;
+//		(ADC_filtered_value[6]) = (middle < 0) ? 0 : middle;
+//	  (ADC_filtered_value[6]) = (middle > 100) ? 100 : middle;
+//		(ADC_filtered_value[7]) = (second_leftp < 0) ? 0 : second_leftp;
+//	  (ADC_filtered_value[7]) = (second_leftp > 100) ? 100 : second_leftp;
+//		(ADC_filtered_value[8]) = (second_rightp < 0) ? 0 : second_rightp;
+//	  (ADC_filtered_value[8]) = (second_rightp > 100) ? 100 : second_rightp;
+}
