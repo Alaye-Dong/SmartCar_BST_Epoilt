@@ -5,12 +5,12 @@
 float g_fDirectionError[5];     // 方向偏差（g_fDirectionError[0]为一对水平电感的差比和偏差）
 float g_fDirectionError_dot[3]; // 方向偏差微分（g_fDirectionError_dot[0]为一对水平电感的差比和偏差微分）
 
-int16 g_ValueOfAD[6] = {0}; // 获取的电感值
-int16 g_ValueOfADFilter[5] = {0};
+int16 ADC_single_divided_value[6] = {0}; // 获取的电感值
+int16 ADC_filtered_value[5] = {0};
 
 // 定义数组大小常量，提高可读性和可维护性
-#define INDUCTOR 6  //电感的个数
-#define SAMPLES 5  //单次采集次数
+#define INDUCTOR 6 // 电感的个数
+#define SAMPLES 5  // 单次采集次数
 int16 ADC_value[INDUCTOR][SAMPLES];
 
 void Magnet_ADC_Init(void)
@@ -40,58 +40,68 @@ void Magnet_ADC_Read(void)
 
 void Magnet_ADC_Filter(void)
 {
-    int16 i, j, k, temp;
-    int16 ad_valu1[INDUCTOR], ad_sum[INDUCTOR];
-    int16 ValueOfADOld[INDUCTOR], ValueOfADNew[INDUCTOR];
+    int16 i, j;
+    int16 ADC_median_value[INDUCTOR], ADC_sum[INDUCTOR];
+    int16 ADC_old_filtered_value[INDUCTOR], ADC_new_filtered_value[INDUCTOR];
 
     Magnet_ADC_Read();
 
     /*=========================冒泡排序升序==========================*/ // 舍弃最大值和最小值
     // 调用排序函数，对每一行进行排序
-    for (int i = 0; i < INDUCTOR; i++) {
-        BubbleSortRow(ADC_value[i]);
-    }
+    Bubble_Sort_ADC();
 
     /*===========================中值滤波=================================*/
-    for (i = 0; i < 6; i++) // 求中间三项的和
+    for (i = 0; i < INDUCTOR; i++) 
     {
-        ad_sum[i] = ADC_value[i][1] + ADC_value[i][2] + ADC_value[i][3];
-        ad_valu1[i] = ad_sum[i] / 3;
+        for(j = 1; j < SAMPLES - 1; j++) // 求去除最大和最小项的和
+        {
+            ADC_sum[i] += ADC_value[i][j];
+        }
+        
+        ADC_median_value[i] = ADC_sum[i] / (SAMPLES - 2);
     }
 
-    for (i = 0; i < 6; i++) // 将数值中个位数除掉
+    for (i = 0; i < INDUCTOR; i++) // 将数值中个位数除掉
     {
-        g_ValueOfAD[i] = (int16)(ad_valu1[i] / 10 * 10);
+        ADC_single_divided_value[i] = (int16)(ADC_median_value[i] / 10 * 10);
 
         // 采集梯度平滑，每次采集最大变化40
-        ValueOfADOld[i] = g_ValueOfADFilter[i];
-        ValueOfADNew[i] = g_ValueOfAD[i];
+        ADC_old_filtered_value[i] = ADC_filtered_value[i];
+        ADC_new_filtered_value[i] = ADC_single_divided_value[i];
 
-        if (ValueOfADNew[i] >= ValueOfADOld[i])
-            g_ValueOfADFilter[i] = ((ValueOfADNew[i] - ValueOfADOld[i]) > 50 ? (ValueOfADOld[i] + 50) : ValueOfADNew[i]);
+        if (ADC_new_filtered_value[i] >= ADC_old_filtered_value[i])
+            ADC_filtered_value[i] = ((ADC_new_filtered_value[i] - ADC_old_filtered_value[i]) > 50 ? (ADC_old_filtered_value[i] + 50) : ADC_new_filtered_value[i]);
         else
-            g_ValueOfADFilter[i] = ((ValueOfADNew[i] - ValueOfADOld[i]) < -60 ? (ValueOfADOld[i] - 60) : ValueOfADNew[i]);
+            ADC_filtered_value[i] = ((ADC_new_filtered_value[i] - ADC_old_filtered_value[i]) < -60 ? (ADC_old_filtered_value[i] - 60) : ADC_new_filtered_value[i]);
     }
 }
 
-void BubbleSortRow(int16 ADC_value[][SAMPLES]) {
+void Bubble_Sort_ADC(void)
+{
     int i, j, k;
+    uint8 swapped;
     int16 temp;
 
-    for (i = 0; i < INDUCTOR; i++) {
-        // 设置标志位判断是否需要继续排序
-        uint8 swapped = 0;
-        for (j = 0; j < SAMPLES - 1; j++) {
-            if (ADC_value[i][j] > ADC_value[i][j + 1]) {
-                temp = ADC_value[i][j + 1];
-                ADC_value[i][j + 1] = ADC_value[i][j];
-                ADC_value[i][j] = temp;
-                swapped = 1; // 标志位设置为1，表示发生过交换
+    for (i = 0; i < INDUCTOR; i++)
+    {
+        swapped = 0; // 每轮排序开始前，标记未发生交换
+
+        for (j = 0; j < SAMPLES - 1; j++)
+        {
+            for (k = 0; k < SAMPLES - 1 - j; k++)
+            {
+                if (ADC_value[i][k] > ADC_value[i][k + 1])
+                {
+                    temp = ADC_value[i][k];
+                    ADC_value[i][k] = ADC_value[i][k + 1];
+                    ADC_value[i][k + 1] = temp;
+                    swapped = 1; // 发生了交换，更新标记
+                }
             }
-        }
-        // 如果没有发生交换，说明数组已排序完成，提前结束循环
-        if (!swapped) {
-            break;
+            if (!swapped)
+            { // 如果一轮循环没有发生交换，说明数组已排序
+                break;
+            }
         }
     }
 }
