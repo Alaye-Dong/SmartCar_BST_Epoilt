@@ -1,10 +1,10 @@
 #include "magnet.h"
 
-#define INDUCTOR 6 // 电感的个数
-#define SAMPLES 5  // 单次采集次数
+#define INDUCTORS 6 // 电感的个数
+#define SAMPLES 5   // 单次采集次数
 
-int16 ADC_value[INDUCTOR][SAMPLES] = {0};
-int16 ADC_filtered_value[INDUCTOR] = {0};
+int16 ADC_value[INDUCTORS][SAMPLES] = {0};
+int16 ADC_filtered_value[INDUCTORS] = {0};
 
 void Magnet_ADC_Init(void)
 {
@@ -20,6 +20,7 @@ void Magnet_Process(void)
 {
     Magnet_ADC_Read();
     Magnet_ADC_Filter();
+    Inductor_Normal();
 }
 
 void Magnet_ADC_Read(void)
@@ -40,17 +41,17 @@ void Magnet_ADC_Read(void)
 void Magnet_ADC_Filter(void)
 {
     int16 i, j;
-    int16 ADC_median_value[INDUCTOR], ADC_sum[INDUCTOR];
-    int16 ADC_old_filtered_value[INDUCTOR];
+    int16 ADC_median_value[INDUCTORS], ADC_sum[INDUCTORS];
+    int16 ADC_old_filtered_value[INDUCTORS];
 
     // 冒泡排序
     Bubble_Sort_ADC();
 
-    for (i = 0; i < INDUCTOR; i++)
+    for (i = 0; i < INDUCTORS; i++)
     {
         ADC_old_filtered_value[i] = ADC_filtered_value[i];
 
-        // 中值均值滤波
+        // 中位值平均滤波
         for (j = 1; j < SAMPLES - 1; j++) // 求去除最大和最小项的和
         {
             ADC_sum[i] += ADC_value[i][j];
@@ -58,6 +59,7 @@ void Magnet_ADC_Filter(void)
         ADC_median_value[i] = ADC_sum[i] / (SAMPLES - 2);
 
         ADC_filtered_value[i] = (int16)(ADC_median_value[i] / 10 * 10); // 将数值中个位数除掉
+
         // 梯度平滑
         if (ADC_filtered_value[i] - ADC_old_filtered_value[i] > 50)
         {
@@ -76,7 +78,7 @@ void Bubble_Sort_ADC(void)
     uint8 swapped;
     int16 temp;
 
-    for (i = 0; i < INDUCTOR; i++)
+    for (i = 0; i < INDUCTORS; i++)
     {
         swapped = 0; // 每轮排序开始前，标记未发生交换
 
@@ -99,49 +101,42 @@ void Bubble_Sort_ADC(void)
         }
     }
 }
-//横S 斜V 竖V 
-unsigned int data diangan[9];
-short leftP = 0, leftV = 0, rightV = 0, rightP = 0, leftS = 0, rightS = 0, middle = 0, second_leftp = 0, second_rightp = 0;
+
+// 横32 斜41 竖05
+// 水平（H）、垂直（V）和斜向（S）
+#define left_V 0
+#define right_V 5
+#define left_H 3
+#define right_H 2
+#define left_S 4
+#define right_S 1
+
+int16 inductor_left_V, inductor_right_V, inductor_left_H, inductor_right_H, inductor_left_S, inductor_right_S;
+int16 inductor_normal_value[INDUCTORS] = {0};
 void Inductor_Normal(void)
 {
-    Magnet_ADC_Read();
-    Magnet_ADC_Filter();
-    
-    diangan[0]=ADC_filtered_value[0];    	
-    diangan[1]=ADC_filtered_value[1];			
-    diangan[2]=ADC_filtered_value[2]; 		
-    diangan[3]=ADC_filtered_value[3];
-    diangan[4]=ADC_filtered_value[4];
-    diangan[5]=ADC_filtered_value[5];	
-//	  diangan[6]=ADC_filtered_value[6];	
-//	  diangan[7]=ADC_filtered_value[7];
-//    diangan[8]=ADC_filtered_value[8];	
-		rightS = (float)(diangan[5] - 1.0) / (1640.0 - 10.0) * 100.0;	
-		leftP =  (float)(diangan[0] - 1.0) / (1730.0 - 10.0) * 100.0;		// 电感归一化
-				
-		leftV = (float)(diangan[2] - 1.0) / (2150.0 - 10.0) * 100.0;		// 电感归一化!!!2500
-		rightV = (float)(diangan[3] - 1.0) / (2400.0 - 10.0) * 100.0;		// 电感归一化	除数越大越往左 右值变小 2400 3150
-		
-    leftS = (float)(diangan[4] - 1.0) / (2280.0 - 10.0) * 100.0; //xie (3200 OK)
-		rightP =  (float)(diangan[1] - 1.0) / (2280.0 - 10.0) * 100.0;		// 电感归一化xie(3200 OK)
+    // (x - min) / (max - min) * 100
+    inductor_normal_value[left_V] = (float)(ADC_filtered_value[left_V] - 1.0) / (1730.0 - 10.0) * 100.0; // 电感归一化
+    inductor_normal_value[right_V] = (float)(ADC_filtered_value[right_V] - 1.0) / (1640.0 - 10.0) * 100.0;
 
-		
-	  (ADC_filtered_value[0]) = (leftP < 0) ? 0 : leftP;           //归一化后限制输出幅度
-		(ADC_filtered_value[0]) = (leftP > 100) ? 100 : leftP;				//归一化后限制输出幅度
-		(ADC_filtered_value[2]) = (rightV < 0) ? 0 : rightV;					//归一化后限制输出幅度
-		(ADC_filtered_value[2]) = (rightV > 100) ? 100 : rightV;			//归一化后限制输出幅度
-	  (ADC_filtered_value[3]) = (leftV < 0) ? 0 : leftV;						//归一化后限制输出幅度
-		(ADC_filtered_value[3]) = (leftV > 100) ? 100 : leftV;				//归一化后限制输出幅度
-		(ADC_filtered_value[1]) = (rightP < 0) ? 0 : rightP;					//归一化后限制输出幅度
-		(ADC_filtered_value[1]) = (rightP > 100) ? 100 : rightP;			//归一化后限制输出幅度		
-    (ADC_filtered_value[4]) = (leftS < 0) ? 0 : leftS;
-	  (ADC_filtered_value[4]) = (leftS > 100) ? 100 : leftS;
-		(ADC_filtered_value[5]) = (rightS < 0) ? 0 : rightS;
-	  (ADC_filtered_value[5]) = (rightS > 100) ? 100 : rightS;
-//		(ADC_filtered_value[6]) = (middle < 0) ? 0 : middle;
-//	  (ADC_filtered_value[6]) = (middle > 100) ? 100 : middle;
-//		(ADC_filtered_value[7]) = (second_leftp < 0) ? 0 : second_leftp;
-//	  (ADC_filtered_value[7]) = (second_leftp > 100) ? 100 : second_leftp;
-//		(ADC_filtered_value[8]) = (second_rightp < 0) ? 0 : second_rightp;
-//	  (ADC_filtered_value[8]) = (second_rightp > 100) ? 100 : second_rightp;
+    inductor_normal_value[left_H] = (float)(ADC_filtered_value[left_H] - 1.0) / (2400.0 - 10.0) * 100.0;   // 电感归一化	除数越大越往左 右值变小 2400 3150
+    inductor_normal_value[right_H] = (float)(ADC_filtered_value[right_H] - 1.0) / (2150.0 - 10.0) * 100.0; // 电感归一化!!!2500
+
+    inductor_normal_value[left_S] = (float)(ADC_filtered_value[left_S] - 1.0) / (2280.0 - 10.0) * 100.0;   // xie (3200 OK)
+    inductor_normal_value[right_S] = (float)(ADC_filtered_value[right_S] - 1.0) / (2280.0 - 10.0) * 100.0; // 电感归一化xie(3200 OK)
+
+    inductor_left_V = (inductor_normal_value[left_V] < 0) ? 0 : inductor_normal_value[left_V];
+    inductor_left_V = (inductor_normal_value[left_V] > 100) ? 100 : inductor_normal_value[left_V];
+    inductor_right_V = (inductor_normal_value[right_V] < 0) ? 0 : inductor_normal_value[right_V];
+    inductor_right_V = (inductor_normal_value[right_V] > 100) ? 100 : inductor_normal_value[right_V];
+
+    inductor_left_H = (inductor_normal_value[left_H] < 0) ? 0 : inductor_normal_value[left_H];
+    inductor_left_H = (inductor_normal_value[left_H] > 100) ? 100 : inductor_normal_value[left_H];
+    inductor_right_H = (inductor_normal_value[right_H] < 0) ? 0 : inductor_normal_value[right_H];
+    inductor_right_H = (inductor_normal_value[right_H] > 100) ? 100 : inductor_normal_value[right_H];
+
+    inductor_left_S = (inductor_normal_value[left_S] < 0) ? 0 : inductor_normal_value[left_S];
+    inductor_left_S = (inductor_normal_value[left_S] > 100) ? 100 : inductor_normal_value[left_S];
+    inductor_right_S = (inductor_normal_value[right_S] < 0) ? 0 : inductor_normal_value[right_S];
+    inductor_right_S = (inductor_normal_value[right_S] > 100) ? 100 : inductor_normal_value[right_S];
 }
