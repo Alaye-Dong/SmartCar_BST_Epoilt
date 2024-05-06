@@ -3,8 +3,7 @@
 #define INDUCTOR 6 // 电感的个数
 #define SAMPLES 5  // 单次采集次数
 
-int16 ADC_value[INDUCTOR][SAMPLES];
-int16 ADC_single_divided_value[INDUCTOR] = {0}; // 获取的电感值
+int16 ADC_value[INDUCTOR][SAMPLES] = {0};
 int16 ADC_filtered_value[INDUCTOR] = {0};
 
 void Magnet_ADC_Init(void)
@@ -15,6 +14,12 @@ void Magnet_ADC_Init(void)
     adc_init(ADC_P06, ADC_SYSclk_DIV_2);
     adc_init(ADC_P11, ADC_SYSclk_DIV_2);
     adc_init(ADC_P13, ADC_SYSclk_DIV_2);
+}
+
+void Magnet_Process(void)
+{
+    Magnet_ADC_Read();
+    Magnet_ADC_Filter();
 }
 
 void Magnet_ADC_Read(void)
@@ -36,39 +41,31 @@ void Magnet_ADC_Filter(void)
 {
     int16 i, j;
     int16 ADC_median_value[INDUCTOR], ADC_sum[INDUCTOR];
-    int16 ADC_old_filtered_value[INDUCTOR], ADC_new_filtered_value[INDUCTOR];
+    int16 ADC_old_filtered_value[INDUCTOR];
 
-    Magnet_ADC_Read();
-
-    /*=========================冒泡排序升序==========================*/
+    // 冒泡排序
     Bubble_Sort_ADC();
 
-    /*===========================中值滤波=================================*/
     for (i = 0; i < INDUCTOR; i++)
     {
+        ADC_old_filtered_value[i] = ADC_filtered_value[i];
+
+        // 中值均值滤波
         for (j = 1; j < SAMPLES - 1; j++) // 求去除最大和最小项的和
         {
             ADC_sum[i] += ADC_value[i][j];
         }
-
         ADC_median_value[i] = ADC_sum[i] / (SAMPLES - 2);
-    }
 
-    for (i = 0; i < INDUCTOR; i++)
-    {
-        ADC_single_divided_value[i] = (int16)(ADC_median_value[i] / 10 * 10); // 将数值中个位数除掉
-
-        // 采集梯度平滑，每次采集最大变化40
-        ADC_old_filtered_value[i] = ADC_filtered_value[i];
-        ADC_new_filtered_value[i] = ADC_single_divided_value[i];
-
-        if (ADC_new_filtered_value[i] >= ADC_old_filtered_value[i])
+        ADC_filtered_value[i] = (int16)(ADC_median_value[i] / 10 * 10); // 将数值中个位数除掉
+        // 梯度平滑
+        if (ADC_filtered_value[i] - ADC_old_filtered_value[i] > 50)
         {
-            ADC_filtered_value[i] = ((ADC_new_filtered_value[i] - ADC_old_filtered_value[i]) > 50 ? (ADC_old_filtered_value[i] + 50) : ADC_new_filtered_value[i]);
+            ADC_filtered_value[i] = ADC_old_filtered_value[i] + 50;
         }
-        else
+        else if (ADC_filtered_value[i] - ADC_old_filtered_value[i] < -60)
         {
-            ADC_filtered_value[i] = ((ADC_new_filtered_value[i] - ADC_old_filtered_value[i]) < -60 ? (ADC_old_filtered_value[i] - 60) : ADC_new_filtered_value[i]);
+            ADC_filtered_value[i] = ADC_old_filtered_value[i] - 60;
         }
     }
 }

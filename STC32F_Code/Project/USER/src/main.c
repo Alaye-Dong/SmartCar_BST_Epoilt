@@ -31,7 +31,7 @@ void main()
     // 此处编写用户代码 例如外设初始化代码等
 
     // ADC初始化
-
+    Magnet_ADC_Init();
 
     Motor_PWM_Init();
 
