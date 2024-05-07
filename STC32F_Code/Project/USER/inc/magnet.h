@@ -5,7 +5,7 @@
 
 void Magnet_ADC_Init(void);
 void Magnet_ADC_Read(void);
-void Magnet_Process(void);
+void Inductor_Process(void);
 void Magnet_ADC_Filter(void);
 void Bubble_Sort_ADC(void);
 void Inductor_Normal(void);
