@@ -6,7 +6,7 @@
 #define KEY3_PIN P16
 #define KEY4_PIN P17
 
-uint8 keystroke_label = 0; // 按下的是哪个键
+uint8 keystroke_label = 0; // 按下的是哪个键 1 2 3 4
 uint8 key_last_status[4] = {0};
 uint8 key_status[4] = {0};
 uint8 key_flag[4] = {0};
@@ -31,7 +31,7 @@ void Keystroke_Scan(void)
         if (key_status[i] && !key_last_status[i])
         {
             keystroke_label = i + 1;
-            BEEP_ON_ms(5);
+            // BEEP_ON_ms(5);
             break;  // 一次只响应一个按键，所以有一个按键响应则可以跳出循环
         }
     }
