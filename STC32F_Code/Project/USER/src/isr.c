@@ -148,7 +148,8 @@ extern void pit_callback(void);
 void TM4_Isr() interrupt 20
 {
 	TIM4_CLEAR_FLAG; //清除中断标志
-
+    
+    Inductor_Process();
     Motor_PWM_Write();
 }
 
