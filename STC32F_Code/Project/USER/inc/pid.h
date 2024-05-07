@@ -3,4 +3,13 @@
 
 #include "headfile.h"
 
+typedef struct
+{
+    float KP;
+    float KI;
+    float KD;
+    float KP_2;
+    float KD_2;
+} PIDTypeDef;
+
 #endif
