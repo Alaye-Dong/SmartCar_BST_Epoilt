@@ -3,6 +3,14 @@
 #define INDUCTORS 6 // 电感的个数
 #define SAMPLES 5   // 单次采集次数
 
+// 水平 32（H）、垂直 05（V）和斜向 41（S）
+#define left_V 0
+#define right_V 5
+#define left_H 3
+#define right_H 2
+#define left_S 4
+#define right_S 1
+
 int16 ADC_value[INDUCTORS][SAMPLES] = {0};
 int16 ADC_filtered_value[INDUCTORS] = {0};
 
@@ -29,12 +37,12 @@ void Magnet_ADC_Read(void)
     // 牛爷爷的车队 [左横 3] [左斜 4] [左竖 0] || [右竖 5] [右斜 1] [右横 2]
     for (i = 0; i < SAMPLES; i++)
     {
-        ADC_value[0][i] = adc_once(ADC_P11, ADC_12BIT);
-        ADC_value[1][i] = adc_once(ADC_P05, ADC_12BIT);
-        ADC_value[2][i] = adc_once(ADC_P00, ADC_12BIT);
-        ADC_value[3][i] = adc_once(ADC_P13, ADC_12BIT);
-        ADC_value[4][i] = adc_once(ADC_P06, ADC_12BIT);
-        ADC_value[5][i] = adc_once(ADC_P01, ADC_12BIT);
+        ADC_value[left_V][i] = adc_once(ADC_P11, ADC_12BIT);
+        ADC_value[right_S][i] = adc_once(ADC_P05, ADC_12BIT);
+        ADC_value[right_H][i] = adc_once(ADC_P00, ADC_12BIT);
+        ADC_value[left_H][i] = adc_once(ADC_P13, ADC_12BIT);
+        ADC_value[left_S][i] = adc_once(ADC_P06, ADC_12BIT);
+        ADC_value[right_V][i] = adc_once(ADC_P01, ADC_12BIT);
     }
 }
 
@@ -102,15 +110,6 @@ void Bubble_Sort_ADC(void)
     }
 }
 
-// 横32 斜41 竖05
-// 水平（H）、垂直（V）和斜向（S）
-#define left_V 0
-#define right_V 5
-#define left_H 3
-#define right_H 2
-#define left_S 4
-#define right_S 1
-
 int16 inductor_left_V, inductor_right_V, inductor_left_H, inductor_right_H, inductor_left_S, inductor_right_S;
 int16 inductor_normal_value[INDUCTORS] = {0};
 void Inductor_Normal(void)
@@ -139,4 +138,12 @@ void Inductor_Normal(void)
     inductor_left_S = (inductor_normal_value[left_S] > 100) ? 100 : inductor_normal_value[left_S];
     inductor_right_S = (inductor_normal_value[right_S] < 0) ? 0 : inductor_normal_value[right_S];
     inductor_right_S = (inductor_normal_value[right_S] > 100) ? 100 : inductor_normal_value[right_S];
+}
+
+float positon_left, positon_right, positon = 0;
+void Inductor_Analyse(void)
+{
+    positon_left = sqrt(inductor_left_H * inductor_left_H + inductor_left_V * inductor_left_V); 
+    positon_right= sqrt(inductor_right_H * inductor_right_H + inductor_right_V * inductor_right_V);
+    positon = (positon_left - positon_right) * 100 / (positon_left + positon_right + 1); //补1防止分母为0
 }
