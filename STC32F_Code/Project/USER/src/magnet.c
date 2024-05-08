@@ -3,6 +3,8 @@
 #define INDUCTORS 6 // 电感的个数
 #define SAMPLES 5   // 单次采集次数
 
+#define EXTREME_NUMBER 2 // 舍弃的最大最小值的个数
+
 // 水平 32（H）、垂直 05（V）和斜向 41（S）
 #define left_V 0
 #define right_V 5
@@ -15,7 +17,7 @@ int16 ADC_value[INDUCTORS][SAMPLES] = {0};
 int16 ADC_filtered_value[INDUCTORS] = {0};
 int16 inductor_normal_value[INDUCTORS] = {0};
 int16 inductor_left_V, inductor_right_V, inductor_left_H, inductor_right_H, inductor_left_S, inductor_right_S = 0;
-int16 position_left, position_right, position = 0; //position大于0表示车偏右应左转，小于0表示车偏左应右转
+int16 position_left, position_right, position = 0; // position大于0表示车偏右应左转，小于0表示车偏左应右转
 
 void Magnet_ADC_Init(void)
 {
@@ -64,11 +66,11 @@ void Magnet_ADC_Filter(void)
         ADC_old_filtered_value[i] = ADC_filtered_value[i];
 
         // 中位值平均滤波
-        for (j = 1; j < SAMPLES - 1; j++) // 求去除最大和最小项的和
+        for (j = EXTREME_NUMBER / 2; j < SAMPLES - (EXTREME_NUMBER / 2); j++) // 求去除最大和最小项的和
         {
             ADC_sum[i] += ADC_value[i][j];
         }
-        ADC_median_value[i] = ADC_sum[i] / (SAMPLES - 2);
+        ADC_median_value[i] = ADC_sum[i] / (SAMPLES - EXTREME_NUMBER);
 
         ADC_filtered_value[i] = (int16)(ADC_median_value[i] / 10 * 10); // 将数值中个位数除掉
 
@@ -113,7 +115,6 @@ void Bubble_Sort_ADC(void)
         }
     }
 }
-
 
 void Inductor_Normal(void)
 {
