@@ -58,5 +58,7 @@
 #include "motor.h"
 #include "encoder.h"
 #include "magnet.h"
+#include "pid.h"
+#include "gyro.h"
 
 #endif

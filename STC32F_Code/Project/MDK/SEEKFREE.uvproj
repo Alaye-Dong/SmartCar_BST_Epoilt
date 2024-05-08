@@ -754,6 +754,11 @@
               <FileType>5</FileType>
               <FilePath>..\USER\inc\pid.h</FilePath>
             </File>
+            <File>
+              <FileName>gyro.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\inc\gyro.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -808,6 +813,11 @@
               <FileName>pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>gyro.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\src\gyro.c</FilePath>
             </File>
           </Files>
         </Group>
