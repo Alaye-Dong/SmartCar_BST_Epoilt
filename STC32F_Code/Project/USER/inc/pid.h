@@ -12,4 +12,13 @@ typedef struct
     float KD_2;
 } PIDTypeDef;
 
+void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2);
+void PIDType_Init(void);
+void PID_Init(void);
+void PID_Process(void);
+void Direction_PID(void);
+void Left_Speed_PID(void);
+void Right_Speed_PID(void);
+int clamp(int value, int min_value, int max_value);
+
 #endif

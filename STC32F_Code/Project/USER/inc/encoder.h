@@ -9,7 +9,7 @@ typedef struct
     int16 encoder_last;
 } EncoderTypeDef;
 
-extern EncoderTypeDef encoder_1, encoder_2;
+extern EncoderTypeDef encoder_left, encoder_right;
 
 void Encoder_Init(void);
 

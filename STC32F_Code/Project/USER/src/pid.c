@@ -1,9 +1,13 @@
 #include "pid.h"
 
 PIDTypeDef direction, motor_left, motor_right;
+
+float direction_output;
+int16 position_last;
+
 int motor_left_error, motor_right_error;
-int motor_left_old_error, motor_right_old_error;
-int target_speed_1, target_speed_2;
+int motor_left_last_error, motor_right_last_error;
+int target_speed_left, target_speed_right;
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
 {
@@ -17,10 +21,24 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 void PIDType_Init(void)
 {
     PID_Parameter_Init(&direction, 0.0, 0.0, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&motor_left, 0.0, 0.0, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&motor_right, 0.0, 0.0, 0.0, 0.0, 0.0);
 }
 
-float direction_output;
-int16 position_last;
+void PID_Init(void)
+{
+    PIDType_Init();
+    EncoderType_Init();
+}
+
+void PID_Process(void)
+{
+    Read_Encoder();
+    Direction_PID();
+    Left_Speed_PID();
+    Right_Speed_PID();
+}
+
 // PID转向控制
 void Direction_PID(void)
 {
@@ -28,15 +46,38 @@ void Direction_PID(void)
     position_last = position;
 }
 
+// 左轮内环
+void Left_Speed_PID(void)
+{
+    motor_left_error = (int)(target_speed_left - encoder_left.encoder_now);
+    motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
+    motor_left_last_error = motor_left_error;
+
+    motor_left_pwm = clamp(motor_left_pwm, -3500, 8000);
+}
+
 // 右轮内环
 void Right_Speed_PID(void)
 {
-    motor_right_error = (int)(target_speed_2 - encoder_2.encoder_now);
-    motor_right_pwm += (motor_right_error - motor_right_old_error) * motor_left.KP + motor_right_error * motor_left.KI;
-    motor_right_old_error = motor_right_error;
+    motor_right_error = (int)(target_speed_right - encoder_right.encoder_now);
+    motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_left.KI;
+    motor_right_last_error = motor_right_error;
 
-    if (motor_right_pwm >= 8000)
-        motor_right_pwm = 8000; // ???
-    else if (motor_right_pwm <= -3500)
-        motor_right_pwm = -3500;
+    motor_right_pwm = clamp(motor_right_pwm, -3500, 8000);
+}
+
+int clamp(int value, int min_value, int max_value)
+{
+    if (value < min_value)
+    {
+        return min_value;
+    }
+    else if (value > max_value)
+    {
+        return max_value;
+    }
+    else
+    {
+        return value;
+    }
 }
