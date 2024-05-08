@@ -11,8 +11,8 @@
 #define MORTOR_PWM_MIN -3500
 #define MORTOR_PWM_MAX 7000
 
-int duty_PWM_1 = 0;
-int duty_PWM_2 = 0;
+int motor_left_pwm = 0;
+int motor_right_pwm = 0;
 
 void Motor_PWM_Init(void)
 {
@@ -27,29 +27,29 @@ void Motor_PWM_Init(void)
 //限幅PWM值后，输出PWM到电机
 void Motor_PWM_Write(void)
 {
-    duty_PWM_1 = Limit(duty_PWM_1, MORTOR_PWM_MIN, MORTOR_PWM_MAX); // 电机PWM限幅
-    duty_PWM_2 = Limit(duty_PWM_2, MORTOR_PWM_MIN, MORTOR_PWM_MAX);
+    motor_left_pwm = Limit(motor_left_pwm, MORTOR_PWM_MIN, MORTOR_PWM_MAX); // 电机PWM限幅
+    motor_right_pwm = Limit(motor_right_pwm, MORTOR_PWM_MIN, MORTOR_PWM_MAX);
 
-    if (duty_PWM_1 > 0)
+    if (motor_left_pwm > 0)
     {
         PWM_1_DIR = 1;
-        pwm_duty(PWM_1, duty_PWM_1);
+        pwm_duty(PWM_1, motor_left_pwm);
     }
     else
     {
         PWM_1_DIR = 0;
-        pwm_duty(PWM_1, abs(duty_PWM_1));
+        pwm_duty(PWM_1, abs(motor_left_pwm));
     }
 
-    if (duty_PWM_2 > 0)
+    if (motor_right_pwm > 0)
     {
         PWM_2_DIR = 0;
-        pwm_duty(PWM_2, duty_PWM_2);
+        pwm_duty(PWM_2, motor_right_pwm);
     }
     else
     {
         PWM_2_DIR = 1;
-        pwm_duty(PWM_2, abs(duty_PWM_2));
+        pwm_duty(PWM_2, abs(motor_right_pwm));
     }
 }
 

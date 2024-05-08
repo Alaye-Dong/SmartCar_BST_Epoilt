@@ -9,6 +9,8 @@ typedef struct
     int16 encoder_last;
 } EncoderTypeDef;
 
+extern EncoderTypeDef encoder_1, encoder_2;
+
 void Encoder_Init(void);
 
 void Encoder_Parameter_Init(EncoderTypeDef *sptr);
