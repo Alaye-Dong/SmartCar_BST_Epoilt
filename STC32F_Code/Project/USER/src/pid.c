@@ -53,8 +53,8 @@ void Left_Speed_PID(void)
     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
     motor_left_last_error = motor_left_error;
 
-    motor_left_pwm -= direction_output; 
-    motor_left_pwm = clamp(motor_left_pwm, -3500, 8000);
+    motor_left_pwm -= direction_output; // 融合方向控制
+    motor_left_pwm = clamp(motor_left_pwm, -3500, 8000); //PWM限幅
 }
 
 // 右轮内环
@@ -64,8 +64,8 @@ void Right_Speed_PID(void)
     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_left.KI;
     motor_right_last_error = motor_right_error;
 
-    motor_right_pwm += direction_output;
-    motor_right_pwm = clamp(motor_right_pwm, -3500, 8000);
+    motor_right_pwm += direction_output; // 融合方向控制
+    motor_right_pwm = clamp(motor_right_pwm, -3500, 8000); //PWM限幅
 }
 
 int clamp(int value, int min_value, int max_value)
