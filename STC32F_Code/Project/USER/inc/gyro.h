@@ -12,5 +12,6 @@ void IMU_Get_Data(void);
 float IMU_Get_Yaw_Rad_S(void);
 void IMU_Get_Yaw_Angle();
 void insertion_sort(int array[], int size); 
+void Trimmed_Mean_Filter(int data_array[], int size, int extreme_filter, int* filtered_value);
 
 #endif
