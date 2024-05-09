@@ -24,10 +24,10 @@ void IMU_Get_data_array(void)
 }
 
 #define SAMPLES 5        // 样本数
-#define EXTREME_NUMBER 2 // 舍弃的最大最小值的个数
+#define EXTREME_NUMBER 1 // 舍弃的最大或最小值的个数
 void IMU_Gyro_Z_Filter()
 {
-    int16 gyro_array[SAMPLES], temp_sum;
+    int16 gyro_array[SAMPLES];
     uint8 i;
 
     for (i = 0; i < SAMPLES; i++)
@@ -38,13 +38,7 @@ void IMU_Gyro_Z_Filter()
 
     insertion_sort(gyro_array, SAMPLES);
 
-    // 中位值平均滤波
-    for (i = EXTREME_NUMBER / 2; i < SAMPLES - (EXTREME_NUMBER / 2); i++) // 求去除最大和最小项的和
-    {
-        temp_sum += gyro_array[i];
-    }
-
-    gyro_z_filtered = temp_sum / (SAMPLES - EXTREME_NUMBER);
+    Trimmed_Mean_Filter(gyro_array, SAMPLES, EXTREME_NUMBER, &gyro_z_filtered);
 }
 
 // Yaw角速度,使用时要确保IMU_Gyro_Z_Filter()在中断或者循环中
