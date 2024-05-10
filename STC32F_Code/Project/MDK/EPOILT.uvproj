@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>STC32F12K</TargetName>
+      <TargetName>EPOILT</TargetName>
       <ToolsetNumber>0x1</ToolsetNumber>
       <ToolsetName>MCS-251</ToolsetName>
       <uAC6>0</uAC6>
@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Out_File\</OutputDirectory>
-          <OutputName>SEEKFREE</OutputName>
+          <OutputName>EPOILT</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>

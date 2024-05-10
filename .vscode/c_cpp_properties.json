@@ -43,6 +43,50 @@
                 "_task_="
             ],
             "intelliSenseMode": "${default}"
+        },
+        {
+            "name": "EPOILT",
+            "includePath": [
+                "c:\\Users\\29717\\Documents\\GitHub\\SmartCar_BST_Epoilt\\STC32F_Code\\Libraries\\libraries",
+                "c:\\Users\\29717\\Documents\\GitHub\\SmartCar_BST_Epoilt\\STC32F_Code\\Libraries\\seekfree_libraries",
+                "c:\\Users\\29717\\Documents\\GitHub\\SmartCar_BST_Epoilt\\STC32F_Code\\Libraries\\seekfree_peripheral",
+                "c:\\Users\\29717\\Documents\\GitHub\\SmartCar_BST_Epoilt\\STC32F_Code\\Project\\CODE",
+                "c:\\Users\\29717\\Documents\\GitHub\\SmartCar_BST_Epoilt\\STC32F_Code\\Project\\USER\\inc",
+                "c:\\Users\\29717\\Documents\\GitHub\\SmartCar_BST_Epoilt\\STC32F_Code\\Project\\USER\\src",
+                "c:\\Users\\29717\\Documents\\GitHub\\SmartCar_BST_Epoilt\\STC32F_Code\\Libraries\\seekfree_components",
+                "C:\\Keil_v5\\C251\\INC",
+                "C:\\Keil_v5\\C251\\INC\\STC",
+                "c:\\Users\\29717\\Documents\\GitHub\\SmartCar_BST_Epoilt\\STC32F_Code\\Libraries\\doc",
+                "${default}",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__C251__",
+                "__VSCODE_C251__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "edata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "far=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
         }
     ],
     "version": 4
