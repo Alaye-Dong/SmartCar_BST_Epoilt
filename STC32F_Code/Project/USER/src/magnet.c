@@ -3,7 +3,7 @@
 #define INDUCTORS 6 // 电感的个数
 #define SAMPLES 5   // 单次采集次数
 
-#define EXTREME_NUMBER 2 // 舍弃的最大最小值的个数
+#define EXTREME_NUMBER 1 // 舍弃的最大最小值的个数
 
 // 水平 32（H）、垂直 05（V）和斜向 41（S）
 #define left_V 0
@@ -54,8 +54,8 @@ void Magnet_ADC_Read(void)
 
 void Magnet_ADC_Filter(void)
 {
-    int16 i, j;
-    int16 ADC_median_value[INDUCTORS], ADC_sum[INDUCTORS];
+    int16 i;
+    int16 ADC_median_value[INDUCTORS];
     int16 ADC_old_filtered_value[INDUCTORS];
 
     // 冒泡排序
@@ -65,12 +65,7 @@ void Magnet_ADC_Filter(void)
     {
         ADC_old_filtered_value[i] = ADC_filtered_value[i];
 
-        // 中位值平均滤波
-        for (j = EXTREME_NUMBER / 2; j < SAMPLES - (EXTREME_NUMBER / 2); j++) // 求去除最大和最小项的和
-        {
-            ADC_sum[i] += ADC_value[i][j];
-        }
-        ADC_median_value[i] = ADC_sum[i] / (SAMPLES - EXTREME_NUMBER);
+        Trimmed_Mean_Filter(&ADC_filtered_value[i], INDUCTORS, EXTREME_NUMBER, &ADC_median_value[i]);
 
         ADC_filtered_value[i] = (int16)(ADC_median_value[i] / 10 * 10); // 将数值中个位数除掉
 
@@ -88,30 +83,38 @@ void Magnet_ADC_Filter(void)
 
 void Bubble_Sort_ADC(void)
 {
-    int i, j, k;
-    uint8 swapped;
-    int16 temp;
+    uint8 k;
+    for (k = 0; k < INDUCTORS; k++)
+    {
+        Bubble_Sort_Int(ADC_value[k], SAMPLES);
+    }
+}
 
-    for (i = 0; i < INDUCTORS; i++)
+// 冒泡排序函数
+void Bubble_Sort_Int(int data_array[], int length)
+{
+    int i, j;
+    uint8 swapped;
+
+    for (i = 0; i < length - 1; i++)
     {
         swapped = 0; // 每轮排序开始前，标记未发生交换
 
-        for (j = 0; j < SAMPLES - 1; j++)
+        for (j = 0; j < length - 1 - i; j++)
         {
-            for (k = 0; k < SAMPLES - 1 - j; k++)
+            if (data_array[j] > data_array[j + 1])
             {
-                if (ADC_value[i][k] > ADC_value[i][k + 1])
-                {
-                    temp = ADC_value[i][k];
-                    ADC_value[i][k] = ADC_value[i][k + 1];
-                    ADC_value[i][k + 1] = temp;
-                    swapped = 1; // 发生了交换，更新标记
-                }
+                int temp = data_array[j];
+                data_array[j] = data_array[j + 1];
+                data_array[j + 1] = temp;
+                swapped = 1; // 发生了交换，更新标记
             }
-            if (!swapped)
-            { // 如果一轮循环没有发生交换，说明数组已排序
-                break;
-            }
+        }
+
+        if (!swapped)
+        {
+            // 如果一轮循环没有发生交换，说明数组已排序
+            break;
         }
     }
 }
