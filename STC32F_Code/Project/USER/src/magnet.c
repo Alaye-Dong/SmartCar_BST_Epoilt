@@ -90,35 +90,6 @@ void Bubble_Sort_ADC(void)
     }
 }
 
-// 冒泡排序函数
-void Bubble_Sort_Int(int16 data_array[], int16 length)
-{
-    int16 i, j;
-    uint8 swapped;
-
-    for (i = 0; i < length - 1; i++)
-    {
-        swapped = 0; // 每轮排序开始前，标记未发生交换
-
-        for (j = 0; j < length - 1 - i; j++)
-        {
-            if (data_array[j] > data_array[j + 1])
-            {
-                int16 temp = data_array[j];
-                data_array[j] = data_array[j + 1];
-                data_array[j + 1] = temp;
-                swapped = 1; // 发生了交换，更新标记
-            }
-        }
-
-        if (!swapped)
-        {
-            // 如果一轮循环没有发生交换，说明数组已排序
-            break;
-        }
-    }
-}
-
 void Inductor_Normal(void)
 {
     // (x - min) / (max - min) * 100

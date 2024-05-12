@@ -66,19 +66,3 @@ void Right_Speed_PID(void)
 
     motor_right_pwm += direction_output; // 融合方向控制
 }
-
-int16 Clamp(int16 value, int16 min_value, int16 max_value)
-{
-    if (value < min_value)
-    {
-        return min_value;
-    }
-    else if (value > max_value)
-    {
-        return max_value;
-    }
-    else
-    {
-        return value;
-    }
-}

@@ -14,7 +14,6 @@ void Magnet_ADC_Read(void);
 void Inductor_Process(void);
 void Magnet_ADC_Filter(void);
 void Bubble_Sort_ADC(void);
-void Bubble_Sort_Int(int16 data_array[], int16 length);
 void Inductor_Normal(void);
 void Inductor_Analyse(void);
 
