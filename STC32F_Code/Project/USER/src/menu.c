@@ -46,7 +46,8 @@ int16 normal_speed = 0;
 int16 menu_have_sub[] = {
     0,
     1, 11, 12,
-    2, 21, 22, 23};
+    2, 21, 22, 23,
+    3};
 
 // 菜单箭头标识
 void Cursor(void)
@@ -231,6 +232,10 @@ void Keystroke_Menu(void)
         Keystroke_Menu_TWO();
         break;
 
+    case 3:
+        Keystroke_Menu_THREE();
+        break;
+
     default:
         break;
     }
@@ -362,5 +367,63 @@ void Keystroke_Menu_TWO(void) // 2 21 22 23
         Menu_TWO_Display(3);
         Keystroke_int(&normal_speed, 1);
         break;
+    }
+}
+
+void Menu_THREE_Display(uint8 control_line)
+{
+    lcd_showstr(0 * CHAR_SCREEN_WIDTH, 0, "<<ELE_INFO");
+
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 1, "|");
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 2, "-");
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 3, "/");
+
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 1, inductor_left_V, 4);
+    lcd_showint32(10 * CHAR_SCREEN_WIDTH, 1, inductor_right_V, 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 2, inductor_left_H, 4);
+    lcd_showint32(10 * CHAR_SCREEN_WIDTH, 2, inductor_right_H, 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 3, inductor_left_S, 4);
+    lcd_showint32(10 * CHAR_SCREEN_WIDTH, 3, inductor_right_S, 4);
+
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 4, "|");
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 5, "-");
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 6, "/");
+
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 4, ADC_filtered_value[LEFT_V], 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 4, ADC_filtered_value[RIGHT_V], 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 5, ADC_filtered_value[LEFT_H], 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 5, ADC_filtered_value[RIGHT_H], 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 6, ADC_filtered_value[LEFT_S], 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 6, ADC_filtered_value[RIGHT_S], 4);
+
+    lcd_showstr(0, control_line, "&"); //&标志提示
+}
+
+void Keystroke_Menu_THREE(void) // 3
+{
+    switch (display_codename)
+    {
+    case 3:
+        while (menu_next_flag == 0)
+        {
+            Menu_THREE_Display(-1);
+            Keystroke_Scan();
+            Cursor();
+        }
+        Menu_Next_Back();
+        break;
+
+    // case 21:
+    //     Menu_TWO_Display(1);
+    //     Keystroke_float(&PID_P, 0.001);
+    //     break;
+    // case 22:
+    //     Menu_TWO_Display(2);
+    //     Keystroke_float(&PID_D, 0.001);
+    //     break;
+    // case 23:
+    //     Menu_TWO_Display(3);
+    //     Keystroke_int(&normal_speed, 1);
+    //     break;
     }
 }

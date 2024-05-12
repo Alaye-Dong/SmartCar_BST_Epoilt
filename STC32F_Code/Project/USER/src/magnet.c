@@ -5,14 +5,6 @@
 
 #define EXTREME_NUMBER 1 // 舍弃的最大最小值的个数
 
-// 水平 32（H）、垂直 05（V）和斜向 41（S）
-#define left_V 0
-#define right_V 5
-#define left_H 3
-#define right_H 2
-#define left_S 4
-#define right_S 1
-
 int16 ADC_value[INDUCTORS][SAMPLES] = {0};
 int16 ADC_filtered_value[INDUCTORS] = {0};
 int16 inductor_normal_value[INDUCTORS] = {0};
@@ -43,12 +35,12 @@ void Magnet_ADC_Read(void)
     // 牛爷爷的车队 [左横 3] [左斜 4] [左竖 0] || [右竖 5] [右斜 1] [右横 2]
     for (i = 0; i < SAMPLES; i++)
     {
-        ADC_value[left_V][i] = adc_once(ADC_P11, ADC_12BIT);
-        ADC_value[right_S][i] = adc_once(ADC_P05, ADC_12BIT);
-        ADC_value[right_H][i] = adc_once(ADC_P00, ADC_12BIT);
-        ADC_value[left_H][i] = adc_once(ADC_P13, ADC_12BIT);
-        ADC_value[left_S][i] = adc_once(ADC_P06, ADC_12BIT);
-        ADC_value[right_V][i] = adc_once(ADC_P01, ADC_12BIT);
+        ADC_value[LEFT_V][i] = adc_once(ADC_P11, ADC_12BIT);
+        ADC_value[RIGHT_S][i] = adc_once(ADC_P05, ADC_12BIT);
+        ADC_value[RIGHT_H][i] = adc_once(ADC_P00, ADC_12BIT);
+        ADC_value[LEFT_H][i] = adc_once(ADC_P13, ADC_12BIT);
+        ADC_value[LEFT_S][i] = adc_once(ADC_P06, ADC_12BIT);
+        ADC_value[RIGHT_V][i] = adc_once(ADC_P01, ADC_12BIT);
     }
 }
 
@@ -94,29 +86,29 @@ void Bubble_Sort_ADC(void)
 void Inductor_Normal(void)
 {
     // (x - min) / (max - min) * 100
-    inductor_normal_value[left_V] = (float)(ADC_filtered_value[left_V] - 10.0) / (1730.0 - 10.0) * 100.0; 
-    inductor_normal_value[right_V] = (float)(ADC_filtered_value[right_V] - 10.0) / (1640.0 - 10.0) * 100.0;
+    inductor_normal_value[LEFT_V] = (float)(ADC_filtered_value[LEFT_V] - 10.0) / (1730.0 - 10.0) * 100.0; 
+    inductor_normal_value[RIGHT_V] = (float)(ADC_filtered_value[RIGHT_V] - 10.0) / (1640.0 - 10.0) * 100.0;
 
-    inductor_normal_value[left_H] = (float)(ADC_filtered_value[left_H] - 10.0) / (2400.0 - 10.0) * 100.0;   
-    inductor_normal_value[right_H] = (float)(ADC_filtered_value[right_H] - 10.0) / (2150.0 - 10.0) * 100.0; 
+    inductor_normal_value[LEFT_H] = (float)(ADC_filtered_value[LEFT_H] - 10.0) / (2400.0 - 10.0) * 100.0;   
+    inductor_normal_value[RIGHT_H] = (float)(ADC_filtered_value[RIGHT_H] - 10.0) / (2150.0 - 10.0) * 100.0; 
 
-    inductor_normal_value[left_S] = (float)(ADC_filtered_value[left_S] - 10.0) / (2280.0 - 10.0) * 100.0;
-    inductor_normal_value[right_S] = (float)(ADC_filtered_value[right_S] - 10.0) / (2280.0 - 10.0) * 100.0;
+    inductor_normal_value[LEFT_S] = (float)(ADC_filtered_value[LEFT_S] - 10.0) / (2280.0 - 10.0) * 100.0;
+    inductor_normal_value[RIGHT_S] = (float)(ADC_filtered_value[RIGHT_S] - 10.0) / (2280.0 - 10.0) * 100.0;
 
-    inductor_left_V = (inductor_normal_value[left_V] < 0) ? 0 : inductor_normal_value[left_V];
-    inductor_left_V = (inductor_normal_value[left_V] > 100) ? 100 : inductor_normal_value[left_V];
-    inductor_right_V = (inductor_normal_value[right_V] < 0) ? 0 : inductor_normal_value[right_V];
-    inductor_right_V = (inductor_normal_value[right_V] > 100) ? 100 : inductor_normal_value[right_V];
+    inductor_left_V = (inductor_normal_value[LEFT_V] < 0) ? 0 : inductor_normal_value[LEFT_V];
+    inductor_left_V = (inductor_normal_value[LEFT_V] > 100) ? 100 : inductor_normal_value[LEFT_V];
+    inductor_right_V = (inductor_normal_value[RIGHT_V] < 0) ? 0 : inductor_normal_value[RIGHT_V];
+    inductor_right_V = (inductor_normal_value[RIGHT_V] > 100) ? 100 : inductor_normal_value[RIGHT_V];
 
-    inductor_left_H = (inductor_normal_value[left_H] < 0) ? 0 : inductor_normal_value[left_H];
-    inductor_left_H = (inductor_normal_value[left_H] > 100) ? 100 : inductor_normal_value[left_H];
-    inductor_right_H = (inductor_normal_value[right_H] < 0) ? 0 : inductor_normal_value[right_H];
-    inductor_right_H = (inductor_normal_value[right_H] > 100) ? 100 : inductor_normal_value[right_H];
+    inductor_left_H = (inductor_normal_value[LEFT_H] < 0) ? 0 : inductor_normal_value[LEFT_H];
+    inductor_left_H = (inductor_normal_value[LEFT_H] > 100) ? 100 : inductor_normal_value[LEFT_H];
+    inductor_right_H = (inductor_normal_value[RIGHT_H] < 0) ? 0 : inductor_normal_value[RIGHT_H];
+    inductor_right_H = (inductor_normal_value[RIGHT_H] > 100) ? 100 : inductor_normal_value[RIGHT_H];
 
-    inductor_left_S = (inductor_normal_value[left_S] < 0) ? 0 : inductor_normal_value[left_S];
-    inductor_left_S = (inductor_normal_value[left_S] > 100) ? 100 : inductor_normal_value[left_S];
-    inductor_right_S = (inductor_normal_value[right_S] < 0) ? 0 : inductor_normal_value[right_S];
-    inductor_right_S = (inductor_normal_value[right_S] > 100) ? 100 : inductor_normal_value[right_S];
+    inductor_left_S = (inductor_normal_value[LEFT_S] < 0) ? 0 : inductor_normal_value[LEFT_S];
+    inductor_left_S = (inductor_normal_value[LEFT_S] > 100) ? 100 : inductor_normal_value[LEFT_S];
+    inductor_right_S = (inductor_normal_value[RIGHT_S] < 0) ? 0 : inductor_normal_value[RIGHT_S];
+    inductor_right_S = (inductor_normal_value[RIGHT_S] > 100) ? 100 : inductor_normal_value[RIGHT_S];
 }
 
 void Inductor_Analyse(void)
