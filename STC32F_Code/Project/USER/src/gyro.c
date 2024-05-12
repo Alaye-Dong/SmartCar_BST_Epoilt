@@ -1,6 +1,4 @@
 #include "gyro.h"
-// int16 imu660ra_gyro_x = 0, imu660ra_gyro_y = 0, imu660ra_gyro_z = 0;            // 三轴陀螺仪数据   gyro (陀螺仪)
-// int16 imu660ra_acc_x = 0, imu660ra_acc_y = 0, imu660ra_acc_z = 0;               // 三轴加速度计数据 acc  (accelerometer 加速度计)
 
 int16 gyro_z_filtered;
 float yaw_angle;
@@ -25,7 +23,7 @@ void IMU_Get_Data(void)
 
 #define SAMPLES 5        // 样本数
 #define EXTREME_NUMBER 1 // 舍弃的最大或最小值的个数
-void IMU_Gyro_Z_Filter()
+void IMU_Get_Gyro_Z_Filter(void)
 {
     int16 gyro_array[SAMPLES];
     uint8 i;
@@ -36,24 +34,30 @@ void IMU_Gyro_Z_Filter()
         gyro_array[i] = imu660ra_gyro_z;
     }
 
-    insertion_sort(gyro_array, SAMPLES);
+    Insertion_Sort(gyro_array, SAMPLES);
 
     Trimmed_Mean_Filter(gyro_array, SAMPLES, EXTREME_NUMBER, &gyro_z_filtered);
 }
 
-// Yaw角速度,使用时要确保IMU_Gyro_Z_Filter()在中断或者循环中
-float IMU_Get_Yaw_Rad_S(void)
-{
-    return imu660ra_gyro_transition(gyro_z_filtered);
-}
-
 void IMU_Get_Yaw_Angle()
 {
-    yaw_angle += IMU_Get_Yaw_Rad_S() * 0.005; // 积分角度：角速度*积分时间10ms
+    yaw_angle += imu660ra_gyro_transition(gyro_z_filtered) * 0.005; // 积分角度=角速度*积分时间
+}
+
+void IMU_Yaw_Angle_Get_Control(uint8 mod)
+{
+    if (mod == 0)
+    {
+        yaw_angle = 0;
+    }
+    else if (mod == 1)
+    {
+        IMU_Get_Yaw_Angle();
+    } 
 }
 
 // 优化过的插入排序
-void insertion_sort(int16 array[], int16 size)
+void Insertion_Sort(int16 array[], int16 size)
 {
     int16 i, j;
     int16 key;
@@ -73,12 +77,19 @@ void insertion_sort(int16 array[], int16 size)
     }
 }
 
-//剪枝平均，去除极端值后取平均值
+
+/**
+ * @description: 剪枝平均，去除极端值后取平均值
+ * @param {int16} data_array 数组已有序
+ * @param {int16} size
+ * @param {int16} extreme_number
+ * @param {int16*} filtered_value 舍弃的最大或最小值的个数
+ * @return {*}
+ */
 void Trimmed_Mean_Filter(int16 data_array[], int16 size, int16 extreme_number, int16* filtered_value)
 {
     int16 temp_sum = 0;
     uint8 i;
-    //data_array数组已有序，exterme_filter为舍弃的最大或最小值的个数
 
     for (i = extreme_number; i < size - extreme_number; i++) // 求去除最大和最小项后的和
     {
