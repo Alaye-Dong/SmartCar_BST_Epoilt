@@ -17,7 +17,7 @@ void IMU_Offset(void)
 {
 }
 
-void IMU_Get_data_array(void)
+void IMU_Get_Data(void)
 {
     imu660ra_get_gyro();
     imu660ra_get_acc();
@@ -74,16 +74,16 @@ void insertion_sort(int16 array[], int16 size)
 }
 
 //剪枝平均，去除极端值后取平均值
-void Trimmed_Mean_Filter(int16 data_array[], int16 size, int16 extreme_filter, int16* filtered_value)
+void Trimmed_Mean_Filter(int16 data_array[], int16 size, int16 extreme_number, int16* filtered_value)
 {
     int16 temp_sum = 0;
     uint8 i;
     //data_array数组已有序，exterme_filter为舍弃的最大或最小值的个数
 
-    for (i = extreme_filter; i < size - extreme_filter; i++) // 求去除最大和最小项后的和
+    for (i = extreme_number; i < size - extreme_number; i++) // 求去除最大和最小项后的和
     {
         temp_sum += data_array[i];
     }
 
-    *filtered_value = temp_sum / (size - extreme_filter * 2); //其余取平均
+    *filtered_value = temp_sum / (size - extreme_number * 2); //其余取平均
 }
