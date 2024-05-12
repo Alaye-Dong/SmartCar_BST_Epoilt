@@ -42,7 +42,8 @@ void PID_Process(void)
 // PID转向控制
 void Direction_PID(void)
 {
-    direction_output = position * direction.KP + (position - position_last) * direction.KD; //+ abs(position) * position * direction.KP_2 + groy_z * KD2; //加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
+    direction_output = position * direction.KP + (position - position_last) * direction.KD;
+    // + abs(position) * position * direction.KP_2 + gyro_z_filtered * direction.KD_2; //加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
     position_last = position;
 }
 
@@ -54,7 +55,6 @@ void Left_Speed_PID(void)
     motor_left_last_error = motor_left_error;
 
     motor_left_pwm -= direction_output; // 融合方向控制
-    motor_left_pwm = clamp(motor_left_pwm, -3500, 8000); //PWM限幅
 }
 
 // 右轮内环
@@ -65,10 +65,9 @@ void Right_Speed_PID(void)
     motor_right_last_error = motor_right_error;
 
     motor_right_pwm += direction_output; // 融合方向控制
-    motor_right_pwm = clamp(motor_right_pwm, -3500, 8000); //PWM限幅
 }
 
-int16 clamp(int16 value, int16 min_value, int16 max_value)
+int16 Clamp(int16 value, int16 min_value, int16 max_value)
 {
     if (value < min_value)
     {
