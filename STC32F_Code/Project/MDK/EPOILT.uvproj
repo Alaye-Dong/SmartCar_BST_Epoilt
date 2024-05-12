@@ -759,6 +759,11 @@
               <FileType>5</FileType>
               <FilePath>..\USER\inc\gyro.h</FilePath>
             </File>
+            <File>
+              <FileName>my_common.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\inc\my_common.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -818,6 +823,11 @@
               <FileName>gyro.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\gyro.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\src\my_common.c</FilePath>
             </File>
           </Files>
         </Group>

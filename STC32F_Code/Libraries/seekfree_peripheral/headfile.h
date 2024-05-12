@@ -51,6 +51,7 @@
 #include "seekfree_assistant.h"
 
 //------自定义头文件
+#include "my_common.h"
 #include "key.h"
 #include "menu.h"
 #include "eeprom.h"

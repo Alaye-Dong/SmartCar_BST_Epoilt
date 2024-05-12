@@ -153,18 +153,3 @@ void Inductor_Analyse(void)
     position_right = sqrt(inductor_right_H * inductor_right_H + inductor_right_V * inductor_right_V);
     position = (position_left - position_right) * 100 / (position_left + position_right + 1); // 补1防止分母为0
 }
-
-// static float g_fDirectionErrorTemp[2][5];
-// InductorNormal();
-// g_fDirectionError[0] = (float)(sqrt(g_ValueOfAD[2]) - sqrt(g_ValueOfAD[3])) * 100 / (sqrt(g_ValueOfAD[3]) + sqrt(g_ValueOfAD[2])); // 水平电感的差比和作为偏差为偏差
-// g_fDirectionError[1] = (float)(sqrt(g_ValueOfAD[5]) - sqrt(g_ValueOfAD[0])) * 100 / (sqrt(g_ValueOfAD[5]) + sqrt(g_ValueOfAD[0]));
-// g_fDirectionError[2] = (float)(0.8 * (sqrt(g_ValueOfAD[2]) - sqrt(g_ValueOfAD[3])) + 0.4 * (sqrt(g_ValueOfAD[4]) - sqrt(g_ValueOfAD[1]))) * 100 /
-//                        (0.8 * (sqrt(g_ValueOfAD[3]) + sqrt(g_ValueOfAD[2])) + 0.4 * abs(sqrt(g_ValueOfAD[4]) - sqrt(g_ValueOfAD[1])));
-// g_fDirectionError[3] = (float)(g_ValueOfAD[5] - g_ValueOfAD[0]);
-
-// g_fDirectionErrorTemp[0][4] = g_fDirectionErrorTemp[0][3];
-// g_fDirectionErrorTemp[0][3] = g_fDirectionErrorTemp[0][2];
-// g_fDirectionErrorTemp[0][2] = g_fDirectionErrorTemp[0][1];
-// g_fDirectionErrorTemp[0][1] = g_fDirectionErrorTemp[0][0];
-// g_fDirectionErrorTemp[0][0] = g_fDirectionError[0];
-// g_fDirectionError_dot[0] = 5 * (g_fDirectionErrorTemp[0][0] - g_fDirectionErrorTemp[0][3]); // 水平电感的偏差微分
