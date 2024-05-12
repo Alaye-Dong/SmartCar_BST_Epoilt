@@ -19,6 +19,6 @@ void PID_Process(void);
 void Direction_PID(void);
 void Left_Speed_PID(void);
 void Right_Speed_PID(void);
-int clamp(int value, int min_value, int max_value);
+int16 clamp(int16 value, int16 min_value, int16 max_value);
 
 #endif

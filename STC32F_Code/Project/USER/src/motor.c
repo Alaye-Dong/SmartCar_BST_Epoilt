@@ -11,8 +11,8 @@
 #define MORTOR_PWM_MIN -3500
 #define MORTOR_PWM_MAX 7000
 
-int motor_left_pwm = 0;
-int motor_right_pwm = 0;
+int16 motor_left_pwm = 0;
+int16 motor_right_pwm = 0;
 
 void Motor_PWM_Init(void)
 {
@@ -53,7 +53,7 @@ void Motor_PWM_Write(void)
     }
 }
 
-int Limit(int x, int min, int max)
+int16 Limit(int16 x, int16 min, int16 max)
 {
     if (x < min)
     {

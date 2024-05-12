@@ -91,9 +91,9 @@ void Bubble_Sort_ADC(void)
 }
 
 // 冒泡排序函数
-void Bubble_Sort_Int(int data_array[], int length)
+void Bubble_Sort_Int(int16 data_array[], int16 length)
 {
-    int i, j;
+    int16 i, j;
     uint8 swapped;
 
     for (i = 0; i < length - 1; i++)
@@ -104,7 +104,7 @@ void Bubble_Sort_Int(int data_array[], int length)
         {
             if (data_array[j] > data_array[j + 1])
             {
-                int temp = data_array[j];
+                int16 temp = data_array[j];
                 data_array[j] = data_array[j + 1];
                 data_array[j + 1] = temp;
                 swapped = 1; // 发生了交换，更新标记

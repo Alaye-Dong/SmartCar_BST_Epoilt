@@ -4,7 +4,7 @@
 #include  "headfile.h"
 
 void BEEP_Init(void);
-void BEEP_ON_ms(int ms);
+void BEEP_ON_ms(int16 ms);
 
 
 #endif

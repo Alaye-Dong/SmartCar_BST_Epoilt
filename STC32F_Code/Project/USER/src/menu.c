@@ -29,21 +29,21 @@
 
 #define EEPROM_MODE 1        // eeporm读写开启则为1
 
-int display_codename = 0; // 显示页面代号
+int16 display_codename = 0; // 显示页面代号
 uint8 cursor_row = 0;     // 光标所在行号
 uint8 previous_cursor_row = -1;  // 上一次光标所在列号
 uint8 menu_next_flag = 0; // 光标所指菜单进入标志位
 float change_unit = 0;    // 单次修改的单位值
-int change_unit_multiplier = 1; // 修改单位倍数
+int16 change_unit_multiplier = 1; // 修改单位倍数
 uint8 keystroke_three_count = 0; // 定义一个全局变量记录KEYSTROKE_THREE的触发次数
 
 // 需要被修改的参数示例
-int start_flag = 0, garage_out_direction = 0;
+int16 start_flag = 0, garage_out_direction = 0;
 float PID_P = 0.123, PID_D = 0.123;
-int normal_speed = 0;
+int16 normal_speed = 0;
 
 // 将有菜单页面的代号填入该数组中，防止由箭头所在行号所决定进入不存在的菜单
-int menu_have_sub[] = {
+int16 menu_have_sub[] = {
     0,
     1, 11, 12,
     2, 21, 22, 23};
@@ -104,7 +104,7 @@ void Menu_Next_Back()
 }
 
 // 检查本行是否存在子菜单
-int Have_Sub_Menu(int menu_id)
+int16 Have_Sub_Menu(int16 menu_id)
 {
     uint8 i = 0;
     // sizeof(menu_have_sub) / sizeof(menu_have_sub [0]) 计算数组长度
@@ -119,7 +119,7 @@ int Have_Sub_Menu(int menu_id)
 }
 
 // 处理按键扫描返回页与参数修改倍数逻辑
-void HandleKeystroke(int keystroke_label)
+void HandleKeystroke(int16 keystroke_label)
 {
     switch (keystroke_label)
     {
@@ -147,9 +147,9 @@ void HandleKeystroke(int keystroke_label)
 }
 
 // 整型参数修改
-void Keystroke_int(int *parameter, int change_unit_MIN)
+void Keystroke_int(int16 *parameter, int16 change_unit_MIN)
 {
-    int change_unit = change_unit_MIN * change_unit_multiplier;
+    int16 change_unit = change_unit_MIN * change_unit_multiplier;
     lcd_showint32(15 * CHAR_SCREEN_WIDTH, 0, change_unit, 3);
 
     Keystroke_Scan();
@@ -187,7 +187,7 @@ void Keystroke_float(float *parameter, float change_unit_MIN)
 }
 
 // 整型特值修改，-1或1
-void Keystroke_Special_Value(int *parameter)
+void Keystroke_Special_Value(int16 *parameter)
 {
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);

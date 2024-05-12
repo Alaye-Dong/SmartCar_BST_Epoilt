@@ -3,19 +3,19 @@
 
 #include "headfile.h"
 
-extern int display_codename; // 显示页面代号
+extern int16 display_codename; // 显示页面代号
 
-extern int start_flag, garage_out_direction;
+extern int16 start_flag, garage_out_direction;
 extern float PID_P, PID_D;
-extern int normal_speed;
+extern int16 normal_speed;
 
 void Cursor(void);
 void Menu_Next_Back(void);
-int Have_Sub_Menu(int menu_id); // 查看是否存在子菜单
+int16 Have_Sub_Menu(int16 menu_id); // 查看是否存在子菜单
 
-void HandleKeystroke(int keystroke_label);
-void Keystroke_Special_Value(int *parameter);
-void Keystroke_int(int *parameter, int change_unit_MIN);
+void HandleKeystroke(int16 keystroke_label);
+void Keystroke_Special_Value(int16 *parameter);
+void Keystroke_int(int16 *parameter, int16 change_unit_MIN);
 void Keystroke_float(float *parameter, float change_unit_MIN);
 
 void Keystroke_Menu(void);

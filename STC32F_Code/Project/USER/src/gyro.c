@@ -53,10 +53,10 @@ void IMU_Get_Yaw_Angle()
 }
 
 // 优化过的插入排序
-void insertion_sort(int array[], int size)
+void insertion_sort(int16 array[], int16 size)
 {
-    int i, j;
-    int key;
+    int16 i, j;
+    int16 key;
 
     for (i = 1; i < size; i++)
     {
@@ -74,9 +74,9 @@ void insertion_sort(int array[], int size)
 }
 
 //剪枝平均，去除极端值后取平均值
-void Trimmed_Mean_Filter(int data_array[], int size, int extreme_filter, int* filtered_value)
+void Trimmed_Mean_Filter(int16 data_array[], int16 size, int16 extreme_filter, int16* filtered_value)
 {
-    int temp_sum = 0;
+    int16 temp_sum = 0;
     uint8 i;
     //data_array数组已有序，exterme_filter为舍弃的最大或最小值的个数
 
