@@ -4,6 +4,8 @@
 #define ENCODER_DIR_2 P53 // 右轮编码器方向脚
 
 EncoderTypeDef encoder_left, encoder_right;
+float car_distance = 0;
+float real_distance = 0;
 
 // 编码器初始化
 void Encoder_Init(void)
@@ -49,4 +51,18 @@ void Read_Encoder(void)
 
     ctimer_count_clean(CTIM0_P34);
     ctimer_count_clean(CTIM3_P04); // 清除积累
+}
+
+/*
+ * @name: void Speed_Calcu(void);
+ * @function: 计算小车运行实际距离
+ * @param: none
+ * @return: none
+ */
+#define ENCODER_TO_DISTANCE 0.001 // 待定（系数=固定距离/测试得到的脉冲）
+void Distance_Calculation(void)
+{
+    car_distance += (encoder_left.encoder_now + encoder_right.encoder_now) / 2;
+    // 实际距离=脉冲*系数
+    real_distance = ENCODER_TO_DISTANCE * car_distance;
 }

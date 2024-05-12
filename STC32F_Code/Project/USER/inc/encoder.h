@@ -19,4 +19,6 @@ void EncoderType_Init(void);
 
 void Read_Encoder(void);
 
+void Distance_Calculation(void);
+
 #endif
