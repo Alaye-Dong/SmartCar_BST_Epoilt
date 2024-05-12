@@ -69,15 +69,15 @@ void Magnet_ADC_Filter(void)
 
         ADC_filtered_value[i] = (int16)(ADC_median_value[i] / 10 * 10); // 将数值中个位数除掉
 
-        // 梯度平滑
-        if (ADC_filtered_value[i] - ADC_old_filtered_value[i] > 50)
-        {
-            ADC_filtered_value[i] = ADC_old_filtered_value[i] + 50;
-        }
-        else if (ADC_filtered_value[i] - ADC_old_filtered_value[i] < -60)
-        {
-            ADC_filtered_value[i] = ADC_old_filtered_value[i] - 60;
-        }
+        // // 梯度平滑
+        // if (ADC_filtered_value[i] - ADC_old_filtered_value[i] > 50)
+        // {
+        //     ADC_filtered_value[i] = ADC_old_filtered_value[i] + 50;
+        // }
+        // else if (ADC_filtered_value[i] - ADC_old_filtered_value[i] < -60)
+        // {
+        //     ADC_filtered_value[i] = ADC_old_filtered_value[i] - 60;
+        // }
     }
 }
 
@@ -90,17 +90,18 @@ void Bubble_Sort_ADC(void)
     }
 }
 
+//归一化
 void Inductor_Normal(void)
 {
     // (x - min) / (max - min) * 100
-    inductor_normal_value[left_V] = (float)(ADC_filtered_value[left_V] - 1.0) / (1730.0 - 10.0) * 100.0; // 电感归一化
-    inductor_normal_value[right_V] = (float)(ADC_filtered_value[right_V] - 1.0) / (1640.0 - 10.0) * 100.0;
+    inductor_normal_value[left_V] = (float)(ADC_filtered_value[left_V] - 10.0) / (1730.0 - 10.0) * 100.0; 
+    inductor_normal_value[right_V] = (float)(ADC_filtered_value[right_V] - 10.0) / (1640.0 - 10.0) * 100.0;
 
-    inductor_normal_value[left_H] = (float)(ADC_filtered_value[left_H] - 1.0) / (2400.0 - 10.0) * 100.0;   // 电感归一化	除数越大越往左 右值变小 2400 3150
-    inductor_normal_value[right_H] = (float)(ADC_filtered_value[right_H] - 1.0) / (2150.0 - 10.0) * 100.0; // 电感归一化!!!2500
+    inductor_normal_value[left_H] = (float)(ADC_filtered_value[left_H] - 10.0) / (2400.0 - 10.0) * 100.0;   
+    inductor_normal_value[right_H] = (float)(ADC_filtered_value[right_H] - 10.0) / (2150.0 - 10.0) * 100.0; 
 
-    inductor_normal_value[left_S] = (float)(ADC_filtered_value[left_S] - 1.0) / (2280.0 - 10.0) * 100.0;   // xie (3200 OK)
-    inductor_normal_value[right_S] = (float)(ADC_filtered_value[right_S] - 1.0) / (2280.0 - 10.0) * 100.0; // 电感归一化xie(3200 OK)
+    inductor_normal_value[left_S] = (float)(ADC_filtered_value[left_S] - 10.0) / (2280.0 - 10.0) * 100.0;
+    inductor_normal_value[right_S] = (float)(ADC_filtered_value[right_S] - 10.0) / (2280.0 - 10.0) * 100.0;
 
     inductor_left_V = (inductor_normal_value[left_V] < 0) ? 0 : inductor_normal_value[left_V];
     inductor_left_V = (inductor_normal_value[left_V] > 100) ? 100 : inductor_normal_value[left_V];
