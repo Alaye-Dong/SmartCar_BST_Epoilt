@@ -18,7 +18,7 @@ void Magnet_ADC_Init(void)
     adc_init(ADC_P05, ADC_SYSclk_DIV_2);
     adc_init(ADC_P06, ADC_SYSclk_DIV_2);
     adc_init(ADC_P11, ADC_SYSclk_DIV_2);
-    adc_init(ADC_P13, ADC_SYSclk_DIV_2);
+    adc_init(ADC_P14, ADC_SYSclk_DIV_2);
 }
 
 void Inductor_Process(void)

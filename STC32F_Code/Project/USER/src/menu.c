@@ -252,8 +252,9 @@ void Keystroke_Menu_HOME(void) // 0
     while (menu_next_flag == 0)
     {
         lcd_showstr((CENTER_COLUMN - 2 ) * CHAR_SCREEN_WIDTH, 0, "MENU");
-        lcd_showstr(1 * 8, 1, "STRAT");
+        lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "STRAT");
         lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "PID_SPEED");
+        lcd_showstr(1 * CHAR_SCREEN_WIDTH, 3, "ELE_INFO");
 
         Keystroke_Scan();
         Cursor();
@@ -372,29 +373,33 @@ void Keystroke_Menu_TWO(void) // 2 21 22 23
 
 void Menu_THREE_Display(uint8 control_line)
 {
-    lcd_showstr(0 * CHAR_SCREEN_WIDTH, 0, "<<ELE_INFO");
+    uint8 i = 0;
+    lcd_showstr(0 * CHAR_SCREEN_WIDTH, i++, "<<ELE_INFO");
 
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 1, "|");
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 2, "-");
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 3, "/");
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_V, 4);
+    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "|");
+    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, inductor_right_V, 4);
 
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 1, inductor_left_V, 4);
-    lcd_showint32(10 * CHAR_SCREEN_WIDTH, 1, inductor_right_V, 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 2, inductor_left_H, 4);
-    lcd_showint32(10 * CHAR_SCREEN_WIDTH, 2, inductor_right_H, 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 3, inductor_left_S, 4);
-    lcd_showint32(10 * CHAR_SCREEN_WIDTH, 3, inductor_right_S, 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_H, 4);
+    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "-");
+    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, inductor_right_H, 4);
 
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 4, "|");
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 5, "-");
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, 6, "/");
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_S, 4);
+    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "/");
+    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, inductor_right_S, 4);
 
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 4, ADC_filtered_value[LEFT_V], 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 4, ADC_filtered_value[RIGHT_V], 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 5, ADC_filtered_value[LEFT_H], 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 5, ADC_filtered_value[RIGHT_H], 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 6, ADC_filtered_value[LEFT_S], 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, 6, ADC_filtered_value[RIGHT_S], 4);
+
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_V], 4);
+    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "|");
+    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_V], 4);
+
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_H], 4);
+    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "-");
+    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_H], 4);
+
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_S], 4);
+    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "/");
+    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_S], 4);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
