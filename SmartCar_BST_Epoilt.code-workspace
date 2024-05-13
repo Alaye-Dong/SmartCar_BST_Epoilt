@@ -21,7 +21,8 @@
 			"seekfree_icm20602.h": "c",
 			"zf_pwm.h": "c",
 			"seekfree_bluetooth_ch9141.h": "c",
-			"gyro.h": "c"
+			"gyro.h": "c",
+			"magnet.h": "c"
 		},
 		"Codegeex.CompletionModel": "CodeGeeX Pro[Beta]",
 		"files.autoSave": "off"
