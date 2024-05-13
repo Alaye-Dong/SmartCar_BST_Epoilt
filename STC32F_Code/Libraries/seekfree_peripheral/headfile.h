@@ -62,4 +62,10 @@
 #include "pid.h"
 #include "gyro.h"
 
+#ifndef VSCODE_C251
+#define INTERRUPT(x) interrupt x
+#else
+#define INTERRUPT(x)
+#endif
+
 #endif
