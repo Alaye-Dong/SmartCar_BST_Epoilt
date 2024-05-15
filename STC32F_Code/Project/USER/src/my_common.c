@@ -37,7 +37,7 @@ void Bubble_Sort_Int(int16 data_array[], int16 length)
  * @param {int16*} filtered_value 得到的平均值
  * @return {*}
  */
-void Trimmed_Mean_Filter(int16 data_array[], int16 size, int16 extreme_number, int16* filtered_value)
+void Trimmed_Mean_Filter(int16 data_array[], int16 size, int16 extreme_number, int16 *filtered_value)
 {
     int16 temp_sum = 0;
     uint8 i;
@@ -47,7 +47,7 @@ void Trimmed_Mean_Filter(int16 data_array[], int16 size, int16 extreme_number, i
         temp_sum += data_array[i];
     }
 
-    *filtered_value = temp_sum / (size - extreme_number * 2); //其余取平均
+    *filtered_value = temp_sum / (size - extreme_number * 2); // 其余取平均
 }
 
 // 优化过的插入排序
@@ -85,4 +85,32 @@ int16 Limit(int16 value, int16 min, int16 max)
     {
         return value;
     }
+}
+
+//快速平方根算法
+float My_Sqrt(float number)
+{
+    long i;
+    float x, y;
+    const float f = 1.5F;
+
+    x = number * 0.5F;
+    y = number;
+    i = *(long *)&y;
+    i = 0x5f375a86 - (i >> 1);
+    y = *(float *)&i;
+    y = y * (f - (x * y * y));
+    y = y * (f - (x * y * y));
+    return number * y;
+}
+
+// 快速倒数平方根算法
+float Inv_Sqrt(float x)
+{
+    float xhalf = 0.5f * x;
+    long i = *(long *)&x;             // get bits for floating VALUE
+    i = (0x5f375a86) - (i >> 1);      // gives initial guess y0
+    x = *(float *)&i;               // convert bits BACK to float
+    x = x * (1.5f - xhalf * x * x); // Newton step, repeating increases accuracy
+    return x;
 }
