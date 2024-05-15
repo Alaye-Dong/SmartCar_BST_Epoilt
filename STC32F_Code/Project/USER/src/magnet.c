@@ -8,12 +8,14 @@ int16 position_left, position_right, position = 0; // position´óÓÚ0±íÊ¾³µÆ«ÓÒÓ¦×
 
 void Magnet_ADC_Init(void)
 {
-    adc_init(ADC_P00, ADC_SYSclk_DIV_2);
-    adc_init(ADC_P01, ADC_SYSclk_DIV_2);
-    adc_init(ADC_P05, ADC_SYSclk_DIV_2);
+    // adc_init(ADC_P00, ADC_SYSclk_DIV_2);
+    // adc_init(ADC_P01, ADC_SYSclk_DIV_2);
+    // adc_init(ADC_P05, ADC_SYSclk_DIV_2);
+
     adc_init(ADC_P06, ADC_SYSclk_DIV_2);
     adc_init(ADC_P11, ADC_SYSclk_DIV_2);
     adc_init(ADC_P14, ADC_SYSclk_DIV_2);
+    adc_init(ADC_P15, ADC_SYSclk_DIV_2);
 }
 
 void Inductor_Process(void)
@@ -30,12 +32,14 @@ void Magnet_ADC_Read(void)
     // Å£Ò¯Ò¯µÄ³µ¶Ó [×óºá 3] [×óÐ± 4] [×óÊú 0] || [ÓÒÊú 5] [ÓÒÐ± 1] [ÓÒºá 2]
     for (i = 0; i < SAMPLES; i++)
     {
+        ADC_value[LEFT_H][i] = adc_once(ADC_P06, ADC_12BIT);
         ADC_value[LEFT_V][i] = adc_once(ADC_P11, ADC_12BIT);
-        ADC_value[RIGHT_S][i] = adc_once(ADC_P05, ADC_12BIT);
-        ADC_value[RIGHT_H][i] = adc_once(ADC_P00, ADC_12BIT);
-        ADC_value[LEFT_H][i] = adc_once(ADC_P13, ADC_12BIT);
-        ADC_value[LEFT_S][i] = adc_once(ADC_P06, ADC_12BIT);
-        ADC_value[RIGHT_V][i] = adc_once(ADC_P01, ADC_12BIT);
+        ADC_value[LEFT_S][i] = 0;
+
+        
+        ADC_value[RIGHT_S][i] = 0;
+        ADC_value[RIGHT_V][i] = adc_once(ADC_P14, ADC_12BIT);
+        ADC_value[RIGHT_H][i] = adc_once(ADC_P15, ADC_12BIT);
     }
 }
 
