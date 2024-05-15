@@ -29,5 +29,6 @@ void Magnet_ADC_Filter(void);
 void Bubble_Sort_ADC(void);
 void Inductor_Normal(void);
 void Inductor_Analyse(void);
+void Magnet_ADC_Print(void);
 
 #endif

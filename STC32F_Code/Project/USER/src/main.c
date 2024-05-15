@@ -59,5 +59,6 @@ void main()
     {
         // 此处编写需要循环执行的代码
         Keystroke_Menu();
+        //Magnet_ADC_Print();
     }
 }

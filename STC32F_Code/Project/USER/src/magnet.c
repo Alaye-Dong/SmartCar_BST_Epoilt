@@ -3,6 +3,7 @@
 int16 ADC_value[INDUCTORS][SAMPLES] = {0};
 int16 ADC_filtered_value[INDUCTORS] = {0};
 int16 inductor_normal_value[INDUCTORS] = {0};
+int16 ADC_old_filtered_value[INDUCTORS] = {0};
 int16 inductor_left_V, inductor_right_V, inductor_left_H, inductor_right_H, inductor_left_S, inductor_right_S = 0;
 int16 position_left, position_right, position = 0; // position大于0表示车偏右应左转，小于0表示车偏左应右转
 
@@ -47,28 +48,27 @@ void Magnet_ADC_Filter(void)
 {
     uint8 i;
     int16 ADC_median_value[INDUCTORS];
-    //int16 ADC_old_filtered_value[INDUCTORS];
-
+    
     // 冒泡排序
     Bubble_Sort_ADC();
 
     for (i = 0; i < INDUCTORS; i++)
     {
-        //ADC_old_filtered_value[i] = ADC_filtered_value[i];
+        ADC_old_filtered_value[i] = ADC_filtered_value[i];
 
-        Trimmed_Mean_Filter(&ADC_filtered_value[i], INDUCTORS, EXTREME_NUMBER, &ADC_median_value[i]);
+        Trimmed_Mean_Filter(&ADC_value[i], INDUCTORS, EXTREME_NUMBER, &ADC_median_value[i]);
 
         ADC_filtered_value[i] = (int16)(ADC_median_value[i] / 10 * 10); // 将数值中个位数除掉
 
         // // 梯度平滑
-        // if (ADC_filtered_value[i] - ADC_old_filtered_value[i] > 50)
-        // {
-        //     ADC_filtered_value[i] = ADC_old_filtered_value[i] + 50;
-        // }
-        // else if (ADC_filtered_value[i] - ADC_old_filtered_value[i] < -60)
-        // {
-        //     ADC_filtered_value[i] = ADC_old_filtered_value[i] - 60;
-        // }
+        if (ADC_filtered_value[i] - ADC_old_filtered_value[i] > 50)
+        {
+            ADC_filtered_value[i] = ADC_old_filtered_value[i] + 50;
+        }
+        else if (ADC_filtered_value[i] - ADC_old_filtered_value[i] < -60)
+        {
+            ADC_filtered_value[i] = ADC_old_filtered_value[i] - 60;
+        }
     }
 }
 
@@ -115,4 +115,13 @@ void Inductor_Analyse(void)
     position_left = sqrt(inductor_left_H * inductor_left_H + inductor_left_V * inductor_left_V);
     position_right = sqrt(inductor_right_H * inductor_right_H + inductor_right_V * inductor_right_V);
     position = (position_left - position_right) * 100 / (position_left + position_right + 1); // 补1防止分母为0
+}
+
+void Magnet_ADC_Print(void)
+{
+    // uint8 i;
+    // for (i = 0; i < INDUCTORS; i++)
+    // {
+        printf("%d,%d,%d\n", ADC_filtered_value[LEFT_H], inductor_normal_value[LEFT_H], inductor_left_H);
+    // }
 }
