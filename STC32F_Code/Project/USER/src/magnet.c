@@ -1,10 +1,5 @@
 #include "magnet.h"
 
-#define INDUCTORS 6 // 电感的个数
-#define SAMPLES 5   // 单次采集次数
-
-#define EXTREME_NUMBER 1 // 舍弃的最大最小值的个数
-
 int16 ADC_value[INDUCTORS][SAMPLES] = {0};
 int16 ADC_filtered_value[INDUCTORS] = {0};
 int16 inductor_normal_value[INDUCTORS] = {0};
@@ -82,15 +77,15 @@ void Bubble_Sort_ADC(void)
     }
 }
 
-//归一化
+// 归一化
 void Inductor_Normal(void)
 {
     // (x - min) / (max - min) * 100
-    inductor_normal_value[LEFT_V] = (float)(ADC_filtered_value[LEFT_V] - 10.0) / (1730.0 - 10.0) * 100.0; 
+    inductor_normal_value[LEFT_V] = (float)(ADC_filtered_value[LEFT_V] - 10.0) / (1730.0 - 10.0) * 100.0;
     inductor_normal_value[RIGHT_V] = (float)(ADC_filtered_value[RIGHT_V] - 10.0) / (1640.0 - 10.0) * 100.0;
 
-    inductor_normal_value[LEFT_H] = (float)(ADC_filtered_value[LEFT_H] - 10.0) / (2400.0 - 10.0) * 100.0;   
-    inductor_normal_value[RIGHT_H] = (float)(ADC_filtered_value[RIGHT_H] - 10.0) / (2150.0 - 10.0) * 100.0; 
+    inductor_normal_value[LEFT_H] = (float)(ADC_filtered_value[LEFT_H] - 10.0) / (2400.0 - 10.0) * 100.0;
+    inductor_normal_value[RIGHT_H] = (float)(ADC_filtered_value[RIGHT_H] - 10.0) / (2150.0 - 10.0) * 100.0;
 
     inductor_normal_value[LEFT_S] = (float)(ADC_filtered_value[LEFT_S] - 10.0) / (2280.0 - 10.0) * 100.0;
     inductor_normal_value[RIGHT_S] = (float)(ADC_filtered_value[RIGHT_S] - 10.0) / (2280.0 - 10.0) * 100.0;

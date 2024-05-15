@@ -3,6 +3,11 @@
 
 #include "headfile.h"
 
+#define INDUCTORS 6 // 电感的个数
+#define SAMPLES 5   // 单次采集次数
+
+#define EXTREME_NUMBER 1 // 舍弃的最大最小值的个数
+
 // 水平 32（H）、垂直 05（V）和斜向 41（S）
 #define LEFT_V 0
 #define RIGHT_V 5
@@ -11,6 +16,7 @@
 #define LEFT_S 4
 #define RIGHT_S 1
 
+extern int16 ADC_value[INDUCTORS][SAMPLES];
 extern int16 ADC_filtered_value[];
 
 extern int16 inductor_left_V, inductor_right_V, inductor_left_H, inductor_right_H, inductor_left_S, inductor_right_S;
