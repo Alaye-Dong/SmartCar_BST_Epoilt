@@ -9,14 +9,12 @@ int16 position_left, position_right, position = 0; // position´óÓÚ0±íÊ¾³µÆ«ÓÒÓ¦×
 
 void Magnet_ADC_Init(void)
 {
-    // adc_init(ADC_P00, ADC_SYSclk_DIV_2);
-    // adc_init(ADC_P01, ADC_SYSclk_DIV_2);
-    // adc_init(ADC_P05, ADC_SYSclk_DIV_2);
-
     adc_init(ADC_P06, ADC_SYSclk_DIV_2);
     adc_init(ADC_P11, ADC_SYSclk_DIV_2);
     adc_init(ADC_P14, ADC_SYSclk_DIV_2);
     adc_init(ADC_P15, ADC_SYSclk_DIV_2);
+
+    //Ð±Ïò´ýÌí¼Ó
 }
 
 void Inductor_Process(void)
@@ -35,10 +33,9 @@ void Magnet_ADC_Read(void)
     {
         ADC_value[LEFT_H][i] = adc_once(ADC_P06, ADC_12BIT);
         ADC_value[LEFT_V][i] = adc_once(ADC_P11, ADC_12BIT);
-        ADC_value[LEFT_S][i] = 0;
+        ADC_value[LEFT_S][i] = 0; // ÔÝÊ±²»¿¼ÂÇÐ±Ïò
 
-        
-        ADC_value[RIGHT_S][i] = 0;
+        ADC_value[RIGHT_S][i] = 0; // ÔÝÊ±²»¿¼ÂÇÐ±Ïò
         ADC_value[RIGHT_V][i] = adc_once(ADC_P14, ADC_12BIT);
         ADC_value[RIGHT_H][i] = adc_once(ADC_P15, ADC_12BIT);
     }
@@ -48,7 +45,7 @@ void Magnet_ADC_Filter(void)
 {
     uint8 i;
     int16 ADC_median_value[INDUCTORS];
-    
+
     // Ã°ÅÝÅÅÐò
     Bubble_Sort_ADC();
 
@@ -60,7 +57,7 @@ void Magnet_ADC_Filter(void)
 
         ADC_filtered_value[i] = (int16)(ADC_median_value[i] / 10 * 10); // ½«ÊýÖµÖÐ¸öÎ»Êý³ýµô
 
-        // // ÌÝ¶ÈÆ½»¬
+        // ÌÝ¶ÈÆ½»¬
         if (ADC_filtered_value[i] - ADC_old_filtered_value[i] > 50)
         {
             ADC_filtered_value[i] = ADC_old_filtered_value[i] + 50;
@@ -77,11 +74,11 @@ void Bubble_Sort_ADC(void)
     uint8 k;
     for (k = 0; k < INDUCTORS; k++)
     {
-        Bubble_Sort_Int(ADC_value[k], SAMPLES);
+        Bubble_Sort_Int16(ADC_value[k], SAMPLES);
     }
 }
 
-// ¹éÒ»»¯
+// µç¸Ð¹éÒ»»¯
 void Inductor_Normal(void)
 {
     // (x - min) / (max - min) * 100
@@ -122,6 +119,6 @@ void Magnet_ADC_Print(void)
     // uint8 i;
     // for (i = 0; i < INDUCTORS; i++)
     // {
-        printf("%d,%d,%d\n", ADC_filtered_value[LEFT_H], inductor_normal_value[LEFT_H], inductor_left_H);
+    printf("%d,%d,%d\n", ADC_filtered_value[LEFT_H], inductor_normal_value[LEFT_H], inductor_left_H);
     // }
 }

@@ -4,7 +4,7 @@
 #include "headfile.h"
 
 #define INDUCTORS 6 // 电感的个数
-#define SAMPLES 5   // 单次采集次数
+#define SAMPLES 5   // 单次采集样本数
 
 #define EXTREME_NUMBER 1 // 舍弃的最大最小值的个数
 
