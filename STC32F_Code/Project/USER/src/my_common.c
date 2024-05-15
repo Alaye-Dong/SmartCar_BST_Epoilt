@@ -1,9 +1,9 @@
 #include "my_common.h"
 
 // 冒泡排序函数
-void Bubble_Sort_Int(int16 data_array[], int16 length)
+void Bubble_Sort_Int16(int16 data_array[], uint8 length)
 {
-    int16 i, j;
+    uint8 i, j;
     uint8 swapped;
 
     for (i = 0; i < length - 1; i++)
@@ -32,12 +32,12 @@ void Bubble_Sort_Int(int16 data_array[], int16 length)
 /**
  * @description: 剪枝平均，去除极端值后取平均值
  * @param {int16} data_array 数组已有序
- * @param {int16} size 数组的大小
- * @param {int16} extreme_number 舍弃的最大或最小值的个数
+ * @param {uint8} size 数组的大小
+ * @param {uint8} extreme_number 舍弃的最大或最小值的个数
  * @param {int16*} filtered_value 得到的平均值
  * @return {*}
  */
-void Trimmed_Mean_Filter(int16 data_array[], int16 size, int16 extreme_number, int16 *filtered_value)
+void Trimmed_Mean_Filter(int16 data_array[], uint8 size, uint8 extreme_number, int16 *filtered_value)
 {
     int16 temp_sum = 0;
     uint8 i;
@@ -51,9 +51,9 @@ void Trimmed_Mean_Filter(int16 data_array[], int16 size, int16 extreme_number, i
 }
 
 // 优化过的插入排序
-void Insertion_Sort(int16 array[], int16 size)
+void Insertion_Sort(int16 array[], uint8 size)
 {
-    int16 i, j;
+    uint8 i, j;
     int16 key;
 
     for (i = 1; i < size; i++)
