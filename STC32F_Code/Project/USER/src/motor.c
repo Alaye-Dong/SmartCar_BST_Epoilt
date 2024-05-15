@@ -27,8 +27,8 @@ void Motor_PWM_Init(void)
 //限幅PWM值后，输出PWM到电机
 void Motor_PWM_Write(void)
 {
-    motor_left_pwm = Limit(motor_left_pwm, MORTOR_PWM_MIN, MORTOR_PWM_MAX); // 电机PWM限幅
-    motor_right_pwm = Limit(motor_right_pwm, MORTOR_PWM_MIN, MORTOR_PWM_MAX);
+    motor_left_pwm = FUNC_LIMIT_AB(motor_left_pwm, MORTOR_PWM_MIN, MORTOR_PWM_MAX); // 电机PWM限幅
+    motor_right_pwm = FUNC_LIMIT_AB(motor_right_pwm, MORTOR_PWM_MIN, MORTOR_PWM_MAX);
 
     if (motor_left_pwm > 0)
     {

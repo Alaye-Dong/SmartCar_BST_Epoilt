@@ -91,20 +91,14 @@ void Inductor_Normal(void)
     inductor_normal_value[LEFT_S] = (float)(ADC_filtered_value[LEFT_S] - 10.0) / (2280.0 - 10.0) * 100.0;
     inductor_normal_value[RIGHT_S] = (float)(ADC_filtered_value[RIGHT_S] - 10.0) / (2280.0 - 10.0) * 100.0;
 
-    inductor_left_V = (inductor_normal_value[LEFT_V] < 0) ? 0 : inductor_normal_value[LEFT_V];
-    inductor_left_V = (inductor_normal_value[LEFT_V] > 100) ? 100 : inductor_normal_value[LEFT_V];
-    inductor_right_V = (inductor_normal_value[RIGHT_V] < 0) ? 0 : inductor_normal_value[RIGHT_V];
-    inductor_right_V = (inductor_normal_value[RIGHT_V] > 100) ? 100 : inductor_normal_value[RIGHT_V];
+    inductor_left_V = FUNC_LIMIT_AB(inductor_normal_value[LEFT_V], 0, 100);
+    inductor_right_V = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_V], 0, 100);
 
-    inductor_left_H = (inductor_normal_value[LEFT_H] < 0) ? 0 : inductor_normal_value[LEFT_H];
-    inductor_left_H = (inductor_normal_value[LEFT_H] > 100) ? 100 : inductor_normal_value[LEFT_H];
-    inductor_right_H = (inductor_normal_value[RIGHT_H] < 0) ? 0 : inductor_normal_value[RIGHT_H];
-    inductor_right_H = (inductor_normal_value[RIGHT_H] > 100) ? 100 : inductor_normal_value[RIGHT_H];
+    inductor_left_H = FUNC_LIMIT_AB(inductor_normal_value[LEFT_H], 0, 100);
+    inductor_right_H = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_H], 0, 100);
 
-    inductor_left_S = (inductor_normal_value[LEFT_S] < 0) ? 0 : inductor_normal_value[LEFT_S];
-    inductor_left_S = (inductor_normal_value[LEFT_S] > 100) ? 100 : inductor_normal_value[LEFT_S];
-    inductor_right_S = (inductor_normal_value[RIGHT_S] < 0) ? 0 : inductor_normal_value[RIGHT_S];
-    inductor_right_S = (inductor_normal_value[RIGHT_S] > 100) ? 100 : inductor_normal_value[RIGHT_S];
+    inductor_left_S = FUNC_LIMIT_AB(inductor_normal_value[LEFT_S], 0, 100);
+    inductor_right_S = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_S], 0, 100);
 }
 
 void Inductor_Analyse(void)

@@ -71,22 +71,6 @@ void Insertion_Sort(int16 array[], uint8 size)
     }
 }
 
-int16 Limit(int16 value, int16 min, int16 max)
-{
-    if (value < min)
-    {
-        return min;
-    }
-    else if (value > max)
-    {
-        return max;
-    }
-    else
-    {
-        return value;
-    }
-}
-
 //快速平方根算法
 float My_Sqrt(float number)
 {
