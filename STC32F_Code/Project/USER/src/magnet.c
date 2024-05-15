@@ -45,16 +45,16 @@ void Magnet_ADC_Read(void)
 
 void Magnet_ADC_Filter(void)
 {
-    int16 i;
+    uint8 i;
     int16 ADC_median_value[INDUCTORS];
-    int16 ADC_old_filtered_value[INDUCTORS];
+    //int16 ADC_old_filtered_value[INDUCTORS];
 
     // ц╟ещеепР
     Bubble_Sort_ADC();
 
     for (i = 0; i < INDUCTORS; i++)
     {
-        ADC_old_filtered_value[i] = ADC_filtered_value[i];
+        //ADC_old_filtered_value[i] = ADC_filtered_value[i];
 
         Trimmed_Mean_Filter(&ADC_filtered_value[i], INDUCTORS, EXTREME_NUMBER, &ADC_median_value[i]);
 
