@@ -384,12 +384,12 @@ void Menu_THREE_Display(uint8 control_line)
     // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "/");
     // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_S][0], 4);
 
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_V], 4);
-    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_V], 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_H], 4);
-    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_H], 4);
+    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_V], 4);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_V], 4);
+    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_H], 4);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_H], 4);
     // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_S], 4);
     // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "/");
     // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_S], 4);
@@ -403,6 +403,14 @@ void Menu_THREE_Display(uint8 control_line)
     // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_S, 4);
     // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "/");
     // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor_right_S, 4);
+
+    //编码器显示
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ENCODER_DIR_1, 4);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "ECD");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ENCODER_DIR_2, 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, encoder_left.encoder_now, 4);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "EC");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, encoder_right.encoder_now, 4);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }

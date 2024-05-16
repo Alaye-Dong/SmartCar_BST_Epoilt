@@ -150,6 +150,7 @@ void TM4_Isr() interrupt 20
 	TIM4_CLEAR_FLAG; //清除中断标志
     
     Inductor_Process();
+    Read_Encoder();
     Motor_PWM_Write();
 }
 

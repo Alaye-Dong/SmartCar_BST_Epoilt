@@ -3,6 +3,9 @@
 
 #include "headfile.h"
 
+#define ENCODER_DIR_1 P35 // 左轮编码器方向脚，电机轴针对自己，值为1代表逆时针转(向前正转)
+#define ENCODER_DIR_2 P53 // 右轮编码器方向脚
+
 typedef struct
 {
     int16 encoder_now;

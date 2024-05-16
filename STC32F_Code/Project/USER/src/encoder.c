@@ -1,8 +1,5 @@
 #include "headfile.h"
 
-#define ENCODER_DIR_1 P35 // 左轮编码器方向脚，电机轴针对自己，值为1代表逆时针转(向前正转)
-#define ENCODER_DIR_2 P53 // 右轮编码器方向脚
-
 EncoderTypeDef encoder_left, encoder_right;
 float car_distance = 0;
 float real_distance = 0;
@@ -37,12 +34,12 @@ void Read_Encoder(void)
     }
     else // 输出低电平，反转
     {
-        encoder_left.encoder_now = abs(ctimer_count_read(CTIM0_P34));
+        encoder_left.encoder_now = ctimer_count_read(CTIM0_P34) * -1;
     }
 
     if (ENCODER_DIR_2 == 1) // 右轮
     {
-        encoder_right.encoder_now = abs(ctimer_count_read(CTIM3_P04));
+        encoder_right.encoder_now = ctimer_count_read(CTIM3_P04) * -1;
     }
     else
     {
