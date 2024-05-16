@@ -48,7 +48,10 @@ void main()
 
     // dl1a_init();    //TOF DL1A 初始化
     BEEP_Init();
+
     lcd_init();    // 屏幕初始化
+    display_codename = 3;
+    
     eeprom_init(); // eeprom初始化
 
     pit_timer_ms(TIM_4, 5); // 设置中断定时

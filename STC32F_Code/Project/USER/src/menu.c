@@ -22,10 +22,10 @@
 #define KEYSTROKE_THREE 3
 #define KEYSTROKE_FOUR 4
 
-#define ROWS_MAX 7          // 光标在屏幕上可移动至的最大行数
+#define ROWS_MAX 9          // 光标在屏幕上可移动至的最大行数
 #define ROWS_MIN 1          // 光标在屏幕上可移动至的最小行数
 #define CHAR_SCREEN_WIDTH 8 // 一个字符的宽度
-#define CENTER_COLUMN 10    // 中央列
+#define CENTER_COLUMN (TFT_X_MAX/CHAR_SCREEN_WIDTH/2)    // 中央列
 
 #define EEPROM_MODE 1 // eeporm读写开启则为1
 
@@ -292,10 +292,10 @@ void Menu_ONE_Display(uint8 control_line)
     lcd_showstr(0 * CHAR_SCREEN_WIDTH, 0, "<<STRAT");
 
     lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "Start_Flag");
-    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "Out_Direction");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "Out_Dir");
 
-    lcd_showint32(14 * CHAR_SCREEN_WIDTH, 1, start_flag, 3); // “1” 应该与该函数被调用时control_line参数一致，才能正确显示&表示在调整的变量
-    lcd_showint32(14 * CHAR_SCREEN_WIDTH, 2, garage_out_direction, 3);
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, 1, start_flag, 3); // “1” 应该与该函数被调用时control_line参数一致，才能正确显示&表示在调整的变量
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, 2, garage_out_direction, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
@@ -331,11 +331,11 @@ void Menu_TWO_Display(uint8 control_line)
 
     lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "P");
     lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "D");
-    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 3, "normal_speed");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 3, "normal_S");
 
-    lcd_showfloat(14 * CHAR_SCREEN_WIDTH, 1, PID_P, 2, 3);
-    lcd_showfloat(14 * CHAR_SCREEN_WIDTH, 2, PID_D, 2, 3);
-    lcd_showint32(14 * CHAR_SCREEN_WIDTH, 3, normal_speed, 3);
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, 1, PID_P, 2, 3);
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, 2, PID_D, 2, 3);
+    lcd_showint32(9 * CHAR_SCREEN_WIDTH, 3, normal_speed, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
@@ -375,40 +375,34 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showstr(0 * CHAR_SCREEN_WIDTH, i++, "<<ELE_INFO");
 
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_V][0], 4);
-    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "|");
-    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_V][0], 4);
-
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_V][0], 4);
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_H][0], 4);
-    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "-");
-    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_H][0], 4);
-
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_H][0], 4);
     // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_S][0], 4);
-    // lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "/");
-    // lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_S][0], 4);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "/");
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_S][0], 4);
 
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_V], 4);
-    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "|");
-    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_V], 4);
-
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_V], 4);
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_H], 4);
-    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "-");
-    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_H], 4);
-
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_H], 4);
     // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_S], 4);
-    // lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "/");
-    // lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_S], 4);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "/");
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_S], 4);
 
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_V, 4);
-    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "|");
-    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, inductor_right_V, 4);
-
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor_right_V, 4);
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_H, 4);
-    lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "-");
-    lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, inductor_right_H, 4);
-
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor_right_H, 4);
     // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_S, 4);
-    // lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "/");
-    // lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, inductor_right_S, 4);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "/");
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor_right_S, 4);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
