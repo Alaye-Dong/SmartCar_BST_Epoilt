@@ -151,6 +151,7 @@ void TM4_Isr() interrupt 20
     
     Inductor_Process();
     Read_Encoder();
+    PID_Process();
     Motor_PWM_Write();
 }
 

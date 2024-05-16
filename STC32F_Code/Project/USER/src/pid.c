@@ -7,7 +7,7 @@ int16 position_last = 0;
 
 int16 motor_left_error, motor_right_error = 0;
 int16 motor_left_last_error, motor_right_last_error = 0;
-int16 target_speed_left, target_speed_right = 0;
+int16 target_speed_left = 100, target_speed_right = 100;
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
 {
@@ -20,9 +20,9 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 
 void PIDType_Init(void)
 {
-    PID_Parameter_Init(&direction, 0.0, 0.0, 0.0, 0.0, 0.0);
-    PID_Parameter_Init(&motor_left, 0.0, 0.0, 0.0, 0.0, 0.0);
-    PID_Parameter_Init(&motor_right, 0.0, 0.0, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&direction, 0.5, 0.0, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&motor_left, 0.5, 0.0, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&motor_right, 0.5, 0.0, 0.0, 0.0, 0.0);
 }
 
 void PID_Init(void)
@@ -33,7 +33,6 @@ void PID_Init(void)
 
 void PID_Process(void)
 {
-    Read_Encoder();
     Direction_PID();
     Left_Speed_PID();
     Right_Speed_PID();
