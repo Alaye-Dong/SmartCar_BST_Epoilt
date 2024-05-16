@@ -22,20 +22,20 @@
 #define KEYSTROKE_THREE 3
 #define KEYSTROKE_FOUR 4
 
-#define ROWS_MAX 7           // 光标在屏幕上可移动至的最大行数
-#define ROWS_MIN 1           // 光标在屏幕上可移动至的最小行数
-#define CHAR_SCREEN_WIDTH 8 //一个字符的宽度
-#define CENTER_COLUMN 10 // 中央列
+#define ROWS_MAX 7          // 光标在屏幕上可移动至的最大行数
+#define ROWS_MIN 1          // 光标在屏幕上可移动至的最小行数
+#define CHAR_SCREEN_WIDTH 8 // 一个字符的宽度
+#define CENTER_COLUMN 10    // 中央列
 
-#define EEPROM_MODE 1        // eeporm读写开启则为1
+#define EEPROM_MODE 1 // eeporm读写开启则为1
 
-int16 display_codename = 0; // 显示页面代号
-uint8 cursor_row = 0;     // 光标所在行号
-uint8 previous_cursor_row = -1;  // 上一次光标所在列号
-uint8 menu_next_flag = 0; // 光标所指菜单进入标志位
-float change_unit = 0;    // 单次修改的单位值
+int16 display_codename = 0;       // 显示页面代号
+uint8 cursor_row = 0;             // 光标所在行号
+uint8 previous_cursor_row = -1;   // 上一次光标所在列号
+uint8 menu_next_flag = 0;         // 光标所指菜单进入标志位
+float change_unit = 0;            // 单次修改的单位值
 int16 change_unit_multiplier = 1; // 修改单位倍数
-uint8 keystroke_three_count = 0; // 定义一个全局变量记录KEYSTROKE_THREE的触发次数
+uint8 keystroke_three_count = 0;  // 定义一个全局变量记录KEYSTROKE_THREE的触发次数
 
 // 需要被修改的参数示例
 int16 start_flag = 0, garage_out_direction = 0;
@@ -69,12 +69,12 @@ void Cursor(void)
         break;
     }
 
-    lcd_showstr(0, cursor_row, ">");  // 在 cursor_row 对应位置打印箭头
+    lcd_showstr(0, cursor_row, ">"); // 在 cursor_row 对应位置打印箭头
 
     // 清除之前箭头位置的显示，避免残留
     if (previous_cursor_row != cursor_row)
     {
-        lcd_showstr(0, previous_cursor_row, " ");  // 在 previous_cursor_row 对应位置打印空格
+        lcd_showstr(0, previous_cursor_row, " "); // 在 previous_cursor_row 对应位置打印空格
         previous_cursor_row = cursor_row;
     }
 }
@@ -143,7 +143,6 @@ void HandleKeystroke(int16 keystroke_label)
             change_unit_multiplier = 100;
             break;
         }
-    break;
     }
 }
 
@@ -172,7 +171,7 @@ void Keystroke_float(float *parameter, float change_unit_MIN)
 {
     float change_unit = change_unit_MIN * change_unit_multiplier;
     lcd_showfloat(14 * CHAR_SCREEN_WIDTH, 0, change_unit, 2, 3);
-    
+
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);
 
@@ -251,7 +250,7 @@ void Keystroke_Menu_HOME(void) // 0
 {
     while (menu_next_flag == 0)
     {
-        lcd_showstr((CENTER_COLUMN - 2 ) * CHAR_SCREEN_WIDTH, 0, "MENU");
+        lcd_showstr((CENTER_COLUMN - 2) * CHAR_SCREEN_WIDTH, 0, "MENU");
         lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "STRAT");
         lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "PID_SPEED");
         lcd_showstr(1 * CHAR_SCREEN_WIDTH, 3, "ELE_INFO");
@@ -295,7 +294,7 @@ void Menu_ONE_Display(uint8 control_line)
     lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "Start_Flag");
     lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "Out_Direction");
 
-    lcd_showint32(14 * CHAR_SCREEN_WIDTH, 1, start_flag, 3);    // “1” 应该与该函数被调用时control_line参数一致，才能正确显示&表示在调整的变量
+    lcd_showint32(14 * CHAR_SCREEN_WIDTH, 1, start_flag, 3); // “1” 应该与该函数被调用时control_line参数一致，才能正确显示&表示在调整的变量
     lcd_showint32(14 * CHAR_SCREEN_WIDTH, 2, garage_out_direction, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
@@ -310,7 +309,7 @@ void Keystroke_Menu_ONE(void) // 1 11 12
         {
             Menu_ONE_Display(-1);
             Keystroke_Scan();
-            Cursor();   
+            Cursor();
         }
         Menu_Next_Back();
         break;
@@ -324,7 +323,6 @@ void Keystroke_Menu_ONE(void) // 1 11 12
         Keystroke_Special_Value(&garage_out_direction);
         break;
     }
-
 }
 
 void Menu_TWO_Display(uint8 control_line)
@@ -388,8 +386,6 @@ void Menu_THREE_Display(uint8 control_line)
     // lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "/");
     // lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_S][0], 4);
 
-
-
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_V], 4);
     lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "|");
     lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_V], 4);
@@ -401,8 +397,6 @@ void Menu_THREE_Display(uint8 control_line)
     // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_filtered_value[LEFT_S], 4);
     // lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "/");
     // lcd_showint32(13 * CHAR_SCREEN_WIDTH, i++, ADC_filtered_value[RIGHT_S], 4);
-
-
 
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_V, 4);
     lcd_showstr(9 * CHAR_SCREEN_WIDTH, i, "|");
@@ -433,17 +427,17 @@ void Keystroke_Menu_THREE(void) // 3
         Menu_Next_Back();
         break;
 
-    // case 21:
-    //     Menu_TWO_Display(1);
-    //     Keystroke_float(&PID_P, 0.001);
-    //     break;
-    // case 22:
-    //     Menu_TWO_Display(2);
-    //     Keystroke_float(&PID_D, 0.001);
-    //     break;
-    // case 23:
-    //     Menu_TWO_Display(3);
-    //     Keystroke_int(&normal_speed, 1);
-    //     break;
+        // case 21:
+        //     Menu_TWO_Display(1);
+        //     Keystroke_float(&PID_P, 0.001);
+        //     break;
+        // case 22:
+        //     Menu_TWO_Display(2);
+        //     Keystroke_float(&PID_D, 0.001);
+        //     break;
+        // case 23:
+        //     Menu_TWO_Display(3);
+        //     Keystroke_int(&normal_speed, 1);
+        //     break;
     }
 }

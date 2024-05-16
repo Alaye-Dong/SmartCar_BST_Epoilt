@@ -15,6 +15,11 @@ void IMU_Offset(void)
 {
 }
 
+void IMU_Process(void)
+{
+    IMU_Get_Gyro_Z_Filter();
+}
+
 void IMU_Get_Data(void)
 {
     imu660ra_get_gyro();
