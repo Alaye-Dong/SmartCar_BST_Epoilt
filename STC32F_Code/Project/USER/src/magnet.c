@@ -14,7 +14,7 @@ void Magnet_ADC_Init(void)
     adc_init(ADC_P14, ADC_SYSclk_DIV_2);
     adc_init(ADC_P15, ADC_SYSclk_DIV_2);
 
-    //斜向待添加
+    // 斜向待添加
 }
 
 void Inductor_Process(void)
@@ -103,9 +103,15 @@ void Inductor_Normal(void)
 
 void Inductor_Analyse(void)
 {
+    // 使用快速平方根的算法
+    // position_left = My_Sqrt(inductor_left_H * inductor_left_H + inductor_left_V * inductor_left_V);
+    // position_right = My_Sqrt(inductor_right_H * inductor_right_H + inductor_right_V * inductor_right_V);
+
+    // 使用系统平方根的算法
     position_left = sqrt(inductor_left_H * inductor_left_H + inductor_left_V * inductor_left_V);
     position_right = sqrt(inductor_right_H * inductor_right_H + inductor_right_V * inductor_right_V);
-    position = (position_left - position_right) * 100 / (position_left + position_right + 1); // 补1防止分母为0
+
+    position = (position_left - position_right) * 100 / (position_left + position_right + 1); // 向量差比和，补1防止分母为0
 }
 
 void Magnet_ADC_Print(void)
