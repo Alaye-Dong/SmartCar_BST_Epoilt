@@ -39,8 +39,6 @@ uint8 keystroke_three_count = 0;  // 定义一个全局变量记录KEYSTROKE_THREE的触发次
 
 // 需要被修改的参数示例
 int16 start_flag = 0, garage_out_direction = 0;
-float PID_P = 0.123, PID_D = 0.123;
-int16 normal_speed = 0;
 
 // 将有菜单页面的代号填入该数组中，防止由箭头所在行号所决定进入不存在的菜单
 int16 menu_have_sub[] = {
@@ -327,15 +325,26 @@ void Keystroke_Menu_ONE(void) // 1 11 12
 
 void Menu_TWO_Display(uint8 control_line)
 {
-    lcd_showstr(0 * CHAR_SCREEN_WIDTH, 0, "<<PID_SPEED");
+    uint8 i = 0;
+    lcd_showstr(0 * CHAR_SCREEN_WIDTH, i++, "<<PID_SPEED");
 
-    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "P");
-    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "D");
-    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 3, "normal_S");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, i, "dir.P");
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, i++, direction.KP, 2, 3);
 
-    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, 1, PID_P, 2, 3);
-    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, 2, PID_D, 2, 3);
-    lcd_showint32(9 * CHAR_SCREEN_WIDTH, 3, normal_speed, 3);
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, i, "dir.D");
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, i++, direction.KD, 2, 3);
+
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, i, "mot_L.P");
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, i++, motor_left.KP, 2, 3);
+
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, i, "mot_L.I");
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, i++, motor_left.KI, 2, 3);
+
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, i, "mot_R.P");
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, i++, motor_right.KP, 2, 3);
+
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, i, "mot_R.I");
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, i++, motor_right.KI, 2, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
@@ -356,15 +365,15 @@ void Keystroke_Menu_TWO(void) // 2 21 22 23
 
     case 21:
         Menu_TWO_Display(1);
-        Keystroke_float(&PID_P, 0.001);
+        Keystroke_float(&direction.KP, 0.001);
         break;
     case 22:
         Menu_TWO_Display(2);
-        Keystroke_float(&PID_D, 0.001);
+        Keystroke_float(&direction.KD, 0.001);
         break;
     case 23:
         Menu_TWO_Display(3);
-        Keystroke_int(&normal_speed, 1);
+        Keystroke_float(&motor_left.KP, 0.001);
         break;
     }
 }

@@ -12,6 +12,8 @@ typedef struct
     float KD_2;
 } PIDTypeDef;
 
+extern PIDTypeDef direction, motor_left, motor_right;
+
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2);
 void PIDType_Init(void);
 void PID_Init(void);

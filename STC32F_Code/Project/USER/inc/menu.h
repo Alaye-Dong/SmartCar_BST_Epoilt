@@ -6,8 +6,6 @@
 extern int16 display_codename; // ÏÔÊ¾Ò³Ãæ´úºÅ
 
 extern int16 start_flag, garage_out_direction;
-extern float PID_P, PID_D;
-extern int16 normal_speed;
 
 void Cursor(void);
 void Menu_Next_Back(void);

@@ -22,9 +22,6 @@ void eeprom_init()
     {
         start_flag = read_int(1);
         garage_out_direction = read_int(2);
-        PID_P = read_float(3);
-        PID_D = read_float(4);
-        normal_speed = read_int(5);
     }
 }
 
@@ -33,9 +30,6 @@ void eeprom_flash()
 {
     save_int(start_flag, 1);
     save_int(garage_out_direction, 2);
-    save_float(PID_P, 3);
-    save_float(PID_D, 4);
-    save_int(normal_speed, 5);
 }
 
 void save_int(int32 input, uint8 value_bit)

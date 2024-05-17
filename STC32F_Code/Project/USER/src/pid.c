@@ -7,7 +7,7 @@ int16 position_last = 0;
 
 int16 motor_left_error, motor_right_error = 0;
 int16 motor_left_last_error, motor_right_last_error = 0;
-int16 target_speed_left = 100, target_speed_right = 100;
+int16 target_speed = 100;
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
 {
@@ -28,7 +28,6 @@ void PIDType_Init(void)
 void PID_Init(void)
 {
     PIDType_Init();
-    EncoderType_Init();
 }
 
 void PID_Process(void)
@@ -49,7 +48,7 @@ void Direction_PID(void)
 // 左轮内环
 void Left_Speed_PID(void)
 {
-    motor_left_error = (int16)(target_speed_left - encoder_left.encoder_now);
+    motor_left_error = (int16)(target_speed - encoder_left.encoder_now);
     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
     motor_left_last_error = motor_left_error;
 
@@ -59,7 +58,7 @@ void Left_Speed_PID(void)
 // 右轮内环
 void Right_Speed_PID(void)
 {
-    motor_right_error = (int16)(target_speed_right - encoder_right.encoder_now);
+    motor_right_error = (int16)(target_speed - encoder_right.encoder_now);
     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_left.KI;
     motor_right_last_error = motor_right_error;
 
