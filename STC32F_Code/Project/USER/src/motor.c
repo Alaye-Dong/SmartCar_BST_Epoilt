@@ -1,7 +1,7 @@
 #include "motor.h"
 
-#define MORTOR_PWM_MIN -3500
-#define MORTOR_PWM_MAX 7000
+#define MORTOR_PWM_MIN -3000
+#define MORTOR_PWM_MAX 3000
 
 int16 motor_left_pwm = 0;
 int16 motor_right_pwm = 0;
