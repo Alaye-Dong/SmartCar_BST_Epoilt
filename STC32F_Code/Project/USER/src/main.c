@@ -29,7 +29,8 @@ void main()
     board_init();                 // 初始化寄存器,勿删除此句代码。
 
     // 此处编写用户代码 例如外设初始化代码等
-
+    lcd_init(); // 屏幕初始化
+    display_codename = 3;
     Magnet_ADC_Init(); // 电磁ADC初始化
 
     Motor_PWM_Init(); // PWM初始化
@@ -38,8 +39,7 @@ void main()
 
     BEEP_Init(); // 蜂鸣器初始化
 
-    lcd_init(); // 屏幕初始化
-    display_codename = 3;
+
 
     eeprom_init(); // eeprom初始化
 
