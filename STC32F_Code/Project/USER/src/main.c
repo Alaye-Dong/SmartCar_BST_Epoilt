@@ -31,6 +31,7 @@ void main()
     // 此处编写用户代码 例如外设初始化代码等
     lcd_init(); // 屏幕初始化
     display_codename = 3;
+    
     Magnet_ADC_Init(); // 电磁ADC初始化
 
     Motor_PWM_Init(); // PWM初始化

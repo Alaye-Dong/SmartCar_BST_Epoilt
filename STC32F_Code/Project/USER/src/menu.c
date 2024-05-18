@@ -22,10 +22,10 @@
 #define KEYSTROKE_THREE 3
 #define KEYSTROKE_FOUR 4
 
-#define ROWS_MAX 9          // 光标在屏幕上可移动至的最大行数
-#define ROWS_MIN 1          // 光标在屏幕上可移动至的最小行数
-#define CHAR_SCREEN_WIDTH 8 // 一个字符的宽度
-#define CENTER_COLUMN (TFT_X_MAX/CHAR_SCREEN_WIDTH/2)    // 中央列
+#define ROWS_MAX 9                                        // 光标在屏幕上可移动至的最大行数
+#define ROWS_MIN 1                                        // 光标在屏幕上可移动至的最小行数
+#define CHAR_SCREEN_WIDTH 8                               // 一个字符的宽度
+#define CENTER_COLUMN (TFT_X_MAX / CHAR_SCREEN_WIDTH / 2) // 中央列
 
 #define EEPROM_MODE 1 // eeporm读写开启则为1
 
@@ -44,7 +44,7 @@ int16 start_flag = 0, garage_out_direction = 0;
 int16 menu_have_sub[] = {
     0,
     1, 11, 12,
-    2, 21, 22, 23,
+    2, 21, 22, 23, 24, 25, 26,
     3};
 
 // 菜单箭头标识
@@ -91,11 +91,11 @@ void Menu_Next_Back()
         lcd_clear(WHITE);
         break;
     case 1: // 进入下一级
-        if (Have_Sub_Menu(display_codename * 10 + cursor_row))
-        {
-            display_codename = display_codename * 10 + cursor_row;
-            lcd_clear(WHITE);
-        }
+            // if (Have_Sub_Menu(display_codename * 10 + cursor_row))
+            // {
+        display_codename = display_codename * 10 + cursor_row;
+        lcd_clear(WHITE);
+        // }
         break;
     }
 
@@ -148,7 +148,7 @@ void HandleKeystroke(int16 keystroke_label)
 void Keystroke_int(int16 *parameter, int16 change_unit_MIN)
 {
     int16 change_unit = change_unit_MIN * change_unit_multiplier;
-    lcd_showint32(15 * CHAR_SCREEN_WIDTH, 0, change_unit, 3);
+    lcd_showint32(10 * CHAR_SCREEN_WIDTH, 0, change_unit, 3);
 
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);
@@ -168,7 +168,7 @@ void Keystroke_int(int16 *parameter, int16 change_unit_MIN)
 void Keystroke_float(float *parameter, float change_unit_MIN)
 {
     float change_unit = change_unit_MIN * change_unit_multiplier;
-    lcd_showfloat(14 * CHAR_SCREEN_WIDTH, 0, change_unit, 2, 3);
+    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, 0, change_unit, 2, 3);
 
     Keystroke_Scan();
     HandleKeystroke(keystroke_label);
@@ -226,14 +226,27 @@ void Keystroke_Menu(void)
     case 21:
     case 22:
     case 23:
+    case 24:
+    case 25:
+    case 26:
         Keystroke_Menu_TWO();
         break;
 
     case 3:
+    case 31:
+    case 32:
+    case 33:
+    case 34:
+    case 35:
+    case 36:
+    case 37:
+    case 38:
+    case 39:
         Keystroke_Menu_THREE();
         break;
 
     default:
+        display_codename /= 10;
         break;
     }
 }
@@ -326,7 +339,7 @@ void Keystroke_Menu_ONE(void) // 1 11 12
 void Menu_TWO_Display(uint8 control_line)
 {
     uint8 i = 0;
-    lcd_showstr(0 * CHAR_SCREEN_WIDTH, i++, "<<PID_SPEED");
+    lcd_showstr(0 * CHAR_SCREEN_WIDTH, i++, "<<PID_S");
 
     lcd_showstr(1 * CHAR_SCREEN_WIDTH, i, "dir.P");
     lcd_showfloat(9 * CHAR_SCREEN_WIDTH, i++, direction.KP, 2, 3);
@@ -375,6 +388,18 @@ void Keystroke_Menu_TWO(void) // 2 21 22 23
         Menu_TWO_Display(3);
         Keystroke_float(&motor_left.KP, 0.001);
         break;
+    case 24:
+        Menu_TWO_Display(4);
+        Keystroke_float(&motor_left.KI, 0.001);
+        break;
+    case 25:
+        Menu_TWO_Display(5);
+        Keystroke_float(&motor_right.KP, 0.001);
+        break;
+    case 26:
+        Menu_TWO_Display(6);
+        Keystroke_float(&motor_right.KI, 0.001);
+        break;
     }
 }
 
@@ -413,7 +438,6 @@ void Menu_THREE_Display(uint8 control_line)
     // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "/");
     // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor_right_S, 4);
 
-
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, encoder_left.encoder_now, 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "EC");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, encoder_right.encoder_now, 4);
@@ -424,6 +448,12 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, motor_left_pwm, 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "PWM");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, motor_right_pwm, 4);
+
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, i, "mot_L_P");
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, i++, motor_left.KP, 2, 3);
+
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, i, "mot_L_I");
+    lcd_showfloat(9 * CHAR_SCREEN_WIDTH, i++, motor_left.KI, 2, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
@@ -442,17 +472,13 @@ void Keystroke_Menu_THREE(void) // 3
         Menu_Next_Back();
         break;
 
-        // case 21:
-        //     Menu_TWO_Display(1);
-        //     Keystroke_float(&PID_P, 0.001);
-        //     break;
-        // case 22:
-        //     Menu_TWO_Display(2);
-        //     Keystroke_float(&PID_D, 0.001);
-        //     break;
-        // case 23:
-        //     Menu_TWO_Display(3);
-        //     Keystroke_int(&normal_speed, 1);
-        //     break;
+    case 38:
+        Menu_TWO_Display(8);
+        Keystroke_float(&motor_left.KP, 0.001);
+        break;
+    case 39:
+        Menu_TWO_Display(9);
+        Keystroke_float(&motor_left.KI, 0.001);
+        break;
     }
 }

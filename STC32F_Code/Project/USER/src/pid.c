@@ -7,7 +7,7 @@ int16 position_last = 0;
 
 int16 motor_left_error, motor_right_error = 0;
 int16 motor_left_last_error, motor_right_last_error = 0;
-int16 target_speed = 50;
+int16 target_speed = 0;
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
 {
@@ -20,9 +20,9 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 
 void PIDType_Init(void)
 {
-    PID_Parameter_Init(&direction, 0.0, 0.0, 0.0, 0.0, 0.0);
-    PID_Parameter_Init(&motor_left, 2.0, 2.0, 0.0, 0.0, 0.0);
-    PID_Parameter_Init(&motor_right, 2.0, 2.0, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&direction, 0, 0.0, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&motor_left, 5.0, 1.705, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&motor_right, 0.0, 0.0, 0.0, 0.0, 0.0);
 }
 
 void PID_Init(void)
@@ -34,10 +34,10 @@ void PID_Process(void)
 {
     Direction_PID();
     Left_Speed_PID();
-    Right_Speed_PID();
+    //Right_Speed_PID();
 }
 
-// PID转向控制
+// 转向 PD 二次项 PD
 void Direction_PID(void)
 {
     direction_output = position * direction.KP + (position - position_last) * direction.KD;
@@ -45,7 +45,7 @@ void Direction_PID(void)
     position_last = position;
 }
 
-// 左轮内环
+// 左轮内环 PI
 void Left_Speed_PID(void)
 {
     motor_left_error = (int16)(target_speed - encoder_left.encoder_now);
@@ -55,7 +55,7 @@ void Left_Speed_PID(void)
     motor_left_pwm -= direction_output; // 融合方向控制
 }
 
-// 右轮内环
+// 右轮内环 PI
 void Right_Speed_PID(void)
 {
     motor_right_error = (int16)(target_speed - encoder_right.encoder_now);
