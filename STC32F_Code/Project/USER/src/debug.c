@@ -13,6 +13,11 @@ void Wireless_Debug_Init(void)
     // 设置函数指针
     seekfree_assistant_receive = wireless_uart_read_buff;
 
+    // 设置函数指针 Debug_Parameter_Send()
+	seekfree_assistant_transfer = seekfree_assistant_transfer_callback;
+    // 需要传输四个通道数据
+	seekfree_assistant_oscilloscope_data.channel_num = 4;
+
     seekfree_assistant_init();
 }
 
@@ -87,4 +92,35 @@ void Debug_Parameter_Assignment(uint8 i)
     default:
         break;
     }
+}
+
+void Debug_Parameter_Print(void)
+{
+    printf("%f\n", (float)encoder_left.encoder_now);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     逐飞助手发送函数
+// 参数说明     *buff           需要发送的数据地址
+// 参数说明     length          需要发送的长度
+// 返回参数     uint32          剩余未发送数据长度
+// 使用示例
+//-------------------------------------------------------------------------------------------------------------------
+uint32 seekfree_assistant_transfer_callback   (const uint8 *buff, uint32 length)
+{
+	uart_putbuff(WIRELESS_UART, buff, length);
+	return 0;
+}
+
+void Debug_Parameter_Send(void)
+{
+	// 设置数据
+	seekfree_assistant_oscilloscope_data.dat[0] = (float)encoder_left.encoder_now;
+	seekfree_assistant_oscilloscope_data.dat[1] = (float)encoder_right.encoder_now;
+	seekfree_assistant_oscilloscope_data.dat[2] = 0;
+	seekfree_assistant_oscilloscope_data.dat[3] = 0;
+
+    // 通过无线转串口发送虚拟示波器数据
+    seekfree_assistant_oscilloscope_send(&seekfree_assistant_oscilloscope_data);
+
 }

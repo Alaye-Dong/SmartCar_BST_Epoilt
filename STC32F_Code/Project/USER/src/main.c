@@ -54,7 +54,11 @@ void main()
     {
         // 此处编写需要循环执行的代码
         Wireless_Debug_Main();
-        Keystroke_Menu();
+        Debug_Parameter_Send();
+        //Debug_Parameter_Print();
+
+        Menu_THREE_Display(-1);
+        //Keystroke_Menu();
 
         //uint8 test_str[] = "\r\n seekfree.taobao.com. \r\n";
         // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);
