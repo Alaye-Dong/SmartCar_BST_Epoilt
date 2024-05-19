@@ -52,6 +52,7 @@
 
 //------自定义头文件
 #include "my_common.h"
+#include "debug.h"
 #include "pid.h"
 #include "eeprom.h"
 #include "beep.h"
@@ -61,7 +62,7 @@
 #include "gyro.h"
 #include "key.h"
 #include "menu.h"
-#include "debug.h"
+
 
 #ifndef VSCODE_C251
 #define INTERRUPT(x) interrupt x

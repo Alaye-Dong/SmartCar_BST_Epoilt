@@ -32,7 +32,7 @@ void main()
     lcd_init(); // 屏幕初始化
     display_codename = 3;
 
-    wireless_uart_init();
+    Wireless_Debug_Init();
 
     Magnet_ADC_Init(); // 电磁ADC初始化
 
@@ -53,8 +53,8 @@ void main()
     while (1)
     {
         // 此处编写需要循环执行的代码
-        //Keystroke_Menu();
-
+        Wireless_Debug_Main();
+        Keystroke_Menu();
 
         //uint8 test_str[] = "\r\n seekfree.taobao.com. \r\n";
         // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);

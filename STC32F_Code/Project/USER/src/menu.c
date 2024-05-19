@@ -259,7 +259,7 @@ void Keystroke_Menu(void)
 //-------------------------------------------------------------------------------------------------------------------
 void Keystroke_Menu_HOME(void) // 0
 {
-    while (menu_next_flag == 0)
+    if (menu_next_flag == 0)
     {
         lcd_showstr((CENTER_COLUMN - 2) * CHAR_SCREEN_WIDTH, 0, "MENU");
         lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "STRAT");
@@ -316,7 +316,7 @@ void Keystroke_Menu_ONE(void) // 1 11 12
     switch (display_codename)
     {
     case 1:
-        while (menu_next_flag == 0)
+        if (menu_next_flag == 0)
         {
             Menu_ONE_Display(-1);
             Keystroke_Scan();
@@ -367,7 +367,7 @@ void Keystroke_Menu_TWO(void) // 2 21 22 23
     switch (display_codename)
     {
     case 2:
-        while (menu_next_flag == 0)
+        if (menu_next_flag == 0)
         {
             Menu_TWO_Display(-1);
             Keystroke_Scan();
@@ -463,7 +463,7 @@ void Keystroke_Menu_THREE(void) // 3
     switch (display_codename)
     {
     case 3:
-        while (menu_next_flag == 0)
+        if (menu_next_flag == 0)
         {
             Menu_THREE_Display(-1);
             Keystroke_Scan();
