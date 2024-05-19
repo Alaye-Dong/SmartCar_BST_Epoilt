@@ -24,7 +24,8 @@
 			"magnet.h": "c",
 			"my_common.h": "c",
 			"motor.h": "c",
-			"pid.h": "c"
+			"pid.h": "c",
+			"debug.h": "c"
 		},
 		
 		"files.autoSave": "off"

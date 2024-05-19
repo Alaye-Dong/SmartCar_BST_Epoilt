@@ -31,7 +31,9 @@ void main()
     // 此处编写用户代码 例如外设初始化代码等
     lcd_init(); // 屏幕初始化
     display_codename = 3;
-    
+
+    wireless_uart_init();
+
     Magnet_ADC_Init(); // 电磁ADC初始化
 
     Motor_PWM_Init(); // PWM初始化
@@ -51,7 +53,14 @@ void main()
     while (1)
     {
         // 此处编写需要循环执行的代码
-        Keystroke_Menu();
-        // Magnet_ADC_Print();
+        //Keystroke_Menu();
+
+
+        //uint8 test_str[] = "\r\n seekfree.taobao.com. \r\n";
+        // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);
+        // // 读取fifo中的内容
+        // dat_len = wireless_uart_read_buff(read_buf, 10);
+        // // 如果读取到数据
+        // if (dat_len != 0)
     }
 }

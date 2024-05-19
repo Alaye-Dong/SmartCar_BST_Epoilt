@@ -24,7 +24,7 @@
 
 #define ROWS_MAX 9                                        // 光标在屏幕上可移动至的最大行数
 #define ROWS_MIN 1                                        // 光标在屏幕上可移动至的最小行数
-#define CHAR_SCREEN_WIDTH 8                               // 一个字符的宽度
+#define CHAR_SCREEN_WIDTH 8                               // 一个字符所占屏幕的宽度（单位px）
 #define CENTER_COLUMN (TFT_X_MAX / CHAR_SCREEN_WIDTH / 2) // 中央列
 
 #define EEPROM_MODE 1 // eeporm读写开启则为1
