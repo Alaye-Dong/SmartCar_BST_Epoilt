@@ -84,8 +84,8 @@ void Debug_Parameter_Assignment(uint8 i)
     case 5:
         direction.KD = seekfree_assistant_parameter[i];
         break;
-        
     case 6:
+        target_speed = seekfree_assistant_parameter[i];
         break;
     case 7:
         break;
@@ -96,7 +96,7 @@ void Debug_Parameter_Assignment(uint8 i)
 
 void Debug_Parameter_Print(void)
 {
-    printf("%f\n", (float)encoder_left.encoder_now);
+    printf("%f\n", (float)encoder_left.encoder_now);    
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -115,9 +115,9 @@ uint32 seekfree_assistant_transfer_callback   (const uint8 *buff, uint32 length)
 void Debug_Parameter_Send(void)
 {
 	// 设置数据
-	seekfree_assistant_oscilloscope_data.dat[0] = (float)encoder_left.encoder_now;
+	seekfree_assistant_oscilloscope_data.dat[0] = (float)encoder_left.encoder_now;//逐飞助手显示的数据只能是浮点
 	seekfree_assistant_oscilloscope_data.dat[1] = (float)encoder_right.encoder_now;
-	seekfree_assistant_oscilloscope_data.dat[2] = 0;
+	seekfree_assistant_oscilloscope_data.dat[2] = direction_output;
 	seekfree_assistant_oscilloscope_data.dat[3] = 0;
 
     // 通过无线转串口发送虚拟示波器数据

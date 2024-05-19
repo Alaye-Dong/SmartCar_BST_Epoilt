@@ -7,7 +7,7 @@ int16 position_last = 0;
 
 int16 motor_left_error, motor_right_error = 0;
 int16 motor_left_last_error, motor_right_last_error = 0;
-int16 target_speed = 0;
+int16 target_speed = 50;
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
 {
@@ -21,8 +21,8 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 void PIDType_Init(void)
 {
     PID_Parameter_Init(&direction, 0, 0.0, 0.0, 0.0, 0.0);
-    PID_Parameter_Init(&motor_left, 5.0, 1.705, 0.0, 0.0, 0.0);
-    PID_Parameter_Init(&motor_right, 0.0, 0.0, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&motor_left, 1.8, 2.0, 0.0, 0.0, 0.0); //+-5
+    PID_Parameter_Init(&motor_right, 2.0, 2.5, 0.0, 0.0, 0.0);
 }
 
 void PID_Init(void)
@@ -34,7 +34,7 @@ void PID_Process(void)
 {
     Direction_PID();
     Left_Speed_PID();
-    //Right_Speed_PID();
+    Right_Speed_PID();
 }
 
 // 转向 PD 二次项 PD

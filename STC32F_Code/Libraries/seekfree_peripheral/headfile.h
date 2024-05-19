@@ -52,8 +52,8 @@
 
 //------自定义头文件
 #include "my_common.h"
-#include "debug.h"
 #include "pid.h"
+#include "debug.h"
 #include "eeprom.h"
 #include "beep.h"
 #include "motor.h"
