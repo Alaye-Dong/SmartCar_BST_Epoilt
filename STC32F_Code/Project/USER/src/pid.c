@@ -21,8 +21,11 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 void PIDType_Init(void)
 {
     PID_Parameter_Init(&direction, 0, 0.0, 0.0, 0.0, 0.0);
-    PID_Parameter_Init(&motor_left, 1.8, 2.0, 0.0, 0.0, 0.0); //+-5
-    PID_Parameter_Init(&motor_right, 2.0, 2.5, 0.0, 0.0, 0.0);
+    // PID_Parameter_Init(&motor_left, 1.8, 2.0, 0.0, 0.0, 0.0); //+-5
+    // PID_Parameter_Init(&motor_right, 2.0, 2.5, 0.0, 0.0, 0.0);
+
+    PID_Parameter_Init(&motor_left, 0.0, 0.0, 0.0, 0.0, 0.0); 
+    PID_Parameter_Init(&motor_right, 0.0, 0.0, 0.0, 0.0, 0.0);
 }
 
 void PID_Init(void)
@@ -59,7 +62,7 @@ void Left_Speed_PID(void)
 void Right_Speed_PID(void)
 {
     motor_right_error = (int16)(target_speed - encoder_right.encoder_now);
-    motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_left.KI;
+    motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_right.KI;
     motor_right_last_error = motor_right_error;
 
     motor_right_pwm += direction_output; // 融合方向控制
