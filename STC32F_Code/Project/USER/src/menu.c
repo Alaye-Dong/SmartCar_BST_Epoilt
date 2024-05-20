@@ -459,6 +459,10 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MI");
     lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KI, 2, 3);
 
+lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, left_speed_I, 4);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "SI");
+   
+
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
 
