@@ -7,7 +7,7 @@ int16 position_last = 0;
 
 int16 motor_left_error, motor_right_error = 0;
 int16 motor_left_last_error, motor_right_last_error = 0;
-int16 target_speed = 70, target_speed_left = 0, target_speed_right = 0;
+int16 target_speed = 0, target_speed_left = 0, target_speed_right = 0;
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
 {
@@ -49,20 +49,15 @@ void Direction_PID(void)
 
     position_last = position;
 
-    target_speed_left = target_speed + direction_output;
-    target_speed_right = target_speed - direction_output;
+    target_speed_left = target_speed - direction_output;
+    target_speed_right = target_speed + direction_output;
 }
 
-int16 left_speed_I = 0;
 // 左轮外环 PI 级
 void Left_Speed_PID(void)
 {
     motor_left_error = (int16)(target_speed_left - encoder_left.encoder_now);
-
-    left_speed_I = motor_left_error * motor_left.KI;
-    left_speed_I = FUNC_LIMIT(left_speed_I,200); //I限幅
-
-    motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + left_speed_I;    
+    motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;    
     motor_left_last_error = motor_left_error;
 }
 
