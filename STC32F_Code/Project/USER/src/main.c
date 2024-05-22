@@ -22,7 +22,8 @@
 // 关于内核频率的设定，可以查看board.h文件
 // 在board_init中,已经将P54引脚设置为复位
 // 如果需要使用P54引脚,可以在board.c文件中的board_init()函数中删除SET_P54_RESRT即可
-
+char print_send_str[32] = {0};
+uint8 send_flag = 0;
 void main()
 {
     clock_init(SYSTEM_CLOCK_52M); // 初始化系统频率,勿删除此句代码。
@@ -33,6 +34,8 @@ void main()
     display_codename = 3;
 
     Wireless_Debug_Init();
+    // 初始化无线转串口
+
 
     Magnet_ADC_Init(); // 电磁ADC初始化
 
@@ -53,9 +56,19 @@ void main()
     while (1)
     {
         // 此处编写需要循环执行的代码
-        Wireless_Debug_Main();
-        Debug_Parameter_Send();
-        //Debug_Parameter_Print();
+        Wireless_Seekfree_Assistant_Debug();
+        Debug_Parameter_Oscilloscope_Send();
+        // if (send_flag)
+        // {
+        //     send_flag = 0;
+        //     printf("%d,", encoder_left.encoder_now);
+        //     printf("%d\n", encoder_right.encoder_now);
+        //     // sprintf(print_send_str,"%d\n", encoder_left.encoder_now);
+        //     // wireless_uart_send_buff((uint8 *)print_send_str,strlen(print_send_str));
+        // }
+
+        // func_int_to_str(test_str, encoder_left.encoder_now);
+        // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);
 
         Menu_THREE_Display(-1);
         //Keystroke_Menu();

@@ -153,6 +153,8 @@ void TM4_Isr() interrupt 20
     Read_Encoder();
     PID_Process();
     Motor_PWM_Write();
+
+    send_flag = 1;
 }
 
 //void  INT0_Isr()  interrupt 0;

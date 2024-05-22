@@ -63,6 +63,7 @@
 #include "key.h"
 #include "menu.h"
 
+extern uint8 send_flag;
 
 #ifndef VSCODE_C251
 #define INTERRUPT(x) interrupt x
