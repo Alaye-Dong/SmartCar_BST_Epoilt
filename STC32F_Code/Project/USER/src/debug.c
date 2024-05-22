@@ -13,7 +13,7 @@ void Wireless_Debug_Init(void)
     // 设置函数指针
     seekfree_assistant_receive = wireless_uart_read_buff;
 
-    // 设置函数指针 Debug_Parameter_Send()
+    // 设置函数指针 Debug_Parameter_Oscilloscope_Send()
     seekfree_assistant_transfer = seekfree_assistant_transfer_callback;
     // 需要传输四个通道数据
     seekfree_assistant_oscilloscope_data.channel_num = 4;
@@ -21,7 +21,7 @@ void Wireless_Debug_Init(void)
     seekfree_assistant_init();
 }
 
-void Wireless_Debug_Main(void)
+void Wireless_Seekfree_Assistant_Debug(void)
 {
     uint8 i = 0;
 
@@ -94,9 +94,9 @@ void Debug_Parameter_Assignment(uint8 i)
     }
 }
 
-void Debug_Parameter_Print(void)
+void Debug_Parameter_Print()
 {
-    printf("%f\n", (float)encoder_left.encoder_now);
+    printf("%d\n", encoder_left.encoder_now);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ uint32 seekfree_assistant_transfer_callback(const uint8 *buff, uint32 length)
  * @note: 数据通道的数量由seekfree_assistant_oscilloscope_data.channel_num决定，其在Wireless_Debug_Init()中被赋值
  * @return {*}
  */
-void Debug_Parameter_Send(void)
+void Debug_Parameter_Oscilloscope_Send(void)
 {
     // 设置数据
     seekfree_assistant_oscilloscope_data.dat[0] = (float)encoder_left.encoder_now; // 逐飞助手显示的数据只能是浮点
