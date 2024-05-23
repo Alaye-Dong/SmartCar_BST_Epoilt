@@ -10,7 +10,6 @@
 		},
 		"files.encoding": "gb2312",
 		"C_Cpp.errorSquiggles": "enabled",
-		"Codegeex.OnlyKeyControl": true,
 		"C_Cpp.intelliSenseEngineFallback": "enabled",
 		"files.associations": {
 			"headfile.h": "c",
@@ -20,9 +19,15 @@
 			"seekfree_18tft.h": "c",
 			"seekfree_icm20602.h": "c",
 			"zf_pwm.h": "c",
-			"seekfree_bluetooth_ch9141.h": "c"
+			"seekfree_bluetooth_ch9141.h": "c",
+			"gyro.h": "c",
+			"magnet.h": "c",
+			"my_common.h": "c",
+			"motor.h": "c",
+			"pid.h": "c",
+			"debug.h": "c"
 		},
-		"Codegeex.CompletionModel": "CodeGeeX Pro[Beta]",
+		
 		"files.autoSave": "off"
 	}
 }

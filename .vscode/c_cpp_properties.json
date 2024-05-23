@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "STC32F12K",
+            "name": "EPOILT",
             "includePath": [
                 "d:\\Alaye\\GitHubDesktop\\SmartCar_BST_Epoilt\\STC32F_Code\\Libraries\\libraries",
                 "d:\\Alaye\\GitHubDesktop\\SmartCar_BST_Epoilt\\STC32F_Code\\Libraries\\seekfree_libraries",

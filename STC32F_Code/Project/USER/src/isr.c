@@ -148,8 +148,14 @@ extern void pit_callback(void);
 void TM4_Isr() interrupt 20
 {
 	TIM4_CLEAR_FLAG; //清除中断标志
-
+    
+    Inductor_Process();
+    IMU_Process();
+    Read_Encoder();
+    PID_Process();
     Motor_PWM_Write();
+
+    send_flag = 1;
 }
 
 //void  INT0_Isr()  interrupt 0;

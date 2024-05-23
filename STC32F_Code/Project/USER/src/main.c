@@ -22,39 +22,34 @@
 // 关于内核频率的设定，可以查看board.h文件
 // 在board_init中,已经将P54引脚设置为复位
 // 如果需要使用P54引脚,可以在board.c文件中的board_init()函数中删除SET_P54_RESRT即可
-
+char print_send_str[32] = {0};
+uint8 send_flag = 0;
 void main()
 {
     clock_init(SYSTEM_CLOCK_52M); // 初始化系统频率,勿删除此句代码。
     board_init();                 // 初始化寄存器,勿删除此句代码。
 
     // 此处编写用户代码 例如外设初始化代码等
+    lcd_init(); // 屏幕初始化
+    display_codename = 3;
 
-    // ADC初始化
-    //  adc_init(ADC_P00,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P01,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P05,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P06,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P11,ADC_SYSclk_DIV_2);
-    //  adc_init(ADC_P13,ADC_SYSclk_DIV_2);
+    Wireless_Debug_Init();
+    // 初始化无线转串口
 
-    Motor_PWM_Init();
 
-    // pwm_init(PWMB_CH1_P74, 50, 692);//舵机 最大765   最小625
+    Magnet_ADC_Init(); // 电磁ADC初始化
 
-    Encoder_Init();
+    IMU_Init();
 
-    // 六轴陀螺仪初始化
-    //  while(imu660ra_init())
-    //  {
-    //      delay_ms(500);
-    //      printf("imu660ra init try again.\r\n");
-    //  }
+    Motor_PWM_Init(); // PWM初始化
 
-    // dl1a_init();    //TOF DL1A 初始化
-    BEEP_Init();
-    lcd_init();    // 屏幕初始化
+    Encoder_Init(); // 编码器初始化
+
+    BEEP_Init(); // 蜂鸣器初始化
+
     eeprom_init(); // eeprom初始化
+
+    PID_Init();
 
     pit_timer_ms(TIM_4, 5); // 设置中断定时
 
@@ -63,6 +58,28 @@ void main()
     while (1)
     {
         // 此处编写需要循环执行的代码
-        Keystroke_Menu();
+        Wireless_Seekfree_Assistant_Debug();
+        Debug_Parameter_Oscilloscope_Send();
+        // if (send_flag)
+        // {
+        //     send_flag = 0;
+        //     printf("%d,", encoder_left.encoder_now);
+        //     printf("%d\n", encoder_right.encoder_now);
+        //     // sprintf(print_send_str,"%d\n", encoder_left.encoder_now);
+        //     // wireless_uart_send_buff((uint8 *)print_send_str,strlen(print_send_str));
+        // }
+
+        // func_int_to_str(test_str, encoder_left.encoder_now);
+        // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);
+
+        Menu_THREE_Display(-1);
+        //Keystroke_Menu();
+
+        //uint8 test_str[] = "\r\n seekfree.taobao.com. \r\n";
+        // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);
+        // // 读取fifo中的内容
+        // dat_len = wireless_uart_read_buff(read_buf, 10);
+        // // 如果读取到数据
+        // if (dat_len != 0)
     }
 }

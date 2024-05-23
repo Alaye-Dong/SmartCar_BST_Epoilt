@@ -51,11 +51,24 @@
 #include "seekfree_assistant.h"
 
 //------自定义头文件
-#include "key.h"
-#include "menu.h"
+#include "my_common.h"
+#include "pid.h"
+#include "debug.h"
 #include "eeprom.h"
 #include "beep.h"
 #include "motor.h"
 #include "encoder.h"
+#include "magnet.h"
+#include "gyro.h"
+#include "key.h"
+#include "menu.h"
+
+extern uint8 send_flag;
+
+#ifndef VSCODE_C251
+#define INTERRUPT(x) interrupt x
+#else
+#define INTERRUPT(x)
+#endif
 
 #endif
