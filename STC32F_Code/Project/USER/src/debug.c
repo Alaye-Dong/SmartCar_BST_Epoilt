@@ -67,7 +67,7 @@ void Debug_Parameter_Assignment(uint8 i)
     switch (i)
     {
     case 0:
-        motor_left.KP = seekfree_assistant_parameter[i];
+        target_speed = seekfree_assistant_parameter[i];
         break;
     case 1:
         motor_left.KI = seekfree_assistant_parameter[i];
@@ -85,9 +85,10 @@ void Debug_Parameter_Assignment(uint8 i)
         direction.KD = seekfree_assistant_parameter[i];
         break;
     case 6:
-        target_speed = seekfree_assistant_parameter[i];
+        direction.KP_2 = seekfree_assistant_parameter[i];
         break;
     case 7:
+        direction.KD_2 = seekfree_assistant_parameter[i];
         break;
     default:
         break;
