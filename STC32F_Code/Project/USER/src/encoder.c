@@ -63,3 +63,26 @@ void Distance_Calculation(void)
     // 实际距离=脉冲*系数
     real_distance = ENCODER_TO_DISTANCE * car_distance;
 }
+
+// /*
+//  * @name:int16 Encoder_SLimit(int16 SpeedNew, int16 SpeedOld, int16 Grad)
+//  * @function:编码器速度采集梯度平滑，每次采集最大变化Grad
+//  * @param:input
+//  * @return:none
+//  */
+// int16 Encoder_SLimit(int16 SpeedNew, int16 SpeedOld, int16 Grad)
+// {
+//     int16 SpeedFinal = 0;
+
+//     if (ABS(SpeedNew - SpeedOld) > Grad) {
+//         if (SpeedNew > 0) {
+//             SpeedFinal = SpeedOld + Grad;
+//         } else if (SpeedNew < 0) {
+//             SpeedFinal = SpeedOld - Grad;
+//         }
+//     } else {
+//         SpeedFinal = SpeedNew;
+//     }
+
+//     return SpeedFinal;
+// }

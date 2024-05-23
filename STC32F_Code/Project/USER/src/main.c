@@ -39,6 +39,8 @@ void main()
 
     Magnet_ADC_Init(); // 电磁ADC初始化
 
+    IMU_Init();
+
     Motor_PWM_Init(); // PWM初始化
 
     Encoder_Init(); // 编码器初始化

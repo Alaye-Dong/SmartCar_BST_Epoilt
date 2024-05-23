@@ -416,14 +416,16 @@ void Keystroke_Menu_TWO(void) // 2 21 22 23
 void Menu_THREE_Display(uint8 control_line)
 {
     uint8 i = 0;
-    lcd_showstr(0 * CHAR_SCREEN_WIDTH, i++, "<<ELE_INFO");
+    lcd_showstr(0 * CHAR_SCREEN_WIDTH, i, "<<INFO");
+    lcd_showint32(8 * CHAR_SCREEN_WIDTH, i, gyro_z_filtered, 5);
+    i++;
 
-    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_V][0], 4);
-    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
-    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_V][0], 4);
-    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_H][0], 4);
-    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
-    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_H][0], 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_V][0], 4);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_V][0], 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_H][0], 4);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_H][0], 4);
 
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_V, 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
@@ -431,9 +433,7 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_H, 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor_right_H, 4);
-    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_S, 4);
-    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "/");
-    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor_right_S, 4);
+
 
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, encoder_left.encoder_now, 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "EC");
@@ -451,13 +451,13 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "PWM");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, motor_right_pwm, 4);
 
-    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KP, 2, 3);
-    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MP");
-    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KP, 2, 3);
+    // lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KP, 2, 3);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MP");
+    // lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KP, 2, 3);
 
-    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KI, 2, 3);
-    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MI");
-    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KI, 2, 3);
+    // lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KI, 2, 3);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MI");
+    // lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KI, 2, 3);
 
 lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, target_speed_left, 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MV");
