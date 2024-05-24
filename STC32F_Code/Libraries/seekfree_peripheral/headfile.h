@@ -1,7 +1,8 @@
 #ifndef __HEADFILE_H_
 #define __HEADFILE_H_
 
-// #define HALL_PIN P33 // 停车霍尔
+
+
 
 #include "isr.h"
 #include <string.h>
@@ -46,6 +47,7 @@
 #include "SEEKFREE_DL1A.h"
 #include "SEEKFREE_DL1B.h"
 #include "SEEKFREE_IPS200_SPI.h"
+
 
 //------逐飞科技组件层头文件
 #include "seekfree_assistant.h"

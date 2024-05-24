@@ -24,7 +24,7 @@
 
 
 //此枚举定义不允许用户修改
-typedef enum    // 枚举ADC通道
+typedef enum 
 {
     CTIM0_P34=0,    
 	CTIM1_P35,    	
@@ -35,7 +35,7 @@ typedef enum    // 枚举ADC通道
 
 
 //此枚举定义不允许用户修改
-typedef enum    // 枚举ADC通道
+typedef enum
 {
     TIM_0,    
 	TIM_1,    	

@@ -67,7 +67,7 @@
 #define IPS114_SPIN_PIN     SPI_CH2           //定义使用的SPI号
 #define	IPS114_SCL_PIN 		SPI_CH2_SCLK_P25	//定义SPI_SCK引脚
 #define	IPS114_SDA_PIN		SPI_CH2_MOSI_P23   //定义SPI_MOSI引脚
-#define	IPS114_SDA_IN_PIN	SPI_CH2_MISO_P24   //定义SPI_MISO引脚  IPS屏幕没有MISO引脚，但是这里任然需要定义，在spi的初始化时需要使用
+#define	IPS114_SDA_IN_PIN	SPI_NULL_PIN   //定义SPI_MISO引脚  IPS屏幕没有MISO引脚，但是这里任然需要定义，在spi的初始化时需要使用
 #define IPS114_REST_PIN  	P20
 #define IPS114_DC_PIN 	 	P21   	//液晶命令位引脚定义
 #define IPS114_CS_PIN    	P22   	//定义SPI_CS引脚

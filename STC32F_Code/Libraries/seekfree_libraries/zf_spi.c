@@ -44,30 +44,22 @@ void spi_init(SPIN_enum spi_n,
 			  SPI_MSTR_enum mstr,
 			  SPI_BAUD_enum baud)
 {
-	switch(spi_n)
-    {
 	//IO口需要配置为：准双向口（传统8051端口模式，弱上拉）
-    case SPI_CH1:
-		gpio_mode(P1_3,GPIO);
-		gpio_mode(P1_4,GPIO);
-		gpio_mode(P1_5,GPIO);
-        break;
-    case SPI_CH2:
-		gpio_mode(P2_3,GPIO);
-		gpio_mode(P2_4,GPIO);
-		gpio_mode(P2_5,GPIO);
-        break;
-    case SPI_CH3:
-		gpio_mode(P4_0,GPIO);
-		gpio_mode(P4_1,GPIO);
-		gpio_mode(P4_3,GPIO);
-        break;
-    case SPI_CH4:
-		gpio_mode(P3_4,GPIO);
-		gpio_mode(P3_3,GPIO);
-		gpio_mode(P3_2,GPIO);
-        break;
-    }
+	if(sck_pin != SPI_NULL_PIN)
+	{
+		gpio_mode(sck_pin & 0xFF,GPIO);
+	}
+	
+	if(mosi_pin != SPI_NULL_PIN)
+	{
+		gpio_mode(mosi_pin & 0xFF,GPIO);
+	}
+	
+	if(miso_pin != SPI_NULL_PIN)
+	{
+		gpio_mode(miso_pin & 0xFF,GPIO);
+	}
+
 	
 	P_SW1 &= ~(0x03<<2);  //清除SPI功能脚选择位
     switch(spi_n)
