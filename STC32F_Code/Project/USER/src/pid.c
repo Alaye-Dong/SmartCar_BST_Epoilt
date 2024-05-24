@@ -23,17 +23,9 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 void PIDType_Init(void)
 {
     PID_Parameter_Init(&direction, 0.45, 0.0, 0.95, 0.003, 0.002);
-    // PID_Parameter_Init(&motor_left, 1.8, 2.0, 0.0, 0.0, 0.0); //+-5
-    // PID_Parameter_Init(&motor_right, 2.0, 2.5, 0.0, 0.0, 0.0);
 
-    // PID_Parameter_Init(&motor_left, 22.71, 0.9435, 0.0, 0.0, 0.0); //21.48, 0.8815
-    // PID_Parameter_Init(&motor_right, 2.0, 2.2, 0.0, 0.0, 0.0);
-
-    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0.0, 0.0, 0.0); //+-5
+    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0.0, 0.0, 0.0); 
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0.0, 0.0, 0.0);
-
-    // PID_Parameter_Init(&motor_left, 0, 0, 0.0, 0.0, 0.0); //+-5
-    // PID_Parameter_Init(&motor_right, 0, 0, 0.0, 0.0, 0.0);
 }
 
 void PID_Init(void)
@@ -43,7 +35,7 @@ void PID_Init(void)
 
 void PID_Process(void)
 {
-    if (direction_pid_time_flag != 3) // 方向环控制周期为20ms，即3次5ms立3次标志位后，再下一次中断时即20ms
+    if (direction_pid_time_flag != 3) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
         direction_pid_time_flag++;
     }
@@ -58,7 +50,7 @@ void PID_Process(void)
     Right_Speed_PID();
 }
 
-// 串级PID
+// *******************************串级PID
 //  转向内环 PD 二次项 PD
 void Direction_PID(void)
 {
@@ -72,10 +64,10 @@ void Direction_PID(void)
     target_speed_right = target_speed + direction_output;
 }
 
-// 左轮外环 PI 级
+// 左轮外环 PI 
 void Left_Speed_PID(void)
 {
-    motor_left_error = (int16)(target_speed_left - encoder_left.encoder_now);
+    motor_left_error = (int16)(target_speed_left - encoder_left.encoder_filtered);
     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
     motor_left_last_error = motor_left_error;
 }
@@ -83,7 +75,7 @@ void Left_Speed_PID(void)
 // 右轮外环 PI
 void Right_Speed_PID(void)
 {
-    motor_right_error = (int16)(target_speed_right - encoder_right.encoder_now);
+    motor_right_error = (int16)(target_speed_right - encoder_right.encoder_filtered);
     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_right.KI;
     motor_right_last_error = motor_right_error;
 }

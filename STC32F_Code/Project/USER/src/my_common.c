@@ -71,7 +71,20 @@ void Insertion_Sort(int16 array[], uint8 size)
     }
 }
 
-//快速平方根算法
+/**
+ * @description: 低通滤波
+ * @note Y(n)=αX(n) + (1-α)Y(n-1) 式中：α=滤波系数；X(n)=本次采样值；Y(n-1)=上次滤波输出值；Y(n)=本次滤波输出值。
+ * @param {float} fliter_factor 滤波系数
+ * @param {int16} last_value
+ * @param {int16} new_value
+ * @return {*}
+ */
+int16 Low_Pass_Filter(int16 new_value, int16 last_value, float fliter_factor)
+{
+    return fliter_factor * new_value + (1 - fliter_factor) * last_value;
+}
+
+// 快速平方根算法
 float My_Sqrt(float number)
 {
     long i;
@@ -92,8 +105,8 @@ float My_Sqrt(float number)
 float Inv_Sqrt(float x)
 {
     float xhalf = 0.5f * x;
-    long i = *(long *)&x;             // get bits for floating VALUE
-    i = (0x5f375a86) - (i >> 1);      // gives initial guess y0
+    long i = *(long *)&x;           // get bits for floating VALUE
+    i = (0x5f375a86) - (i >> 1);    // gives initial guess y0
     x = *(float *)&i;               // convert bits BACK to float
     x = x * (1.5f - xhalf * x * x); // Newton step, repeating increases accuracy
     return x;

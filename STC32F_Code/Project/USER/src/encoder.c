@@ -26,6 +26,12 @@ void EncoderType_Init(void)
     Encoder_Parameter_Init(&encoder_right);
 }
 
+void Encoder_Process(void)
+{
+    Read_Encoder();
+    Encoder_Filter();
+}
+
 void Read_Encoder(void)
 {
     if (ENCODER_DIR_1 == 1) // 输出高电平，正转
@@ -50,6 +56,12 @@ void Read_Encoder(void)
     ctimer_count_clean(CTIM3_P04); // 清除积累
 }
 
+void Encoder_Filter(void)
+{
+    encoder_left.encoder_filtered = Low_Pass_Filter(encoder_left.encoder_now, encoder_left.encoder_last, 0.5);
+    encoder_right.encoder_filtered = Low_Pass_Filter(encoder_right.encoder_now, encoder_right.encoder_last, 0.5);
+}
+
 /*
  * @name: void Speed_Calcu(void);
  * @function: 计算小车运行实际距离
@@ -63,6 +75,8 @@ void Distance_Calculation(void)
     // 实际距离=脉冲*系数
     real_distance = ENCODER_TO_DISTANCE * car_distance;
 }
+
+
 
 // /*
 //  * @name:int16 Encoder_SLimit(int16 SpeedNew, int16 SpeedOld, int16 Grad)

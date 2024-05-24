@@ -31,15 +31,13 @@ void main()
 
     // 此处编写用户代码 例如外设初始化代码等
     lcd_init(); // 屏幕初始化
-    display_codename = 3;
+    //！！！使用到了未实际连接的P24引脚作spi初始化，该脚与电机控制方向脚引脚冲突，必须lcd_init()后再进行Motor_PWM_Init()中的gpio_mode(P2_4, GPO_PP)， 否则会导致电机控制方向脚输出异常;
 
-    Wireless_Debug_Init();
-    // 初始化无线转串口
-
+    Wireless_Debug_Init(); // 初始化无线转串口
 
     Magnet_ADC_Init(); // 电磁ADC初始化
 
-    IMU_Init();
+    IMU_Init(); // 姿态传感器初始化
 
     Motor_PWM_Init(); // PWM初始化
 

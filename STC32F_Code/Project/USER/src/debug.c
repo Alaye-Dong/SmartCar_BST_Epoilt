@@ -1,8 +1,5 @@
 #include "debug.h"
 
-// #define TEMP_BUFFER_SIZE 64
-// static uint8 temp_uart_buffer[TEMP_BUFFER_SIZE]; // 数据存放数组
-
 char send_str[32] = {0};
 
 void Wireless_Debug_Init(void)
@@ -16,7 +13,7 @@ void Wireless_Debug_Init(void)
     // 设置函数指针 Debug_Parameter_Oscilloscope_Send()
     seekfree_assistant_transfer = seekfree_assistant_transfer_callback;
     // 需要传输四个通道数据
-    seekfree_assistant_oscilloscope_data.channel_num = 4;
+    seekfree_assistant_oscilloscope_data.channel_num = 5;
 
     seekfree_assistant_init();
 }
@@ -123,7 +120,8 @@ void Debug_Parameter_Oscilloscope_Send(void)
     seekfree_assistant_oscilloscope_data.dat[0] = (float)encoder_left.encoder_now; // 逐飞助手显示的数据只能是浮点
     seekfree_assistant_oscilloscope_data.dat[1] = (float)encoder_right.encoder_now;
     seekfree_assistant_oscilloscope_data.dat[2] = direction_output;
-    seekfree_assistant_oscilloscope_data.dat[3] = 0;
+    seekfree_assistant_oscilloscope_data.dat[3] = encoder_left.encoder_filtered;
+    seekfree_assistant_oscilloscope_data.dat[4] = encoder_right.encoder_filtered;
 
     // 通过无线转串口发送虚拟示波器数据
     seekfree_assistant_oscilloscope_send(&seekfree_assistant_oscilloscope_data);
