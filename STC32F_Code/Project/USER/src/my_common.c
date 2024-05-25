@@ -81,7 +81,7 @@ void Insertion_Sort(int16 array[], uint8 size)
  */
 int16 Low_Pass_Filter(int16 new_value, int16 last_value, float fliter_factor)
 {
-    return fliter_factor * new_value + (1 - fliter_factor) * last_value;
+    return (int16) (fliter_factor * new_value + (1 - fliter_factor) * last_value);
 }
 
 // 快速平方根算法

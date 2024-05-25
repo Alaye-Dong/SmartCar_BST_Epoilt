@@ -34,6 +34,9 @@ void Encoder_Process(void)
 
 void Read_Encoder(void)
 {
+    encoder_left.encoder_last = encoder_left.encoder_now;
+    encoder_right.encoder_last = encoder_right.encoder_now;
+    
     if (ENCODER_DIR_1 == 1) // 输出高电平，正转
     {
         encoder_left.encoder_now = ctimer_count_read(CTIM0_P34);
