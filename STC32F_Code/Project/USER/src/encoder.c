@@ -1,7 +1,7 @@
-#include "headfile.h"
+#include "encoder.h"
 
 EncoderTypeDef encoder_left, encoder_right;
-float car_distance = 0;
+int32 car_distance = 0;
 float real_distance = 0;
 
 // 编码器初始化
@@ -36,7 +36,7 @@ void Read_Encoder(void)
 {
     encoder_left.encoder_last = encoder_left.encoder_now;
     encoder_right.encoder_last = encoder_right.encoder_now;
-    
+
     if (ENCODER_DIR_1 == 1) // 输出高电平，正转
     {
         encoder_left.encoder_now = ctimer_count_read(CTIM0_P34);
@@ -71,35 +71,10 @@ void Encoder_Filter(void)
  * @param: none
  * @return: none
  */
-#define ENCODER_TO_DISTANCE 0.001 // 待定（系数=固定距离/测试得到的脉冲）
+#define ENCODER_TO_DISTANCE 0.0091 // 系数=固定距离/测试得到的脉冲 测试200cm 脉冲21533 22350 22344
 void Distance_Calculation(void)
 {
-    car_distance += (encoder_left.encoder_now + encoder_right.encoder_now) / 2;
-    // 实际距离=脉冲*系数
-    real_distance = ENCODER_TO_DISTANCE * car_distance;
+    car_distance += (encoder_left.encoder_filtered + encoder_right.encoder_filtered) / 2;
+    
+    real_distance = ENCODER_TO_DISTANCE * car_distance; // 实际距离=脉冲*系数
 }
-
-
-
-// /*
-//  * @name:int16 Encoder_SLimit(int16 SpeedNew, int16 SpeedOld, int16 Grad)
-//  * @function:编码器速度采集梯度平滑，每次采集最大变化Grad
-//  * @param:input
-//  * @return:none
-//  */
-// int16 Encoder_SLimit(int16 SpeedNew, int16 SpeedOld, int16 Grad)
-// {
-//     int16 SpeedFinal = 0;
-
-//     if (ABS(SpeedNew - SpeedOld) > Grad) {
-//         if (SpeedNew > 0) {
-//             SpeedFinal = SpeedOld + Grad;
-//         } else if (SpeedNew < 0) {
-//             SpeedFinal = SpeedOld - Grad;
-//         }
-//     } else {
-//         SpeedFinal = SpeedNew;
-//     }
-
-//     return SpeedFinal;
-// }
