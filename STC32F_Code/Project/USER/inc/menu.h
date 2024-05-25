@@ -28,4 +28,7 @@ void Keystroke_Menu_TWO(void);
 void Menu_THREE_Display(uint8 control_line);
 void Keystroke_Menu_THREE(void);
 
+void Menu_FOUR_Display(uint8 control_line);
+void Keystroke_Menu_FOUR(void);
+
 #endif
