@@ -22,9 +22,9 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 
 void PIDType_Init(void)
 {
-    PID_Parameter_Init(&direction, 0.45, 0.0, 0.95, 0.003, 0.002);
+    PID_Parameter_Init(&direction, 0.45, 0.0, 1.2, 0.001, 0.002); // 50速 D1.2
 
-    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0.0, 0.0, 0.0); 
+    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0.0, 0.0, 0.0);
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0.0, 0.0, 0.0);
 }
 
@@ -54,8 +54,7 @@ void PID_Process(void)
 //  转向内环 PD 二次项 PD
 void Direction_PID(void)
 {
-    direction_output = position * direction.KP + (position - position_last) * direction.KD
-     + abs(position) * position * direction.KP_2 + gyro_z_filtered * direction.KD_2;
+    direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 + gyro_z_filtered * direction.KD_2;
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
 
     position_last = position;
@@ -64,7 +63,7 @@ void Direction_PID(void)
     target_speed_right = target_speed + direction_output;
 }
 
-// 左轮外环 PI 
+// 左轮外环 PI
 void Left_Speed_PID(void)
 {
     motor_left_error = (int16)(target_speed_left - encoder_left.encoder_filtered);
