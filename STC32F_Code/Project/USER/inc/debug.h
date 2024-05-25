@@ -3,6 +3,8 @@
 
 #include "headfile.h"
 
+extern uint8 print_send_flag;
+
 void Wireless_Debug_Init(void);
 void Wireless_Seekfree_Assistant_Debug(void);
 void Debug_Parameter_Assignment(uint8 i);

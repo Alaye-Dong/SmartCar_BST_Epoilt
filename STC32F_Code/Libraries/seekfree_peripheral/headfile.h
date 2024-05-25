@@ -64,8 +64,7 @@
 #include "gyro.h"
 #include "key.h"
 #include "menu.h"
-
-extern uint8 send_flag;
+#include "right_angle.h"
 
 #ifndef VSCODE_C251
 #define INTERRUPT(x) interrupt x

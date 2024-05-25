@@ -26,7 +26,8 @@
 			"motor.h": "c",
 			"pid.h": "c",
 			"debug.h": "c",
-			"encoder.h": "c"
+			"encoder.h": "c",
+			"right_angle.h": "c"
 		},
 		
 		"files.autoSave": "off"

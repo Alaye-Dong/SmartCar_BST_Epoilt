@@ -3,6 +3,8 @@
 int16 gyro_z_filtered;
 float yaw_angle;
 
+int8 yaw_angle_get_mod = OFF;
+
 void IMU_Init(void)
 {
     if (imu660ra_init())
@@ -18,6 +20,7 @@ void IMU_Offset(void)
 void IMU_Process(void)
 {
     IMU_Get_Gyro_Z_Filter();
+    IMU_Yaw_Angle_Get_Control(yaw_angle_get_mod);
 }
 
 void IMU_Get_Data(void)
@@ -49,14 +52,19 @@ void IMU_Get_Yaw_Angle()
     yaw_angle += imu660ra_gyro_transition(gyro_z_filtered) * 0.005; // 积分角度=角速度*积分时间
 }
 
-void IMU_Yaw_Angle_Get_Control(uint8 mod)
+void IMU_Yaw_Angle_Get_Control(YAW_ANGLE_GET_MOD_enmu mod)
 {
-    if (mod == 0)
+    switch (mod)
     {
+    case RESET:
         yaw_angle = 0;
-    }
-    else if (mod == 1)
-    {
+        break;
+    case ON:
         IMU_Get_Yaw_Angle();
-    } 
+        break;
+    case OFF:
+        break;
+    default:
+        break;
+    }
 }

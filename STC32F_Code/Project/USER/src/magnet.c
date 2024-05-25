@@ -22,7 +22,6 @@ void Inductor_Process(void)
     Magnet_ADC_Read();
     Magnet_ADC_Filter();
     Inductor_Normal();
-    Inductor_Analyse();
 }
 
 void Magnet_ADC_Read(void)
@@ -101,7 +100,7 @@ void Inductor_Normal(void)
     inductor_right_S = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_S], 0, 100);
 }
 
-void Inductor_Analyse(void)
+void Position_Analyse(void)
 {
     // 使用快速平方根的算法
     // position_left = My_Sqrt(inductor_left_H * inductor_left_H + inductor_left_V * inductor_left_V);

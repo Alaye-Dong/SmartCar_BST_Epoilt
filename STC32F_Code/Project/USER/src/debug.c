@@ -1,6 +1,7 @@
 #include "debug.h"
 
 char send_str[32] = {0};
+uint8 print_send_flag;
 
 void Wireless_Debug_Init(void)
 {
@@ -94,7 +95,14 @@ void Debug_Parameter_Assignment(uint8 i)
 
 void Debug_Parameter_Print()
 {
-    printf("%d\n", encoder_left.encoder_now);
+    if (print_send_flag)
+    {
+        print_send_flag = 0;
+        printf("%d,", encoder_left.encoder_now);
+        printf("%d\n", encoder_right.encoder_now);
+        // sprintf(print_send_str,"%d\n", encoder_left.encoder_now);
+        // wireless_uart_send_buff((uint8 *)print_send_str,strlen(print_send_str));
+    }
 }
 
 //-------------------------------------------------------------------------------------------------------------------
