@@ -3,7 +3,7 @@
 int16 gyro_z_filtered;
 float yaw_angle;
 
-int8 yaw_angle_get_mod = OFF;
+YAW_ANGLE_GET_MOD_enmu yaw_angle_get_mod = OFF;
 
 void IMU_Init(void)
 {

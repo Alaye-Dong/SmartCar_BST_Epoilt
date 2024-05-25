@@ -1,6 +1,6 @@
 #include "right_angle.h"
 
-int8 right_angle_flag = RIGHT_ANGLE_NONE;
+RIGHT_ANGLE_STATE_enmu right_angle_flag = RIGHT_ANGLE_NONE;
 
 // 直角元素识别
 void Right_Angle_Recognition(void)

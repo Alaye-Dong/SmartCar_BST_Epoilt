@@ -3,7 +3,7 @@
 
 #include "headfile.h"
 
-typedef enum 
+typedef enum YAW_ANGLE_GET_MOD
 {
     RESET = 0, //÷ÿ÷√πÈ¡„
     ON, //‘À––
@@ -12,7 +12,7 @@ typedef enum
 
 extern int16 gyro_z_filtered;
 extern float yaw_angle;
-extern int8 yaw_angle_get_mod;
+extern YAW_ANGLE_GET_MOD_enmu yaw_angle_get_mod;
 
 
 void IMU_Init(void);
