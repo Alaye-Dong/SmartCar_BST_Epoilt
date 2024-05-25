@@ -31,6 +31,7 @@ void main()
 
     // 此处编写用户代码 例如外设初始化代码等
     lcd_init(); // 屏幕初始化
+    display_codename = 3;
     //！！！使用到了未实际连接的P24引脚作spi初始化，该脚与电机控制方向脚引脚冲突，必须lcd_init()后再进行Motor_PWM_Init()中的gpio_mode(P2_4, GPO_PP)， 否则会导致电机控制方向脚输出异常;
 
     Wireless_Debug_Init(); // 初始化无线转串口
@@ -58,6 +59,7 @@ void main()
         // 此处编写需要循环执行的代码
         Wireless_Seekfree_Assistant_Debug();
         Debug_Parameter_Oscilloscope_Send();
+
         // if (send_flag)
         // {
         //     send_flag = 0;
@@ -67,17 +69,6 @@ void main()
         //     // wireless_uart_send_buff((uint8 *)print_send_str,strlen(print_send_str));
         // }
 
-        // func_int_to_str(test_str, encoder_left.encoder_now);
-        // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);
-
-        Menu_THREE_Display(-1);
-        //Keystroke_Menu();
-
-        //uint8 test_str[] = "\r\n seekfree.taobao.com. \r\n";
-        // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);
-        // // 读取fifo中的内容
-        // dat_len = wireless_uart_read_buff(read_buf, 10);
-        // // 如果读取到数据
-        // if (dat_len != 0)
+        Keystroke_Menu();
     }
 }

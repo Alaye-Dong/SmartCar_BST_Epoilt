@@ -25,7 +25,8 @@
 			"my_common.h": "c",
 			"motor.h": "c",
 			"pid.h": "c",
-			"debug.h": "c"
+			"debug.h": "c",
+			"encoder.h": "c"
 		},
 		
 		"files.autoSave": "off"

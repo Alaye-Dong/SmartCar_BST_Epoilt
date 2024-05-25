@@ -769,6 +769,11 @@
               <FileType>5</FileType>
               <FilePath>..\USER\inc\debug.h</FilePath>
             </File>
+            <File>
+              <FileName>right_angle.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\inc\right_angle.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -838,6 +843,11 @@
               <FileName>debug.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>right_angle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\src\right_angle.c</FilePath>
             </File>
           </Files>
         </Group>
