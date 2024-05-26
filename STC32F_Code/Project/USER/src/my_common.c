@@ -111,3 +111,35 @@ float Inv_Sqrt(float x)
     x = x * (1.5f - xhalf * x * x); // Newton step, repeating increases accuracy
     return x;
 }
+
+float Knn_Calculation(int16 Knn_Left_V, int16 Knn_Right_V, int16 Knn_Left_H, int16 Knn_Right_H)
+{
+    return pow(Knn_Left_V - inductor[LEFT_V], 2) + pow(Knn_Right_V - inductor[RIGHT_V], 2) + pow(Knn_Left_H - inductor[LEFT_H], 2) + pow(Knn_Right_H - inductor[RIGHT_H], 2);
+}
+
+// 计算两个值的相似性（使用曼哈顿距离）
+float Calculate_Similarity_Manhattan(int16 actual_value, int16 target_value)
+{
+    // 计算实际值与目标值之间的绝对差值
+    int16 absolute_difference = FUNC_ABS(actual_value - target_value);
+    // 计算相似性
+    float similarity = 1 - (float)absolute_difference / 100.0; // 传感器值范围在 0 到 100
+    // 确保相似性在 0 到 1 之间
+    return FUNC_LIMIT_AB(similarity, 0, 1);
+}
+
+
+// 计算接近程度系数
+float Proximity_Coefficient(int16 actual_values[], int16 target_values[], uint8 size)
+{
+    uint8 i;
+    float similarity_sum = 0;
+    //int size = sizeof(array) / sizeof(array[0]);
+    // 遍历传感器
+    for (i = 0; i < size; ++i) {
+        // 计算相似性并将其添加到相似性之和中
+        similarity_sum += Calculate_Similarity_Manhattan(actual_values[i], target_values[i]);
+    }
+    // 计算平均相似性
+    return similarity_sum / size;
+}
