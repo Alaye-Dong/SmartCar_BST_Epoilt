@@ -54,7 +54,7 @@ void PID_Process(void)
 //  转向内环 PD 二次项 PD
 void Direction_PID(void)
 {
-    direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 + gyro_z_filtered * direction.KD_2;
+    direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
 
     position_last = position;
