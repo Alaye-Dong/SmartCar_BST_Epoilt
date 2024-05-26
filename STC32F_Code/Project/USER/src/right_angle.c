@@ -1,17 +1,19 @@
 #include "right_angle.h"
 
 RIGHT_ANGLE_STATE_enmu right_angle_flag = RIGHT_ANGLE_NONE;
+float right_angle_left_knn = 0;
+float right_angle_right_knn = 0;
 
 // 直角元素识别
 void Right_Angle_Recognition(void)
 {
-    if (inductor_left_H <= 15 || inductor_right_H <= 15)
+    if (inductor[LEFT_H] <= 15 || inductor[RIGHT_H] <= 15)
     {
-        if (inductor_left_V >= 90 && inductor_right_V <= 20)
+        if (inductor[LEFT_V] >= 90 && inductor[RIGHT_V] <= 20)
         {
             right_angle_flag = RIGHT_ANGLE_TURN_LEFT;
         }
-        else if (inductor_right_V >= 90 && inductor_left_V <= 20)
+        else if (inductor[RIGHT_V] >= 90 && inductor[LEFT_V] <= 20)
         {
             right_angle_flag = RIGHT_ANGLE_TURN_RIGHT;
         }

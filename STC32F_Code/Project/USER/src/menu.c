@@ -431,7 +431,8 @@ void Menu_THREE_Display(uint8 control_line)
 {
     uint8 i = 0;
     lcd_showstr(0 * CHAR_SCREEN_WIDTH, i, "<<INFO");
-    lcd_showint32(8 * CHAR_SCREEN_WIDTH, i, gyro_z_filtered, 5);
+    lcd_showint32(6 * CHAR_SCREEN_WIDTH, i, gyro_z_filtered, 4);
+    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i, yaw_angle, 3, 1);
     i++;
 
     lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, encoder_left.encoder_now, 4);
@@ -498,12 +499,12 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_H][0], 4);
 
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_V, 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor[LEFT_V], 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor_right_V, 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor_left_H, 4);
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor[RIGHT_V], 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor[LEFT_H], 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor_right_H, 4);
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor[RIGHT_H], 4);
 
     lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, target_speed, 4);
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "V/Dir");
@@ -513,8 +514,7 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "PWM");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, motor_right_pwm, 4);
 
-    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, car_distance, 5);
-    
+    lcd_showfloat(0 * CHAR_SCREEN_WIDTH, i++, round_right_knn, 4, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }

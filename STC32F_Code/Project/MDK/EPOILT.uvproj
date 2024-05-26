@@ -774,6 +774,11 @@
               <FileType>5</FileType>
               <FilePath>..\USER\inc\right_angle.h</FilePath>
             </File>
+            <File>
+              <FileName>round.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\inc\round.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -848,6 +853,11 @@
               <FileName>right_angle.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\right_angle.c</FilePath>
+            </File>
+            <File>
+              <FileName>round.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\src\round.c</FilePath>
             </File>
           </Files>
         </Group>

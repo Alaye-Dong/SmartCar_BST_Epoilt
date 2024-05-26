@@ -4,7 +4,7 @@ int16 ADC_value[INDUCTORS][SAMPLES] = {0};
 int16 ADC_filtered_value[INDUCTORS] = {0};
 int16 inductor_normal_value[INDUCTORS] = {0};
 int16 ADC_old_filtered_value[INDUCTORS] = {0};
-int16 inductor_left_V, inductor_right_V, inductor_left_H, inductor_right_H, inductor_left_S, inductor_right_S = 0;
+int16 inductor[INDUCTORS] = {0};
 int16 position_left, position_right, position = 0; // position大于0表示车偏右应左转，小于0表示车偏左应右转
 
 void Magnet_ADC_Init(void)
@@ -90,25 +90,25 @@ void Inductor_Normal(void)
     inductor_normal_value[LEFT_S] = (float)(ADC_filtered_value[LEFT_S] - 10.0) / (2280.0 - 10.0) * 100.0;
     inductor_normal_value[RIGHT_S] = (float)(ADC_filtered_value[RIGHT_S] - 10.0) / (2280.0 - 10.0) * 100.0;
 
-    inductor_left_V = FUNC_LIMIT_AB(inductor_normal_value[LEFT_V], 0, 100);
-    inductor_right_V = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_V], 0, 100);
+    inductor[LEFT_V] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_V], 0, 100);
+    inductor[RIGHT_V] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_V], 0, 100);
 
-    inductor_left_H = FUNC_LIMIT_AB(inductor_normal_value[LEFT_H], 0, 100);
-    inductor_right_H = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_H], 0, 100);
+    inductor[LEFT_H] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_H], 0, 100);
+    inductor[RIGHT_H] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_H], 0, 100);
 
-    inductor_left_S = FUNC_LIMIT_AB(inductor_normal_value[LEFT_S], 0, 100);
-    inductor_right_S = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_S], 0, 100);
+    inductor[LEFT_S] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_S], 0, 100);
+    inductor[RIGHT_S] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_S], 0, 100);
 }
 
 void Position_Analyse(void)
 {
     // 使用快速平方根的算法
-    // position_left = My_Sqrt(inductor_left_H * inductor_left_H + inductor_left_V * inductor_left_V);
-    // position_right = My_Sqrt(inductor_right_H * inductor_right_H + inductor_right_V * inductor_right_V);
+    // position_left = My_Sqrt(inductor[LEFT_H] * inductor[LEFT_H] + inductor[LEFT_V] * inductor[LEFT_V]);
+    // position_right = My_Sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] + inductor[RIGHT_V] * inductor[RIGHT_V]);
 
     // 使用系统平方根的算法
-    position_left = sqrt(inductor_left_H * inductor_left_H + inductor_left_V * inductor_left_V);
-    position_right = sqrt(inductor_right_H * inductor_right_H + inductor_right_V * inductor_right_V);
+    position_left = sqrt(inductor[LEFT_H] * inductor[LEFT_H] + inductor[LEFT_V] * inductor[LEFT_V]);
+    position_right = sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] + inductor[RIGHT_V] * inductor[RIGHT_V]);
 
     position = (position_left - position_right) * 100 / (position_left + position_right + 1); // 向量差比和，补1防止分母为0
 }
@@ -118,6 +118,6 @@ void Magnet_ADC_Print(void)
     // uint8 i;
     // for (i = 0; i < INDUCTORS; i++)
     // {
-    printf("%d,%d,%d\n", ADC_filtered_value[LEFT_H], inductor_normal_value[LEFT_H], inductor_left_H);
+    printf("%d,%d,%d\n", ADC_filtered_value[LEFT_H], inductor_normal_value[LEFT_H], inductor[LEFT_H]);
     // }
 }

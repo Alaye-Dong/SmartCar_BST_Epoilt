@@ -27,7 +27,8 @@
 			"pid.h": "c",
 			"debug.h": "c",
 			"encoder.h": "c",
-			"right_angle.h": "c"
+			"right_angle.h": "c",
+			"round.h": "c"
 		},
 		
 		"files.autoSave": "off"
