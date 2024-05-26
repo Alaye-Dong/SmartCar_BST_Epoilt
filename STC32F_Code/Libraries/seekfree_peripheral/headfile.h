@@ -65,6 +65,7 @@
 #include "key.h"
 #include "menu.h"
 #include "right_angle.h"
+#include "round.h"
 
 #ifndef VSCODE_C251
 #define INTERRUPT(x) interrupt x
