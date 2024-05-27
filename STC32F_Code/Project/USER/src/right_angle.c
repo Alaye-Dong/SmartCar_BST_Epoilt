@@ -22,6 +22,7 @@ void Right_Angle_Recognition(void)
 
 void Right_Angle_Turn_Process(void)
 {
+    element_busy_flag = 1;
     if (right_angle_flag == RIGHT_ANGLE_TURN_LEFT)
     {
         BEEP_ON();
@@ -32,6 +33,8 @@ void Right_Angle_Turn_Process(void)
             right_angle_flag = RIGHT_ANGLE_NONE;
             IMU_Yaw_Angle_Get_Control(RESET);
             BEEP_OFF();
+
+            element_busy_flag = 0;
         }
     }
     else if (right_angle_flag == RIGHT_ANGLE_TURN_RIGHT)
@@ -44,6 +47,8 @@ void Right_Angle_Turn_Process(void)
             right_angle_flag = RIGHT_ANGLE_NONE;
             IMU_Yaw_Angle_Get_Control(RESET);
             BEEP_OFF();
+
+            element_busy_flag = 0;
         }
     }
 }

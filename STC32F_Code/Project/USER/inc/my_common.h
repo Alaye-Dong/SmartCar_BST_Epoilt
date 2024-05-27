@@ -34,6 +34,8 @@
 //-------------------------------------------------------------------------------------------------------------------
 #define     FUNC_LIMIT_AB(x, a, b)  ((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
 
+extern int8 element_busy_flag;
+
 void Bubble_Sort_Int16(int16 data_array[], uint8 length);
 void Trimmed_Mean_Filter(int16 data_array[], uint8 size, uint8 extreme_number, int16 *filtered_value);
 void Insertion_Sort(int16 array[], uint8 size);

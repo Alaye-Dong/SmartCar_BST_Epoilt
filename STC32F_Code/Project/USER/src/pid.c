@@ -5,8 +5,8 @@ PIDTypeDef direction, motor_left, motor_right;
 float direction_output = 0;
 int16 position_last = 0;
 
-int16 motor_left_error, motor_right_error = 0;
-int16 motor_left_last_error, motor_right_last_error = 0;
+int16 motor_left_error = 0, motor_right_error = 0;
+int16 motor_left_last_error = 0, motor_right_last_error = 0;
 int16 target_speed = 50, target_speed_left = 0, target_speed_right = 0;
 
 uint8 direction_pid_time_flag = 0; // 方向环控制周期标志位 （20ms

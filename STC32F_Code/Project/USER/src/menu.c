@@ -490,7 +490,9 @@ void Keystroke_Menu_THREE(void) // 3
 void Menu_FOUR_Display(uint8 control_line)
 {
     uint8 i = 0;
-    lcd_showstr(0 * CHAR_SCREEN_WIDTH, i++, "<<ELE_INFO");
+    lcd_showstr(0 * CHAR_SCREEN_WIDTH, i, "<<ELE");
+    lcd_showint32(6 * CHAR_SCREEN_WIDTH, i, gyro_z_filtered, 4);
+    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, yaw_angle, 3, 1);
 
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_V][0], 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
@@ -514,7 +516,9 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "PWM");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, motor_right_pwm, 4);
 
-    lcd_showfloat(0 * CHAR_SCREEN_WIDTH, i++, round_right_knn, 4, 3);
+    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, round_proximity_coeff, 4);
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "RDis");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, real_distance, 4);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }

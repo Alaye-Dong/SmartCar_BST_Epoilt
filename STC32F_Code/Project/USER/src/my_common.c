@@ -1,5 +1,7 @@
 #include "my_common.h"
 
+int8 element_busy_flag = 0;
+
 // Ã°ÅÝÅÅÐòº¯Êý
 void Bubble_Sort_Int16(int16 data_array[], uint8 length)
 {

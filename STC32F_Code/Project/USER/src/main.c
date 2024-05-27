@@ -53,7 +53,7 @@ void main()
 
     pit_timer_ms(TIM_4, 5); // 设置中断定时
 
-    BEEP_ON_ms(100);
+    Beep_Buzzing(100, 3); // 开机提示蜂鸣
 
     while (1)
     {
@@ -63,11 +63,17 @@ void main()
 
         Keystroke_Menu();
 
-        // 元素识别
-        if (right_angle_flag == RIGHT_ANGLE_NONE)
+        if (element_busy_flag != 1)
         {
-            Right_Angle_Recognition();
+            // 元素识别
+            // if (right_angle_flag == RIGHT_ANGLE_NONE)
+            // {
+                Right_Angle_Recognition();
+            // }
+            // if (round_flag == ROUND_NONE)
+            // {
+                Round_Recognition();
+            // }
         }
-        Round_Recognition();
     }
 }
