@@ -1,7 +1,7 @@
 #include "debug.h"
 
 char send_str[32] = {0};
-uint8 print_send_flag;
+uint8 print_send_flag = 0;
 
 void Wireless_Debug_Init(void)
 {
@@ -132,7 +132,7 @@ void Debug_Parameter_Oscilloscope_Send(void)
     seekfree_assistant_oscilloscope_data.dat[4] = inductor[RIGHT_V];
     seekfree_assistant_oscilloscope_data.dat[5] = inductor[LEFT_H];
     seekfree_assistant_oscilloscope_data.dat[6] = inductor[RIGHT_H];
-    seekfree_assistant_oscilloscope_data.dat[7] = right_angle_flag;
+    seekfree_assistant_oscilloscope_data.dat[7] = round_proximity_coeff;
 
     // 通过无线转串口发送虚拟示波器数据
     seekfree_assistant_oscilloscope_send(&seekfree_assistant_oscilloscope_data);

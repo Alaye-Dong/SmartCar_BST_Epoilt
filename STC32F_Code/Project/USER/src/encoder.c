@@ -78,3 +78,9 @@ void Distance_Calculation(void)
     
     real_distance = ENCODER_TO_DISTANCE * car_distance; // 实际距离=脉冲*系数
 }
+
+void Distance_Reset(void)
+{
+    car_distance = 0;
+    real_distance = 0;
+}

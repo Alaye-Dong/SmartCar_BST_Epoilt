@@ -1,7 +1,7 @@
 #include "gyro.h"
 
-int16 gyro_z_filtered;
-float yaw_angle;
+int16 gyro_z_filtered = 0;
+float yaw_angle = 0;
 
 YAW_ANGLE_GET_MOD_enmu yaw_angle_get_mod = OFF;
 
@@ -9,6 +9,7 @@ void IMU_Init(void)
 {
     if (imu660ra_init())
     {
+        lcd_clear(RED);
         lcd_showstr(1 * 8, 1, "GYRO_ERROR");
     }
 }

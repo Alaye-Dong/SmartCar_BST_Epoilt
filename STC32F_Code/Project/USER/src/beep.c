@@ -1,4 +1,4 @@
-#include "headfile.h"
+#include "beep.h"
 
 #define BEEP P32
 
@@ -35,7 +35,7 @@ void BEEP_Toggle(void)
  * @param:  time_ms:发声时间   buzz_num:发声次数
  * @return:none
  */
-void Beep_Buzzing(uint8 time_ms, uint16 buzz_num)
+void Beep_Buzzing(uint8 time_ms, uint8 buzz_num)
 {
     BEEP_OFF();
 	for(buzz_num = buzz_num * 2; buzz_num > 0; buzz_num--) {

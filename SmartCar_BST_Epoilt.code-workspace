@@ -28,7 +28,8 @@
 			"debug.h": "c",
 			"encoder.h": "c",
 			"right_angle.h": "c",
-			"round.h": "c"
+			"round.h": "c",
+			"beep.h": "c"
 		},
 		
 		"files.autoSave": "off"
