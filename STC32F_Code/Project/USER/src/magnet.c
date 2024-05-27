@@ -5,7 +5,7 @@ int16 ADC_filtered_value[INDUCTORS] = {0};
 int16 inductor_normal_value[INDUCTORS] = {0};
 int16 ADC_old_filtered_value[INDUCTORS] = {0};
 int16 inductor[INDUCTORS] = {0};
-int16 position_left, position_right, position = 0; // position大于0表示车偏右应左转，小于0表示车偏左应右转
+int16 position_left = 0, position_right = 0, position = 0; // position大于0表示车偏右应左转，小于0表示车偏左应右转
 
 void Magnet_ADC_Init(void)
 {
