@@ -61,10 +61,10 @@ void UART2_Isr() interrupt 8
         {
             wireless_uart_callback(); // 无线转串口回调函数
         }
-        else if (wireless_type == WIRELESS_CH9141)
-        {
-            bluetooth_ch9141_uart_callback(); // 蓝牙转串口回调函数
-        }
+        // else if (wireless_type == WIRELESS_CH9141)
+        // {
+        //     bluetooth_ch9141_uart_callback(); // 蓝牙转串口回调函数
+        // }
     }
 }
 

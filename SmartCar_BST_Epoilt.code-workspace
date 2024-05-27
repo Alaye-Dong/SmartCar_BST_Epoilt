@@ -29,7 +29,8 @@
 			"encoder.h": "c",
 			"right_angle.h": "c",
 			"round.h": "c",
-			"beep.h": "c"
+			"beep.h": "c",
+			"seekfree_tsl1401.h": "c"
 		},
 		
 		"files.autoSave": "off"
