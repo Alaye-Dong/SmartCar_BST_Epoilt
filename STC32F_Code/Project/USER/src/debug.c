@@ -132,7 +132,7 @@ void Debug_Parameter_Oscilloscope_Send(void)
     seekfree_assistant_oscilloscope_data.dat[4] = inductor[RIGHT_V];
     seekfree_assistant_oscilloscope_data.dat[5] = inductor[LEFT_H];
     seekfree_assistant_oscilloscope_data.dat[6] = inductor[RIGHT_H];
-    seekfree_assistant_oscilloscope_data.dat[7] = round_proximity_coeff;
+    seekfree_assistant_oscilloscope_data.dat[7] = round_right_proximity_coeff;
 
     // 通过无线转串口发送虚拟示波器数据
     seekfree_assistant_oscilloscope_send(&seekfree_assistant_oscilloscope_data);

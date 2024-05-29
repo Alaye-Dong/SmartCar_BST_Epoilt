@@ -40,10 +40,10 @@ void Bubble_Sort_Int16(int16 data_array[], uint8 length);
 void Trimmed_Mean_Filter(int16 data_array[], uint8 size, uint8 extreme_number, int16 *filtered_value);
 void Insertion_Sort(int16 array[], uint8 size);
 int16 Low_Pass_Filter(int16 new_value, int16 last_value, float fliter_factor);
+
 float Inv_Sqrt(float x);
 float My_Sqrt(float x);
-float Knn_Calculation(int16 Knn_Left_V, int16 Knn_Right_V, int16 Knn_Left_H, int16 Knn_Right_H);
-float Calculate_Similarity_Manhattan(int16 actual_value, int16 target_value);
-float Proximity_Coefficient(int16 actual_values[], int16 target_values[], uint8 size);
+
+float Calculate_Minkowski_Distance(int16 inductor[], int16 target[], uint8 size, uint8 p);
 
 #endif

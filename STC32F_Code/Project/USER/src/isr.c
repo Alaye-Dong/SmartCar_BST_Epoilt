@@ -140,9 +140,11 @@ void TM4_Isr() interrupt 20
     TIM4_CLEAR_FLAG; // 清除中断标志
 
     Inductor_Process(); // 电感
+    IMU_Process();
+    Encoder_Process();
+    Position_Analyse();
 
-
-
+    // 元素时可以覆盖掉计算得得position
     if (right_angle_flag != RIGHT_ANGLE_NONE)
     {
         Right_Angle_Turn_Process();
@@ -151,13 +153,7 @@ void TM4_Isr() interrupt 20
     {
         Round_Turn_Process();
     }
-    else
-    {
-        Position_Analyse();
-    }
 
-    IMU_Process();
-    Encoder_Process();
     PID_Process();
     Motor_PWM_Write();
 

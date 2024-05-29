@@ -1,6 +1,6 @@
 #include "my_common.h"
 
-int8 element_busy_flag = 0;
+int8 element_busy_flag = 0; //赛道元素检测忙标志位。防止在成功元素检测后进行对应动作过程中检测到新的赛道元素，导致运行错乱。
 
 // 冒泡排序函数
 void Bubble_Sort_Int16(int16 data_array[], uint8 length)
@@ -83,7 +83,7 @@ void Insertion_Sort(int16 array[], uint8 size)
  */
 int16 Low_Pass_Filter(int16 new_value, int16 last_value, float fliter_factor)
 {
-    return (int16) (fliter_factor * new_value + (1 - fliter_factor) * last_value);
+    return (int16)(fliter_factor * new_value + (1 - fliter_factor) * last_value);
 }
 
 // 快速平方根算法
@@ -114,34 +114,30 @@ float Inv_Sqrt(float x)
     return x;
 }
 
-float Knn_Calculation(int16 Knn_Left_V, int16 Knn_Right_V, int16 Knn_Left_H, int16 Knn_Right_H)
-{
-    return pow(Knn_Left_V - inductor[LEFT_V], 2) + pow(Knn_Right_V - inductor[RIGHT_V], 2) + pow(Knn_Left_H - inductor[LEFT_H], 2) + pow(Knn_Right_H - inductor[RIGHT_H], 2);
-}
-
-// 计算两个值的相似性（使用曼哈顿距离）
-float Calculate_Similarity_Manhattan(int16 actual_value, int16 target_value)
-{
-    // 计算实际值与目标值之间的绝对差值
-    int16 absolute_difference = FUNC_ABS(actual_value - target_value);
-    // 计算相似性
-    float similarity = 1 - (float)absolute_difference / 100.0; // 传感器值范围在 0 到 100
-    // 确保相似性在 0 到 1 之间
-    return FUNC_LIMIT_AB(similarity, 0, 1);
-}
-
-
-// 计算接近程度系数
-float Proximity_Coefficient(int16 actual_values[], int16 target_values[], uint8 size)
+/**
+ * @description: 闵可夫斯基距离计算函数 在电磁车中用于计算目标电感相似度
+ * @param {int} inductor 待比较的数组
+ * @param {int} target 目标数组
+ * @param {int} size 数组大小
+ * @param {int} p 闵可夫斯基距离的参数：p=1时为曼哈顿距离 p=2时为欧几里得距离
+ * @return {*}
+ * @note: p=1时为曼哈顿距离,这适用于处理离散数据或需要考虑各个维度的线性关系的情况。
+ *        p=2时为欧几里得距离,这适用于处理连续数据或需要考虑各个维度的平方关系的情况，
+ *        当p较小时，距离主要由离群点决定；当p较大时，距离主要由较大差值的维度决定。
+ */
+float Calculate_Minkowski_Distance(int16 inductor[], int16 target[], uint8 size, uint8 p)
 {
     uint8 i;
-    float similarity_sum = 0;
-    //int size = sizeof(array) / sizeof(array[0]);
-    // 遍历传感器
-    for (i = 0; i < size; ++i) {
-        // 计算相似性并将其添加到相似性之和中
-        similarity_sum += Calculate_Similarity_Manhattan(actual_values[i], target_values[i]);
+    float distance = 0.0;
+
+    // 计算每个传感器值与目标值的差的绝对值的 p 次方，并求和
+    for (i = 0; i < size; i++)
+    {
+        distance += pow(FUNC_ABS(inductor[i] - target[i]), p);
     }
-    // 计算平均相似性
-    return similarity_sum / size;
+
+    // 对求和结果取 p 次方根
+    // distance = pow(distance, 1.0 / p); // 不计算p次根，降低计算压力，结果不再是标准的闵可夫斯基距离，但仍可以进行相似度比较
+
+    return distance;
 }
