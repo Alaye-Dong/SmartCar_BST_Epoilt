@@ -82,9 +82,9 @@ void Bubble_Sort_ADC(void)
 #define LEFT_V_MIN 68 
 #define RIGHT_V_MAX 3700
 #define RIGHT_V_MIN 5
-#define LEFT_H_MAX 3700
+#define LEFT_H_MAX 3000
 #define LEFT_H_MIN 160
-#define RIGHT_H_MAX 3700
+#define RIGHT_H_MAX 3000
 #define RIGHT_H_MIN 25
 void Inductor_Normal(void)
 {

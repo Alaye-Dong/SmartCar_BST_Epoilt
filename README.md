@@ -13,7 +13,7 @@ Keil原因，使用中文注释必须使用GB2312编码，所以当查看本项�
 为节省存储空间，没有使用到的设备驱动文件已经从Keil项目中移出，保存在STC32F_Code\Libraries\seekfree_peripheral\Unuse文件夹中。
 若有重新添加的需要，请在Keil的Manage Project Items中将需要的文件重新添加到项目中。
 
-![1716831537859](image/README/1716831537859.png)
+![1717048084319](image/README/1717048084319.png)
 
 # 参考资料
 

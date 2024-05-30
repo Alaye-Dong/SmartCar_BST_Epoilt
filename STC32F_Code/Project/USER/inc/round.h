@@ -6,6 +6,8 @@
 typedef enum ROUND_STATE //RIGHT_ANGLE_STATE是一个标识符，可以看成这个集合的名字，是一个可选项，即是可有可无的项。
 {
     ROUND_NONE = 0,
+    ROUND_PRE,
+    
     ROUND_LEFT_PRE, //预入环
     ROUND_LEFT_TRUN_IN, //入环
     ROUND_LEFT_IN,   //环内

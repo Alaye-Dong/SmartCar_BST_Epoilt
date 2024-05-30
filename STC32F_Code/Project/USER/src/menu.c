@@ -515,7 +515,7 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, motor_left_pwm, 4);
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "PWM");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, motor_right_pwm, 4);
-
+    
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "Dis");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, real_distance, 4);
 
