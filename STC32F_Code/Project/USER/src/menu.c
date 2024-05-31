@@ -439,8 +439,8 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "EC");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, encoder_right.encoder_now, 4);
 
-    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, target_speed, 4);
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "V/Dir");
+    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, speed.target, 4);
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "V/Pos");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, position, 4);
 
     lcd_showfloat(0 * CHAR_SCREEN_WIDTH, i, direction.KP, 2, 3);
@@ -455,17 +455,17 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "PWM");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, motor_right_pwm, 4);
 
-    // lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KP, 2, 3);
-    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MP");
-    // lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KP, 2, 3);
+    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KP, 2, 3);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MP");
+    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KP, 2, 3);
 
-    // lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KI, 2, 3);
-    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MI");
-    // lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KI, 2, 3);
+    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KI, 2, 3);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MI");
+    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KI, 2, 3);
 
-    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, target_speed_left, 4);
-    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MV");
-    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, target_speed_right, 4);
+    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, speed.target_left, 4);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MV");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, speed.target_right, 4);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
@@ -508,7 +508,7 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, inductor[RIGHT_H], 4);
 
-    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, target_speed, 4);
+    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, speed.target, 4);
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "V/Dir");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, position, 4);
 

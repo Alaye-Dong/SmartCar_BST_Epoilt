@@ -65,10 +65,10 @@ void Debug_Parameter_Assignment(uint8 i)
     switch (i)
     {
     case 0:
-        target_speed = seekfree_assistant_parameter[i];
+        speed.normal = seekfree_assistant_parameter[i];
         break;
     case 1:
-        motor_left.KI = seekfree_assistant_parameter[i];
+        speed.deceleration_factor = seekfree_assistant_parameter[i];
         break;
     case 2:
         motor_right.KP = seekfree_assistant_parameter[i];
@@ -125,7 +125,7 @@ uint32 seekfree_assistant_transfer_callback(const uint8 *buff, uint32 length)
 void Debug_Parameter_Oscilloscope_Send(void)
 {
     // …Ë÷√ ˝æ›
-    seekfree_assistant_oscilloscope_data.dat[0] = encoder_left.encoder_filtered; 
+    seekfree_assistant_oscilloscope_data.dat[0] = encoder_left.encoder_filtered;
     seekfree_assistant_oscilloscope_data.dat[1] = encoder_right.encoder_filtered;
     seekfree_assistant_oscilloscope_data.dat[2] = direction_output;
     seekfree_assistant_oscilloscope_data.dat[3] = inductor[LEFT_V];
