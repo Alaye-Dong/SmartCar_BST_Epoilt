@@ -5,6 +5,10 @@
 
 int16 motor_left_pwm = 0;
 int16 motor_right_pwm = 0;
+
+int16 motor_left_pwm_last = 0;
+int16 motor_right_pwm_last = 0;
+
 void Motor_PWM_Init(void)
 {
     // PWMÒý½Å³õÊ¼»¯
@@ -45,4 +49,7 @@ void Motor_PWM_Write(void)
         DIR_2 = 0;
         pwm_duty(PWM_2, -motor_right_pwm);
     }
+
+    motor_left_pwm_last = motor_left_pwm;
+    motor_right_pwm_last = motor_right_pwm;
 }
