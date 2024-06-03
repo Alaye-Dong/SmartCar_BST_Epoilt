@@ -1,6 +1,6 @@
 #include "my_common.h"
 
-int8 element_busy_flag = 0; //赛道元素检测忙标志位。防止在成功元素检测后进行对应动作过程中检测到新的赛道元素，导致运行错乱。
+int8 element_busy_flag = 0; // 赛道元素检测忙标志位。防止在成功元素检测后进行对应动作过程中检测到新的赛道元素，导致运行错乱。
 
 // 冒泡排序函数
 void Bubble_Sort_Int16(int16 data_array[], uint8 length)
@@ -140,4 +140,39 @@ float Calculate_Minkowski_Distance(int16 inductor[], int16 target[], uint8 size,
     // distance = pow(distance, 1.0 / p); // 不计算p次根，降低计算压力，结果不再是标准的闵可夫斯基距离，但仍可以进行相似度比较
 
     return distance;
+}
+
+/**
+ * 计算斜率
+ *
+ * 本函数通过最小二乘法计算给定数据数组的斜率，这些数据点被视为(x, y)对。
+ * 斜率的计算基于数据点的x和y值的累加和以及它们的乘积和二次项的累加和。
+ *
+ * @param data_array 指向整数数据的数组，这些数据代表y值。
+ * @param n 数组中数据点的数量。
+ * @return 返回计算得到的斜率。slope>0表示斜率向上，<0表示斜率向下，=0表示斜率为0。
+ */
+float Calculate_Slope(int *data_array, int n)
+{
+    int i;
+    float sum_x = 0, sum_y = 0, sum_xy = 0, sum_x2 = 0;
+    float x_mean, y_mean, slope;
+
+    // 计算 x 和 y 的和
+    for (i = 0; i < n; i++)
+    {
+        sum_x += i;
+        sum_y += data_array[i];
+        sum_xy += i * data_array[i];
+        sum_x2 += i * i;
+    }
+
+    // 计算 x 和 y 的平均值
+    x_mean = sum_x / n;
+    y_mean = sum_y / n;
+
+    // 计算线性回归斜率
+    slope = (sum_xy - n * x_mean * y_mean) / (sum_x2 - n * x_mean * x_mean);
+
+    return slope;
 }

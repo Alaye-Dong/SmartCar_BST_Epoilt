@@ -79,7 +79,7 @@ void Bubble_Sort_ADC(void)
 
 // 电感归一化
 #define LEFT_V_MAX 3700
-#define LEFT_V_MIN 68 
+#define LEFT_V_MIN 68
 #define RIGHT_V_MAX 3700
 #define RIGHT_V_MIN 5
 #define LEFT_H_MAX 3000

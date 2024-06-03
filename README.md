@@ -52,6 +52,12 @@ int main() {
 }
 ```
 
+# 模糊PID
+
+[【智能车】模糊PID控制原理详解与代码实现-CSDN博客](https://blog.csdn.net/weixin_45636061/article/details/124996230)
+
+[飞思卡尔智能车----模糊PID算法通俗讲_汽车运动控制模糊pid-CSDN博客](https://blog.csdn.net/weixin_36340979/article/details/79168052)
+
 # 注意
 
 ## 编码格式或中文乱码
@@ -60,7 +66,7 @@ Keil原因，使用中文注释必须使用GB2312编码，所以当查看本项�
 
 ## 无用设备驱动文件
 
-为节省单片机存储空间，没有使用到的设备驱动文件已经从Keil项目中移出，保存在`STC32F_Code\Libraries\seekfree_peripheral\Unuse`文件夹中。
+为节省单片机存储空间，没有使用到的设备驱动文件已经从Keil项目中移出，保存在 `STC32F_Code\Libraries\seekfree_peripheral\Unuse`文件夹中。
 若需要重新添加，请在Keil的Manage Project Items中将需要的文件重新添加到项目中。
 
 ![1717048084319](image/README/1717048084319.png)
@@ -87,3 +93,4 @@ Keil原因，使用中文注释必须使用GB2312编码，所以当查看本项�
 
 * [ ] 前馈PID
 * [ ] 卡尔曼滤波
+* [ ] 模糊PID

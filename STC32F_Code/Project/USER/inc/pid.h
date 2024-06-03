@@ -38,4 +38,8 @@ void Right_Speed_PID(void);
 void Speed_Contrl(void);
 float Increment_PI_Dynamic_P_MAX(int16 target_speed_encoder, int16 encoder_now);
 
+int fuzzify(float value);
+int fuzzy_rule(int error, int delta_error);
+void fuzzy_pid_control(float error, float delta_error, float *kp, float *kd, float *kp2, float *kd2);
+
 #endif
