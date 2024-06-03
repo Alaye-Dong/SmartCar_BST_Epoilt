@@ -7,13 +7,13 @@ float right_angle_right_knn = 0;
 // 直角元素识别
 void Right_Angle_Recognition(void)
 {
-    if (inductor[LEFT_H] <= 15 || inductor[RIGHT_H] <= 15)
+    if (inductor[LEFT_H] <= 30 && inductor[RIGHT_H] <= 30)
     {
-        if (inductor[LEFT_V] >= 90 && inductor[RIGHT_V] <= 20)
+        if (inductor[LEFT_V] >= 85 && inductor[RIGHT_V] <= 40)
         {
             right_angle_flag = RIGHT_ANGLE_TURN_LEFT;
         }
-        else if (inductor[RIGHT_V] >= 90 && inductor[LEFT_V] <= 20)
+        else if (inductor[RIGHT_V] >= 85 && inductor[LEFT_V] <= 40)
         {
             right_angle_flag = RIGHT_ANGLE_TURN_RIGHT;
         }

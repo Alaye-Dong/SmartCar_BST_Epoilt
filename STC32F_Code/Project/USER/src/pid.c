@@ -63,6 +63,11 @@ void PID_Process(void)
 int16 delta_error = 0;
 void Direction_PID(void)
 {
+    if (inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0 || inductor[LEFT_H] == 0 && inductor[RIGHT_H] == 0) // 丢线记忆
+    {
+        position = position_last;
+    }
+
     // 计算误差变化率
     delta_error = position - position_last;
     fuzzy_pid_control(position, delta_error, &direction.KP, &direction.KD, &direction.KP_2, &direction.KD_2);
