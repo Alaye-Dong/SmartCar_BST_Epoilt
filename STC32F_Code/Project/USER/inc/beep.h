@@ -1,7 +1,7 @@
-#ifndef __BEEP_H
-#define __BEEP_H
+#ifndef __BEEP_H_
+#define __BEEP_H_
 
-#include  "headfile.h"
+#include "headfile.h"
 
 void BEEP_Init(void);
 void BEEP_ON_ms(int16 ms);

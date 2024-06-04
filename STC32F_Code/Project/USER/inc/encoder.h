@@ -1,5 +1,5 @@
-#ifndef __ENCODER_H
-#define __ENCODER_H
+#ifndef __ENCODER_H_
+#define __ENCODER_H_
 
 #include "headfile.h"
 

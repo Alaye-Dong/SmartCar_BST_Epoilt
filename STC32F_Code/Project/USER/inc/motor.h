@@ -1,5 +1,5 @@
-#ifndef _MOTOR_H_
-#define _MOTOR_H_
+#ifndef __MOTOR_H_
+#define __MOTOR_H_
 
 #include "headfile.h"
 

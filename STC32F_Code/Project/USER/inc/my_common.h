@@ -1,5 +1,5 @@
-#ifndef _MY_COMMON_H_
-#define _MY_COMMON_H_
+#ifndef __MY_COMMON_H_
+#define __MY_COMMON_H_
 
 #include "headfile.h"
 

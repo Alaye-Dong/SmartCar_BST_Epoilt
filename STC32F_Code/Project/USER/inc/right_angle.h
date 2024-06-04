@@ -1,5 +1,5 @@
-#ifndef _RIGHT_ANGLE_H_
-#define _RIGHT_ANGLE_H_
+#ifndef __RIGHT_ANGLE_H_
+#define __RIGHT_ANGLE_H_
 
 #include "headfile.h"
 

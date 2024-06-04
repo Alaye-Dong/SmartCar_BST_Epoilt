@@ -1,5 +1,5 @@
-#ifndef _MENU_H_
-#define _MENU_H_
+#ifndef __MENU_H_
+#define __MENU_H_
 
 #include "headfile.h"
 

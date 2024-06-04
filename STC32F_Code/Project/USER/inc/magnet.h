@@ -1,5 +1,5 @@
-#ifndef _MAGNET_H_
-#define _MAGNET_H_
+#ifndef __MAGNET_H_
+#define __MAGNET_H_
 
 #include "headfile.h"
 
@@ -20,7 +20,7 @@ extern int16 ADC_value[INDUCTORS][SAMPLES];
 extern int16 ADC_filtered_value[];
 
 extern int16 inductor[];
-extern int16 position_left, position_right, position; //position大于0表示车偏右应左转，小于0表示车偏左应右转
+extern int16 position_left, position_right, position; // position大于0表示车偏右应左转，小于0表示车偏左应右转
 
 void Magnet_ADC_Init(void);
 void Magnet_ADC_Read(void);
