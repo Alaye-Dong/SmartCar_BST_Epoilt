@@ -28,7 +28,7 @@ extern PIDTypeDef direction, motor_left, motor_right;
 
 extern float direction_output;
 
-void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2);
+void PID_Parameter_Init(PIDTypeDef* sptr, float KP, float KI, float KD, float KP_2, float KD_2);
 void PIDType_Init(void);
 void PID_Init(void);
 void PID_Process(void);
@@ -38,8 +38,8 @@ void Right_Speed_PID(void);
 void Speed_Contrl(void);
 float Increment_PI_Dynamic_P_MAX(int16 target_speed_encoder, int16 encoder_now);
 
-int fuzzify(float value);
-int fuzzy_rule(int error, int delta_error);
-void fuzzy_pid_control(float error, float delta_error, float *kp, float *kd, float *kp2, float *kd2);
+int Fuzzify(float value);
+int Fuzzy_Rule(int error, int delta_error);
+void Fuzzy_PID_Control(float error, float delta_error, float* kp, float* kd, float* kp2, float* kd2);
 
 #endif

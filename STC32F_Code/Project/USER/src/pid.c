@@ -10,7 +10,7 @@ int16 motor_left_last_error = 0, motor_right_last_error = 0;
 
 uint8 direction_pid_time_flag = 0; // 方向环控制周期标志位 （20ms
 
-SpeedTypeDef speed = {60, 0, 0.00,
+SpeedTypeDef speed = {70, 0, 0.00,
                       0, 0, 0};
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
@@ -70,7 +70,7 @@ void Direction_PID(void)
 
     // 计算误差变化率
     delta_error = position - position_last;
-    fuzzy_pid_control(position, delta_error, &direction.KP, &direction.KD, &direction.KP_2, &direction.KD_2);
+    Fuzzy_PID_Control(position, delta_error, &direction.KP, &direction.KD, &direction.KP_2, &direction.KD_2);
 
     direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
@@ -180,7 +180,7 @@ float Increment_PI_Dynamic_P_MAX(int16 target_speed_encoder, int16 encoder_now)
 #define PB 3  // Positive Big
 
 // 模糊化函数，将偏差和偏差变化率转换为模糊集合
-int fuzzify(float value)
+int Fuzzify(float value)
 {
     if (value <= -75)
         return NB;
@@ -199,7 +199,7 @@ int fuzzify(float value)
 }
 
 // 模糊规则库
-int fuzzy_rule(int error, int delta_error)
+int Fuzzy_Rule(int error, int delta_error)
 {
     if (error == NB && delta_error == NB)
         return PB;
@@ -310,54 +310,39 @@ int fuzzy_rule(int error, int delta_error)
 }
 
 // 模糊 PID 控制器
-void fuzzy_pid_control(float error, float delta_error, float *kp, float *kd, float *kp2, float *kd2)
+void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, float *kp2, float *kd2)
 {
-    int fuzzy_error = fuzzify(error);             // 模糊化误差
-    int fuzzy_delta_error = fuzzify(delta_error); // 模糊化误差变化率
+    int fuzzy_error = Fuzzify(error);             // 模糊化误差
+    int fuzzy_delta_error = Fuzzify(delta_error); // 模糊化误差变化率
 
-    int fuzzy_output = fuzzy_rule(fuzzy_error, fuzzy_delta_error);
+    int fuzzy_output = Fuzzy_Rule(fuzzy_error, fuzzy_delta_error);
 
     // 根据模糊输出调整 PID 参数
     switch (fuzzy_output)
     {
     case NB:
-        *kp = 0.50;
+    case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
+        *kp = 0.53;
         *kd = 1.2;
-        *kp2 = 0.001;
-        *kd2 = 0.006;
+        *kp2 = 0.002;
+        *kd2 = 0.002;
         break;
     case NM:
-        *kp = 0.47;
+    case PM:
+        *kp = 0.48;
         *kd = 1.2;
-        *kp2 = 0.001;
-        *kd2 = 0.006;
+        *kp2 = 0.002;
+        *kd2 = 0.003;
         break;
     case NS:
-        *kp = 0.45;
+    case PS:
+        *kp = 0.46;
         *kd = 1.2;
         *kp2 = 0.001;
-        *kd2 = 0.006;
+        *kd2 = 0.005;
         break;
     case Z:
-        *kp = 0.40;
-        *kd = 1.2;
-        *kp2 = 0.001;
-        *kd2 = 0.006;
-        break;
-    case PS:
-        *kp = 0.45;
-        *kd = 1.2;
-        *kp2 = 0.001;
-        *kd2 = 0.006;
-        break;
-    case PM:
-        *kp = 0.47;
-        *kd = 1.2;
-        *kp2 = 0.001;
-        *kd2 = 0.006;
-        break;
-    case PB:
-        *kp = 0.50;
+        *kp = 0.42;
         *kd = 1.2;
         *kp2 = 0.001;
         *kd2 = 0.006;

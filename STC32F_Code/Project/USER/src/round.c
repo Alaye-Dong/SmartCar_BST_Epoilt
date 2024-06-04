@@ -18,7 +18,6 @@ void Round_Recognition(void)
         if (inductor[LEFT_V] + inductor[RIGHT_V] < 50)
         {
             Beep_Buzzing(5, 3);
-            // round_flag = ROUND_RIGHT_PRE;
             round_flag = ROUND_PRE;
         }
     }
@@ -32,8 +31,6 @@ void Round_Turn_Process(void)
     {
     // ***** ×ó»· ********************************************
     case ROUND_PRE:
-
-    case ROUND_LEFT_PRE:
         IMU_Yaw_Angle_Get_Control(ON);
         position *= 0.3;
         Distance_Calculation();
@@ -50,6 +47,9 @@ void Round_Turn_Process(void)
                 Distance_Reset();
             }
         }
+        break;
+
+    case ROUND_LEFT_PRE:
         break;
 
     case ROUND_LEFT_TRUN_IN:
