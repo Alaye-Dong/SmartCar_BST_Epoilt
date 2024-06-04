@@ -679,6 +679,11 @@
               <FileType>5</FileType>
               <FilePath>..\USER\inc\round.h</FilePath>
             </File>
+            <File>
+              <FileName>cross.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\inc\cross.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -758,6 +763,11 @@
               <FileName>round.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\round.c</FilePath>
+            </File>
+            <File>
+              <FileName>cross.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\src\cross.c</FilePath>
             </File>
           </Files>
         </Group>
