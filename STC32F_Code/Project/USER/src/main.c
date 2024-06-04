@@ -67,6 +67,7 @@ void main()
         {
             Right_Angle_Recognition();
             Round_Recognition();
+            // Cross_Recognition();
         }
     }
 }

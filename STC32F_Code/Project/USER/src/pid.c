@@ -10,7 +10,7 @@ int16 motor_left_last_error = 0, motor_right_last_error = 0;
 
 uint8 direction_pid_time_flag = 0; // 方向环控制周期标志位 （20ms
 
-SpeedTypeDef speed = {70, 0, 0.00,
+SpeedTypeDef speed = {70, 0, 0.01,
                       0, 0, 0};
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
@@ -63,7 +63,7 @@ void PID_Process(void)
 int16 delta_error = 0;
 void Direction_PID(void)
 {
-    if (inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0 || inductor[LEFT_H] == 0 && inductor[RIGHT_H] == 0) // 丢线记忆
+    if (inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0 || inductor[LEFT_H] <= 5 && inductor[RIGHT_H] <= 5) // 丢线记忆
     {
         position = position_last;
     }
@@ -117,7 +117,7 @@ void Speed_Contrl(void)
     // }
 }
 
-//*************************************并级PID
+// // *************************************并级PID
 
 // // 转向 PD 二次项 PD
 // void Direction_PID(void)
@@ -168,7 +168,7 @@ float Increment_PI_Dynamic_P_MAX(int16 target_speed_encoder, int16 encoder_now)
     return FUNC_ABS((float)(ENCODER_MAX - encoder_now) / encoder_increment);
 }
 
-// TODO*********************************************模糊PID
+// *********************************************模糊PID
 
 // 定义模糊集合
 #define NB -3 // Negative Big

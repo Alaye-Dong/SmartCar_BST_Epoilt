@@ -144,7 +144,7 @@ void TM4_Isr() interrupt 20
     Encoder_Process();
     Position_Analyse();
     Speed_Contrl();
-    
+
     // 元素时可以覆盖掉计算得得position
     if (right_angle_flag != RIGHT_ANGLE_NONE)
     {
@@ -153,6 +153,10 @@ void TM4_Isr() interrupt 20
     else if (round_flag != ROUND_NONE)
     {
         Round_Turn_Process();
+    }
+    else if (cross_flag != CROSS_NONE)
+    {
+        Cross_Turn_Process();
     }
 
     PID_Process();
