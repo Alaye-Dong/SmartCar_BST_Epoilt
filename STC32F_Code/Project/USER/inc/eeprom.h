@@ -3,8 +3,17 @@
 
 #include "headfile.h"
 
+// 枚举定义EEPROM地址
+typedef enum EEPROM_ADDRESS
+{
+    ADDRESS_EEPROM_INIT_TIME = 0,
+    ADDRESS_START_FLAG,
+    ADDRESS_GARAGE_OUT_DIRECTION
+    // 可以在这里添加更多的地址位
+} EEPROM_ADDRESS_enmu;
+
 extern uint8 date_buff[100]; // eeprom数据数组
-// extern uint8 eeprom_init_time;
+
 void eeprom_init();
 void eeprom_flash();
 
