@@ -71,6 +71,10 @@ Keil原因，使用中文注释必须使用GB2312编码，所以当查看本项�
 
 ![1717048084319](image/README/1717048084319.png)
 
+## 符号链接
+
+本项目使用到了 `Keil uVision Assistant` 插件进行开发，但如果 `.uvprj `文件不在打开的一级子文件夹中，插件将无法自动识别到 `.uvprj `文件，每次都需要手动指定，进行重复的操作。所以可以使用[希望打开vscode时自动打开当前目录下所以子目录的keil工程文件 · Issue #39 · github0null/keil-assistant](https://github.com/github0null/keil-assistant/issues/39)中提到的使用符号链接将深层子文件夹中 `STC32F_Code\Project\MDK\EPOILT.uvproj`文件链接到一级子文件夹中，生成的链接文件为 `SmartCar_BST_Epoilt\EPOILT.symlink.uvproj` ，生成的链接文件将同步目标文件的修改。
+
 # 参考资料
 
 感谢以下开源项目和博客教程提供的参考与帮助

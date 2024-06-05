@@ -2,6 +2,7 @@
 
 PIDTypeDef direction, motor_left, motor_right;
 
+int16 delta_error = 0; // 用于模糊PID的误差变化量
 float direction_output = 0;
 int16 position_last = 0;
 
@@ -10,7 +11,7 @@ int16 motor_left_last_error = 0, motor_right_last_error = 0;
 
 uint8 direction_pid_time_flag = 0; // 方向环控制周期标志位 （20ms
 
-SpeedTypeDef speed = {70, 0, 0.01,
+SpeedTypeDef speed = {70, 0, 0.004,
                       0, 0, 0};
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
@@ -25,7 +26,7 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 void PIDType_Init(void)
 {
     // PID_Parameter_Init(&direction, 0.45, 0.0, 1.2, 0.001, 0.002); // 50速
-    PID_Parameter_Init(&direction, 0.5, 0.0, 1.2, 0.001, 0.006); // 70速
+    PID_Parameter_Init(&direction, 0.5, 0.0, 1.2, 0.001, 0.006); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
 
     PID_Parameter_Init(&motor_left, 27.33, 2.737, 0.0, 0.0, 0.0); // 一般固定速度P
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0.0, 0.0, 0.0);
@@ -41,15 +42,17 @@ void PID_Init(void)
     PIDType_Init();
 }
 
+#define DIRECTION_PID_PERIOD 4 // 定义20ms的周期，即4个5ms周期
 void PID_Process(void)
 {
-    if (direction_pid_time_flag != 3) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
+    Direction_Loss_Memory();
+    if (direction_pid_time_flag != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
         direction_pid_time_flag++;
     }
     else
     {
-        direction_pid_time_flag = 0;
+        direction_pid_time_flag = 0; // 重置周期计数器
 
         Direction_PID();
     }
@@ -58,22 +61,24 @@ void PID_Process(void)
     Right_Speed_PID();
 }
 
-// *******************************串级PID
-//  转向内环 PD 二次项 PD
-int16 delta_error = 0;
-void Direction_PID(void)
+// 丢线记忆打角
+void Direction_Loss_Memory(void)
 {
-    if (inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0 || inductor[LEFT_H] <= 5 && inductor[RIGHT_H] <= 5) // 丢线记忆
+    if ((inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0) || (inductor[LEFT_H] <= 5 && inductor[RIGHT_H] <= 5)) // 丢线阈值记忆打角
     {
         position = position_last;
     }
+}
 
-    // 计算误差变化率
-    delta_error = position - position_last;
-    Fuzzy_PID_Control(position, delta_error, &direction.KP, &direction.KD, &direction.KP_2, &direction.KD_2);
+// *******************************串级PID
+//  转向内环 PD 二次项 PD
+void Direction_PID(void)
+{
+    delta_error = position - position_last;                                                                   // 计算误差变化量
+    Fuzzy_PID_Control(position, delta_error, &direction.KP, &direction.KD, &direction.KP_2, &direction.KD_2); // 模糊PID计算赋值
 
-    direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
+    direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
 
     position_last = position;
 
@@ -85,7 +90,7 @@ void Direction_PID(void)
 void Left_Speed_PID(void)
 {
     motor_left_error = (int16)(speed.target_left - encoder_left.encoder_filtered);
-    // motor_left.KP = Increment_PI_Dynamic_P_MAX(speed.target_left, encoder_left.encoder_filtered);
+    // motor_left.KP = Increment_PI_Dynamic_P_MAX(speed.target_left, encoder_left.encoder_filtered); // 使用增量式动态P
     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
     motor_left_last_error = motor_left_error;
 }
@@ -94,7 +99,7 @@ void Left_Speed_PID(void)
 void Right_Speed_PID(void)
 {
     motor_right_error = (int16)(speed.target_right - encoder_right.encoder_filtered);
-    // motor_right.KP = Increment_PI_Dynamic_P_MAX(speed.target_right, encoder_right.encoder_filtered);
+    // motor_right.KP = Increment_PI_Dynamic_P_MAX(speed.target_right, encoder_right.encoder_filtered); // 使用增量式动态P
     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_right.KI;
     motor_right_last_error = motor_right_error;
 }
@@ -103,7 +108,10 @@ void Right_Speed_PID(void)
 void Speed_Contrl(void)
 {
     // speed.target = speed.normal;
-    speed.target = speed.normal - FUNC_ABS(position * speed.deceleration_factor);
+    // speed.target = speed.normal - FUNC_ABS(position * speed.deceleration_factor);
+
+    // TODO 利用陀螺仪进行直道弯道判断
+    speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor);
 
     //////////**************直道***********/////////////
     // if (GyroX <= 1500 && GyroX >= -1500)
