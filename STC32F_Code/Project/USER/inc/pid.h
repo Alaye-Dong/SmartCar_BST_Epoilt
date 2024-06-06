@@ -3,16 +3,17 @@
 
 #include "headfile.h"
 
-typedef struct
+typedef struct PID
 {
     float KP;
     float KI;
     float KD;
     float KP_2;
     float KD_2;
+    float KFF; // Ç°À¡ÏµÊý
 } PIDTypeDef;
 
-typedef struct
+typedef struct Speed
 {
     int16 normal;
     float boost_factor;
@@ -28,11 +29,11 @@ extern PIDTypeDef direction, motor_left, motor_right;
 
 extern float direction_output;
 
-void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2);
+void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KFF);
 void PIDType_Init(void);
 void PID_Init(void);
 void PID_Process(void);
-void Direction_Loss_Memory(void);
+void Position_Loss_Remember(void);
 void Direction_PID(void);
 void Left_Speed_PID(void);
 void Right_Speed_PID(void);

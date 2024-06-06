@@ -68,13 +68,13 @@ void Debug_Parameter_Assignment(uint8 i)
         speed.normal = seekfree_assistant_parameter[i];
         break;
     case 1:
-        speed.deceleration_factor = seekfree_assistant_parameter[i];
+        direction.KFF = seekfree_assistant_parameter[i];
         break;
     case 2:
-        motor_right.KP = seekfree_assistant_parameter[i];
+        motor_left.KFF = seekfree_assistant_parameter[i];
         break;
     case 3:
-        motor_right.KI = seekfree_assistant_parameter[i];
+        motor_right.KFF = seekfree_assistant_parameter[i];
         break;
     case 4:
         direction.KP = seekfree_assistant_parameter[i];

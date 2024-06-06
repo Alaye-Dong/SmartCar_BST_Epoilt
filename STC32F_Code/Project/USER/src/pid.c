@@ -2,7 +2,7 @@
 
 PIDTypeDef direction, motor_left, motor_right;
 
-int16 delta_error = 0; // 用于模糊PID的误差变化量
+int16 position_delta_error = 0; // 用于方向环模糊PID的偏差变化量
 float direction_output = 0;
 int16 position_last = 0;
 
@@ -11,30 +11,32 @@ int16 motor_left_last_error = 0, motor_right_last_error = 0;
 
 uint8 direction_pid_time_flag = 0; // 方向环控制周期标志位 （20ms
 
-SpeedTypeDef speed = {70, 0, 0.004,
+SpeedTypeDef speed = {80, 0, 0.004,
                       0, 0, 0};
 
-void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2)
+void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KFF)
 {
     sptr->KP = KP;
     sptr->KI = KI;
     sptr->KD = KD;
     sptr->KP_2 = KP_2;
     sptr->KD_2 = KD_2;
+    sptr->KFF = KFF;
 }
 
+// TODO 调节合适的前馈系数
 void PIDType_Init(void)
 {
-    // PID_Parameter_Init(&direction, 0.45, 0.0, 1.2, 0.001, 0.002); // 50速
-    PID_Parameter_Init(&direction, 0.5, 0.0, 1.2, 0.001, 0.006); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
+    // PID_Parameter_Init(&direction, 0.45, 0.0, 1.2, 0.001, 0.002, 0); // 50速
+    PID_Parameter_Init(&direction, 0.5, 0, 1.2, 0.001, 0.006, 0.1); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
 
-    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0.0, 0.0, 0.0); // 一般固定速度P
-    PID_Parameter_Init(&motor_right, 30.28, 3.818, 0.0, 0.0, 0.0);
+    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0); // 一般固定速度P
+    PID_Parameter_Init(&motor_right, 30.28, 3.818, 0, 0, 0, 0.0);
 
     // // *使用动态P
-    // PID_Parameter_Init(&direction, 0.47, 0.0, 1.2, 0.001, 0.003); // 50速
-    // PID_Parameter_Init(&motor_left, 0, 2.737, 0.0, 0.0, 0.0); // 初始为0，使用动态P
-    // PID_Parameter_Init(&motor_right, 0, 3.818, 0.0, 0.0, 0.0);
+    // PID_Parameter_Init(&direction, 0.47, 0.0, 1.2, 0.001, 0.003, 0); // 50速
+    // PID_Parameter_Init(&motor_left, 0, 2.737, 0.0, 0.0, 0.0, 0); // 初始为0，使用动态P
+    // PID_Parameter_Init(&motor_right, 0, 3.818, 0.0, 0.0, 0.0, 0);
 }
 
 void PID_Init(void)
@@ -45,7 +47,8 @@ void PID_Init(void)
 #define DIRECTION_PID_PERIOD 4 // 定义20ms的周期，即4个5ms周期
 void PID_Process(void)
 {
-    Direction_Loss_Memory();
+    Position_Loss_Remember();
+
     if (direction_pid_time_flag != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
         direction_pid_time_flag++;
@@ -62,7 +65,7 @@ void PID_Process(void)
 }
 
 // 丢线记忆打角
-void Direction_Loss_Memory(void)
+void Position_Loss_Remember(void)
 {
     if ((inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0) || (inductor[LEFT_H] <= 5 && inductor[RIGHT_H] <= 5)) // 丢线阈值记忆打角
     {
@@ -74,12 +77,12 @@ void Direction_Loss_Memory(void)
 //  转向内环 PD 二次项 PD
 void Direction_PID(void)
 {
-    delta_error = position - position_last;                                                                   // 计算误差变化量
-    Fuzzy_PID_Control(position, delta_error, &direction.KP, &direction.KD, &direction.KP_2, &direction.KD_2); // 模糊PID计算赋值
+    position_delta_error = position - position_last;                                                                   // 计算误差变化量
+    Fuzzy_PID_Control(position, position_delta_error, &direction.KP, &direction.KD, &direction.KP_2, &direction.KD_2); // 模糊PID计算赋值
 
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
     direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
-
+    direction_output += position_delta_error * direction.KFF; // 合并前馈量
     position_last = position;
 
     speed.target_left = speed.target - direction_output;
@@ -92,6 +95,7 @@ void Left_Speed_PID(void)
     motor_left_error = (int16)(speed.target_left - encoder_left.encoder_filtered);
     // motor_left.KP = Increment_PI_Dynamic_P_MAX(speed.target_left, encoder_left.encoder_filtered); // 使用增量式动态P
     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
+    motor_left_pwm += motor_left_error * motor_left.KFF; // 合并前馈量
     motor_left_last_error = motor_left_error;
 }
 
@@ -101,6 +105,7 @@ void Right_Speed_PID(void)
     motor_right_error = (int16)(speed.target_right - encoder_right.encoder_filtered);
     // motor_right.KP = Increment_PI_Dynamic_P_MAX(speed.target_right, encoder_right.encoder_filtered); // 使用增量式动态P
     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_right.KI;
+    motor_right_pwm += motor_right_error * motor_right.KFF; // 合并前馈量
     motor_right_last_error = motor_right_error;
 }
 
@@ -111,9 +116,10 @@ void Speed_Contrl(void)
     // speed.target = speed.normal - FUNC_ABS(position * speed.deceleration_factor);
 
     // TODO 利用陀螺仪进行直道弯道判断
-    speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor);
+    speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor); // 速度控制，弯道减速
 
-    //////////**************直道***********/////////////
+    //////////**************直道***********/
+    ////////////
     // if (GyroX <= 1500 && GyroX >= -1500)
     //     zhidaotime++;
     // if (zhidaotime > 20)
@@ -325,35 +331,72 @@ void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, flo
 
     int fuzzy_output = Fuzzy_Rule(fuzzy_error, fuzzy_delta_error);
 
-    // 根据模糊输出调整 PID 参数
-    switch (fuzzy_output)
+    if (speed.normal <= 70)
     {
-    case NB:
-    case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
-        *kp = 0.53;
-        *kd = 1.2;
-        *kp2 = 0.002;
-        *kd2 = 0.002;
-        break;
-    case NM:
-    case PM:
-        *kp = 0.48;
-        *kd = 1.2;
-        *kp2 = 0.002;
-        *kd2 = 0.003;
-        break;
-    case NS:
-    case PS:
-        *kp = 0.46;
-        *kd = 1.2;
-        *kp2 = 0.001;
-        *kd2 = 0.005;
-        break;
-    case Z:
-        *kp = 0.42;
-        *kd = 1.2;
-        *kp2 = 0.001;
-        *kd2 = 0.006;
-        break;
+        // 根据模糊输出调整 PID 参数
+        switch (fuzzy_output)
+        {
+        case NB:
+        case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
+            *kp = 0.52;
+            *kd = 1.25;
+            *kp2 = 0.002;
+            *kd2 = 0.002;
+            break;
+        case NM:
+        case PM:
+            *kp = 0.48;
+            *kd = 1.2;
+            *kp2 = 0.0015;
+            *kd2 = 0.003;
+            break;
+        case NS:
+        case PS:
+            *kp = 0.45;
+            *kd = 1.2;
+            *kp2 = 0.001;
+            *kd2 = 0.005;
+            break;
+        case Z:
+            *kp = 0.42;
+            *kd = 1.2;
+            *kp2 = 0.001;
+            *kd2 = 0.006;
+            break;
+        }
+    }
+    else if (speed.normal <= 80)
+    {
+        // 根据模糊输出调整 PID 参数
+        switch (fuzzy_output)
+        {
+        case NB:
+        case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
+            *kp = 0.52;
+            *kd = 1.0;
+            *kp2 = 0.002;
+            *kd2 = 0.002;
+            break;
+        case NM:
+        case PM:
+            *kp = 0.49;
+            *kd = 1.05;
+            *kp2 = 0.0015;
+            *kd2 = 0.003;
+            break;
+        case NS:
+        case PS:
+            *kp = 0.46;
+            *kd = 1.1;
+            *kp2 = 0.001;
+            *kd2 = 0.005;
+            break;
+        case Z:
+            *kp = 0.43;
+            *kd = 1.15;
+            *kp2 = 0.001;
+            *kd2 = 0.006;
+            break;
+        }
     }
 }
