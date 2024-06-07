@@ -451,7 +451,7 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "dPD2");
     lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, direction.KD_2, 2, 3);
 
-    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, direction.KFF, 2, 3);
+    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, direction.KF, 2, 3);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i++, "dF");
 
     lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, motor_left_pwm, 4);
@@ -470,9 +470,9 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "MTar");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, speed.target_right, 4);
 
-    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KFF, 2, 3);
+    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KF, 2, 3);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MF");
-    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KFF, 2, 3);
+    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KF, 2, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }

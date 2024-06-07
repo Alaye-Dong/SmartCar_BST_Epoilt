@@ -11,17 +11,18 @@ int16 motor_left_last_error = 0, motor_right_last_error = 0;
 
 uint8 direction_pid_time_flag = 0; // 方向环控制周期标志位 （20ms
 
+// 70速减速系数0.004 80速0.005
 SpeedTypeDef speed = {80, 0, 0.004,
                       0, 0, 0};
 
-void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KFF)
+void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KF)
 {
     sptr->KP = KP;
     sptr->KI = KI;
     sptr->KD = KD;
     sptr->KP_2 = KP_2;
     sptr->KD_2 = KD_2;
-    sptr->KFF = KFF;
+    sptr->KF = KF;
 }
 
 // TODO 调节合适的前馈系数
@@ -73,8 +74,8 @@ void Position_Loss_Remember(void)
     }
 }
 
-// *******************************串级PID
-//  转向内环 PD 二次项 PD
+// *******************************串级PID 偏差->>转向环->>速度环->>PWM
+//  转向外环 PD 二次项 PD
 void Direction_PID(void)
 {
     position_delta_error = position - position_last;                                                                   // 计算误差变化量
@@ -82,30 +83,32 @@ void Direction_PID(void)
 
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
     direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
-    direction_output += position_delta_error * direction.KFF; // 合并前馈量
+    direction_output += position_delta_error * direction.KF; // 合并前馈量
     position_last = position;
 
     speed.target_left = speed.target - direction_output;
     speed.target_right = speed.target + direction_output;
 }
 
-// 左轮外环 PI
+// 左轮内环 PI
 void Left_Speed_PID(void)
 {
     motor_left_error = (int16)(speed.target_left - encoder_left.encoder_filtered);
     // motor_left.KP = Increment_PI_Dynamic_P_MAX(speed.target_left, encoder_left.encoder_filtered); // 使用增量式动态P
     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
-    motor_left_pwm += motor_left_error * motor_left.KFF; // 合并前馈量
+    motor_left_pwm += motor_left_error * motor_left.KF; // 合并前馈量
+
     motor_left_last_error = motor_left_error;
 }
 
-// 右轮外环 PI
+// 右轮内环 PI
 void Right_Speed_PID(void)
 {
     motor_right_error = (int16)(speed.target_right - encoder_right.encoder_filtered);
     // motor_right.KP = Increment_PI_Dynamic_P_MAX(speed.target_right, encoder_right.encoder_filtered); // 使用增量式动态P
     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_right.KI;
-    motor_right_pwm += motor_right_error * motor_right.KFF; // 合并前馈量
+    motor_right_pwm += motor_right_error * motor_right.KF; // 合并前馈量
+
     motor_right_last_error = motor_right_error;
 }
 
@@ -372,28 +375,28 @@ void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, flo
         {
         case NB:
         case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
-            *kp = 0.52;
-            *kd = 1.0;
+            *kp = 0.50;
+            *kd = 1.2;
             *kp2 = 0.002;
             *kd2 = 0.002;
             break;
         case NM:
         case PM:
-            *kp = 0.49;
-            *kd = 1.05;
+            *kp = 0.47;
+            *kd = 1.2;
             *kp2 = 0.0015;
             *kd2 = 0.003;
             break;
         case NS:
         case PS:
-            *kp = 0.46;
-            *kd = 1.1;
+            *kp = 0.45;
+            *kd = 1.2;
             *kp2 = 0.001;
             *kd2 = 0.005;
             break;
         case Z:
-            *kp = 0.43;
-            *kd = 1.15;
+            *kp = 0.42;
+            *kd = 1.2;
             *kp2 = 0.001;
             *kd2 = 0.006;
             break;

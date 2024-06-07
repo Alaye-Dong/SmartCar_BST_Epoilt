@@ -10,7 +10,7 @@ typedef struct PID
     float KD;
     float KP_2;
     float KD_2;
-    float KFF; // 前馈系数
+    float KF; // 前馈系数
 } PIDTypeDef;
 
 typedef struct Speed
@@ -29,7 +29,7 @@ extern PIDTypeDef direction, motor_left, motor_right;
 
 extern float direction_output;
 
-void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KFF);
+void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KF);
 void PIDType_Init(void);
 void PID_Init(void);
 void PID_Process(void);

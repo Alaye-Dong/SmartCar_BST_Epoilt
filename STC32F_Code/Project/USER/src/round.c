@@ -46,6 +46,11 @@ void Round_Turn_Process(void)
                 round_flag = ROUND_RIGHT_TURN_IN;
                 Distance_Reset();
             }
+            else if (real_distance > 200) // 预入环但是没有正确入环则退出环元素
+            {
+                round_flag = ROUND_NONE;
+                Distance_Reset();
+            }
         }
         break;
 
@@ -53,7 +58,7 @@ void Round_Turn_Process(void)
         break;
 
     case ROUND_LEFT_TRUN_IN:
-        position += 30;
+        position += 40;
         IMU_Yaw_Angle_Get_Control(ON);
         if (FUNC_ABS(yaw_angle) >= 25)
         {
@@ -73,7 +78,7 @@ void Round_Turn_Process(void)
 
     case ROUND_LEFT_TURN_OUT:
         LED = 0;
-        position += 30;
+        position += 40;
         IMU_Yaw_Angle_Get_Control(ON);
         if (FUNC_ABS(yaw_angle) >= 340)
         {

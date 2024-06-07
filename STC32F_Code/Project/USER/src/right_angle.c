@@ -28,7 +28,7 @@ void Right_Angle_Turn_Process(void)
         BEEP_ON();
         position = 80;
         IMU_Yaw_Angle_Get_Control(ON);
-        if (yaw_angle >= 75)
+        if (yaw_angle >= 65)
         {
             right_angle_flag = RIGHT_ANGLE_NONE;
             IMU_Yaw_Angle_Get_Control(RESET);
@@ -42,7 +42,7 @@ void Right_Angle_Turn_Process(void)
         BEEP_ON();
         position = -80;
         IMU_Yaw_Angle_Get_Control(ON);
-        if (yaw_angle <= -75)
+        if (yaw_angle <= -65)
         {
             right_angle_flag = RIGHT_ANGLE_NONE;
             IMU_Yaw_Angle_Get_Control(RESET);
