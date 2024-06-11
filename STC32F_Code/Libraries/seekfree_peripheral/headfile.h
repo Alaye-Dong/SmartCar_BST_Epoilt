@@ -65,6 +65,7 @@
 #include "right_angle.h"
 #include "round.h"
 #include "cross.h"
+#include "obstacle.h"
 
 #ifndef VSCODE_C251
 #define INTERRUPT(x) interrupt x

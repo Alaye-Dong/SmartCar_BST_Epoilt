@@ -44,7 +44,7 @@ void Round_Turn_Process(void)
                 round_flag = ROUND_RIGHT_TURN_IN;
                 Distance_Reset();
             }
-            else if (real_distance > 200) // 预入环但是没有正确入环则退出环元素
+            else if (real_distance > 200) // 预入环但是没有正确入环则退出环元素处理
             {
                 round_flag = ROUND_NONE;
                 Distance_Reset();

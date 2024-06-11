@@ -684,6 +684,11 @@
               <FileType>5</FileType>
               <FilePath>..\USER\inc\cross.h</FilePath>
             </File>
+            <File>
+              <FileName>obstacle.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\inc\obstacle.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -768,6 +773,11 @@
               <FileName>cross.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\cross.c</FilePath>
+            </File>
+            <File>
+              <FileName>obstacle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\src\obstacle.c</FilePath>
             </File>
           </Files>
         </Group>
