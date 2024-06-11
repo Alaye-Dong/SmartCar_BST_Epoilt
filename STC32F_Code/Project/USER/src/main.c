@@ -47,8 +47,9 @@ void main()
 
     BEEP_Init(); // 蜂鸣器初始化
 
-    eeprom_init(); // eeprom初始化
+    ToF_Init(); // ToF DL1B初始化
 
+    eeprom_init(); // eeprom初始化
     PID_Init();
 
     pit_timer_ms(TIM_4, 5); // 设置中断定时
@@ -67,6 +68,7 @@ void main()
         {
             Right_Angle_Recognition();
             Round_Recognition();
+            Obstacle_Recognition();
             // Cross_Recognition();
         }
     }

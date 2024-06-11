@@ -103,7 +103,7 @@ void Round_Turn_Process(void)
         }
         break;
 
-    // ! ************************************* ”“ª∑ ********
+    // ************************************* ”“ª∑ ********
     case ROUND_RIGHT_PRE:
         IMU_Yaw_Angle_Get_Control(ON);
         position *= 0.3;
