@@ -10,8 +10,8 @@ const int16 round_right_target_inductor[4] = {15, 9, 53, 57};
 
 void Round_Recognition(void)
 {
-    round_left_proximity_coeff = Calculate_Minkowski_Distance(inductor, round_left_target_inductor, 4, 2);
-    round_right_proximity_coeff = Calculate_Minkowski_Distance(inductor, round_right_target_inductor, 4, 2);
+    // round_left_proximity_coeff = Calculate_Minkowski_Distance(inductor, round_left_target_inductor, 4, 1);
+    // round_right_proximity_coeff = Calculate_Minkowski_Distance(inductor, round_right_target_inductor, 4, 1);
 
     if (inductor[LEFT_H] + inductor[RIGHT_H] > 90 && inductor[LEFT_H] + inductor[RIGHT_H] < 120 && inductor[LEFT_H] > 30 && inductor[RIGHT_H] > 30) //&& position < 0
     {
@@ -29,19 +29,17 @@ void Round_Turn_Process(void)
 
     switch (round_flag)
     {
-    // ***** ×ó»· ********************************************
     case ROUND_PRE:
-        IMU_Yaw_Angle_Get_Control(ON);
-        position *= 0.3;
+        position *= 0.2;
         Distance_Calculation();
-        if (real_distance > 80)
+        if (real_distance > 70)
         {
-            if (inductor[LEFT_V] - inductor[RIGHT_V] > 30)
+            if ((inductor[LEFT_V] - inductor[RIGHT_V] > 30) && (inductor[LEFT_H] + inductor[RIGHT_H] > 150) && (inductor[LEFT_H] > 80))
             {
                 round_flag = ROUND_LEFT_TRUN_IN;
                 Distance_Reset();
             }
-            else if (inductor[RIGHT_V] - inductor[LEFT_V] > 30)
+            else if ((inductor[RIGHT_V] - inductor[LEFT_V] > 30) && (inductor[RIGHT_H] + inductor[LEFT_H] > 150) && (inductor[RIGHT_H] > 80))
             {
                 round_flag = ROUND_RIGHT_TURN_IN;
                 Distance_Reset();
@@ -54,6 +52,7 @@ void Round_Turn_Process(void)
         }
         break;
 
+    // ***** ×ó»· ********************************************
     case ROUND_LEFT_PRE:
         break;
 
@@ -151,15 +150,17 @@ void Round_Turn_Process(void)
         break;
 
     case ROUND_RIGHT_OUT:
-        // position = position * 0.25;
         Distance_Calculation();
         if (real_distance > 120)
         {
             Distance_Reset();
             round_flag = ROUND_NONE;
-            element_busy_flag = 0;
-            BEEP_OFF();
         }
+        break;
+
+    case ROUND_NONE:
+        element_busy_flag = 0;
+        BEEP_OFF();
         break;
 
     default:

@@ -9,9 +9,8 @@ int16 position_last = 0;
 int16 motor_left_error = 0, motor_right_error = 0;
 int16 motor_left_last_error = 0, motor_right_last_error = 0;
 
-uint8 direction_pid_time_flag = 0; // 方向环控制周期标志位 （20ms
+uint8 direction_pid_time_counter = 0; // 方向环控制周期标志位 （20ms
 
-// 70速减速系数0.004 80速0.005
 SpeedTypeDef speed = {80, 0, 0.004,
                       0, 0, 0};
 
@@ -28,10 +27,8 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 // TODO 调节合适的前馈系数
 void PIDType_Init(void)
 {
-    // PID_Parameter_Init(&direction, 0.45, 0.0, 1.2, 0.001, 0.002, 0); // 50速
     PID_Parameter_Init(&direction, 0.5, 0, 1.2, 0.001, 0.006, 0.1); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
-
-    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0); // 一般固定速度P
+    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0);    // 一般固定速度P
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0, 0, 0, 0.0);
 
     // // *使用动态P
@@ -48,15 +45,16 @@ void PID_Init(void)
 #define DIRECTION_PID_PERIOD 4 // 定义20ms的周期，即4个5ms周期
 void PID_Process(void)
 {
+    Speed_Contrl();
     Position_Loss_Remember();
 
-    if (direction_pid_time_flag != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
+    if (direction_pid_time_counter != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
-        direction_pid_time_flag++;
+        direction_pid_time_counter++;
     }
     else
     {
-        direction_pid_time_flag = 0; // 重置周期计数器
+        direction_pid_time_counter = 0; // 重置周期计数器
 
         Direction_PID();
     }
@@ -65,12 +63,28 @@ void PID_Process(void)
     Right_Speed_PID();
 }
 
-// 丢线记忆打角
+//  丢线记忆打角
+//  TODO 长时间丢线保护
+uint8 position_loss_time_counter = 0;
+uint8 position_loss_flag = 0;
 void Position_Loss_Remember(void)
 {
-    if ((inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0) || (inductor[LEFT_H] <= 5 && inductor[RIGHT_H] <= 5)) // 丢线阈值记忆打角
+    if (position_loss_time_counter > 200) // 5 * 200 = 1000ms 丢线累计1s停车保护
+    {
+        speed.target = 0;
+    }
+
+    if ((inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0) || (inductor[LEFT_H] <= 5 && inductor[RIGHT_H] <= 5)) // 短时间丢线，记忆打角
     {
         position = position_last;
+        if (position_loss_time_counter < 255) // 防止溢出
+        {
+            position_loss_time_counter++;
+        }
+    }
+    else // 寻得线，丢线累计时间标志位清零
+    {
+        position_loss_time_counter = 0;
     }
 }
 
@@ -112,25 +126,25 @@ void Right_Speed_PID(void)
     motor_right_last_error = motor_right_error;
 }
 
-// 速度控制，弯道减速
+/* 速度控制，弯道减速 */
+uint16 straight_time_flag = 0;
 void Speed_Contrl(void)
 {
-    // speed.target = speed.normal;
-    // speed.target = speed.normal - FUNC_ABS(position * speed.deceleration_factor);
-
     // TODO 利用陀螺仪进行直道弯道判断
     speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor); // 速度控制，弯道减速
 
-    //////////**************直道***********/
-    ////////////
-    // if (GyroX <= 1500 && GyroX >= -1500)
-    //     zhidaotime++;
-    // if (zhidaotime > 20)
-    //     zhidaoflag = 1;
-    // if (GyroX > 1500 || GyroX < -1500)
+    // //长直道加速
+    // if (FUNC_ABS(gyro_z_filtered) < 500)
     // {
-    //     zhidaotime = 0;
-    //     zhidaoflag = 0;
+    //     straight_time_flag++;
+    // }
+    // if (straight_time_flag > 200) // 200 * 5 = 1000ms
+    // {
+    //     speed.target = speed.target + speed.target * speed.boost_factor;
+    // }
+    // else
+    // {
+    //     straight_time_flag = 0;
     // }
 }
 

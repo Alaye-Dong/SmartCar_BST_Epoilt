@@ -9,12 +9,21 @@
 #define EXTREME_NUMBER 1 // 舍弃的最大最小值的个数
 
 // 水平（H）、垂直（V）和斜向（S）
-#define LEFT_V 0
-#define RIGHT_V 1
-#define LEFT_H 2
-#define RIGHT_H 3
-#define LEFT_S 4
-#define RIGHT_S 5
+enum Inductor_Type
+{
+    LEFT_V = 0,
+    RIGHT_V = 1,
+    LEFT_H = 2,
+    RIGHT_H = 3,
+    LEFT_S = 4,
+    RIGHT_S = 5
+};
+// #define LEFT_V 0
+// #define RIGHT_V 1
+// #define LEFT_H 2
+// #define RIGHT_H 3
+// #define LEFT_S 4
+// #define RIGHT_S 5
 
 extern int16 ADC_value[INDUCTORS][SAMPLES];
 extern int16 ADC_filtered_value[];

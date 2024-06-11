@@ -111,6 +111,7 @@ void Inductor_Normal(void)
     // inductor[RIGHT_S] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_S], 0, 100);
 }
 
+#define INDUCTOR_V_GAIN 1 // 垂直方向的增益
 void Position_Analyse(void)
 {
     // 使用快速平方根的算法
@@ -118,8 +119,8 @@ void Position_Analyse(void)
     // position_right = My_Sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] + inductor[RIGHT_V] * inductor[RIGHT_V]);
 
     // 使用系统平方根的算法
-    position_left = sqrt(inductor[LEFT_H] * inductor[LEFT_H] + inductor[LEFT_V] * inductor[LEFT_V]);
-    position_right = sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] + inductor[RIGHT_V] * inductor[RIGHT_V]);
+    position_left = sqrt(inductor[LEFT_H] * inductor[LEFT_H] + inductor[LEFT_V] * inductor[LEFT_V] * INDUCTOR_V_GAIN);
+    position_right = sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] + inductor[RIGHT_V] * inductor[RIGHT_V] * INDUCTOR_V_GAIN);
 
     position = (position_left - position_right) * 100 / (position_left + position_right + 1); // 向量差比和，补1防止分母为0
 }

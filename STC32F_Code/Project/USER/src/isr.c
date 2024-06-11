@@ -143,7 +143,6 @@ void TM4_Isr() interrupt 20
     IMU_Process();
     Encoder_Process();
     Position_Analyse();
-    Speed_Contrl();
 
     // 元素时可以覆盖掉计算得的position
     if (right_angle_flag != RIGHT_ANGLE_NONE)
