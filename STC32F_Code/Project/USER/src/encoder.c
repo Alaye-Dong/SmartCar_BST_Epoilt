@@ -1,8 +1,8 @@
 #include "encoder.h"
 
 EncoderTypeDef encoder_left, encoder_right;
-int32 car_distance = 0;
-float real_distance = 0;
+float car_distance_once = 0;
+float car_distance_real_cm = 0;
 
 // 编码器初始化
 void Encoder_Init(void)
@@ -71,16 +71,16 @@ void Encoder_Filter(void)
  * @param: none
  * @return: none
  */
-#define ENCODER_TO_DISTANCE 0.0091 // 系数=固定距离/测试得到的脉冲 测试200cm 脉冲21533 22350 22344
+#define ENCODER_TO_DISTANCE_CM 0.0091 // 系数=固定距离/测试得到的脉冲 测试200cm 脉冲21533 22350 22344
 void Distance_Calculation(void)
 {
-    car_distance += (encoder_left.encoder_filtered + encoder_right.encoder_filtered) / 2;
-    
-    real_distance = ENCODER_TO_DISTANCE * car_distance; // 实际距离=脉冲*系数
+    car_distance_once = (encoder_left.encoder_filtered + encoder_right.encoder_filtered) / 2.0;
+
+    car_distance_real_cm += ENCODER_TO_DISTANCE_CM * car_distance_once; // 实际距离=脉冲*系数
 }
 
 void Distance_Reset(void)
 {
-    car_distance = 0;
-    real_distance = 0;
+    car_distance_once = 0;
+    car_distance_real_cm = 0;
 }

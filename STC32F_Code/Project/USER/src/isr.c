@@ -153,6 +153,10 @@ void TM4_Isr() interrupt 20
     {
         Round_Turn_Process();
     }
+    else if (obstacle_flag != OBSTACLE_NONE)
+    {
+        Obstacle_Turn_Process();
+    }
     else if (cross_flag != CROSS_NONE)
     {
         Cross_Turn_Process();

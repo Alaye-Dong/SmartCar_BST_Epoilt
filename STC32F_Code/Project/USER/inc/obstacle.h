@@ -11,6 +11,8 @@ typedef enum OBSTACLE_STATE
     OBSTACLE_TURN_LEFT_BACK // 避让后向左驶回中线
 } OBSTACLE_STATE_enmu;
 
+extern OBSTACLE_STATE_enmu obstacle_flag;
+
 void ToF_Init(void);
 void Obstacle_Recognition(void);
 void Obstacle_Turn_Process(void);

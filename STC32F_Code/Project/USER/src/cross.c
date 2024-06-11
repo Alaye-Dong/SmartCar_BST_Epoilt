@@ -19,7 +19,7 @@ void Cross_Turn_Process(void)
         BEEP_ON();
         position = position * 0.3;
         Distance_Calculation();
-        if (real_distance > 50)
+        if (car_distance_real_cm > 50)
         {
             Distance_Reset();
             cross_flag = CROSS_NONE;

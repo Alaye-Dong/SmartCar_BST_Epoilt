@@ -32,7 +32,7 @@ void Round_Turn_Process(void)
     case ROUND_PRE:
         position *= 0.2;
         Distance_Calculation();
-        if (real_distance > 70)
+        if (car_distance_real_cm > 70)
         {
             if ((inductor[LEFT_V] - inductor[RIGHT_V] > 30) && (inductor[LEFT_H] + inductor[RIGHT_H] > 150) && (inductor[LEFT_H] > 80))
             {
@@ -44,7 +44,7 @@ void Round_Turn_Process(void)
                 round_flag = ROUND_RIGHT_TURN_IN;
                 Distance_Reset();
             }
-            else if (real_distance > 200) // 预入环但是没有正确入环则退出环元素处理
+            else if (car_distance_real_cm > 200) // 预入环但是没有正确入环则退出环元素处理
             {
                 round_flag = ROUND_NONE;
                 Distance_Reset();
@@ -86,13 +86,13 @@ void Round_Turn_Process(void)
         break;
 
     case ROUND_LEFT_OUT:
-        if (real_distance < 100)
+        if (car_distance_real_cm < 100)
         {
             position *= 0.3;
         }
 
         Distance_Calculation();
-        if (real_distance > 120)
+        if (car_distance_real_cm > 120)
         {
             Distance_Reset();
             round_flag = ROUND_NONE;
@@ -108,7 +108,7 @@ void Round_Turn_Process(void)
         IMU_Yaw_Angle_Get_Control(ON);
         position *= 0.3;
         Distance_Calculation();
-        if (real_distance > 80)
+        if (car_distance_real_cm > 80)
         {
             if (inductor[RIGHT_V] - inductor[LEFT_V] > 30)
             {
@@ -151,7 +151,7 @@ void Round_Turn_Process(void)
 
     case ROUND_RIGHT_OUT:
         Distance_Calculation();
-        if (real_distance > 120)
+        if (car_distance_real_cm > 120)
         {
             Distance_Reset();
             round_flag = ROUND_NONE;
