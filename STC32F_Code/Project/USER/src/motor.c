@@ -16,8 +16,8 @@ void Motor_PWM_Init(void)
     pwm_init(PWM_2, 17000, 0);
 
     // 电机方向信号初始化
-    gpio_mode(P1_0, GPO_PP);
-    gpio_mode(P2_4, GPO_PP);
+    gpio_mode(P1_0, GPO_PP); // DIR_2
+    gpio_mode(P2_4, GPO_PP); // DIR_1
 }
 
 // 限幅PWM值后，输出PWM到电机

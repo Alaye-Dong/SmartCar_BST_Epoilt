@@ -34,6 +34,8 @@ void Round_Turn_Process(void)
         Distance_Calculation();
         if (car_distance_real_cm > 70)
         {
+            // Round_Type_Deal(); //  手动指定环类型处理 // TODO 自动识别环类型和指定环类型的使用哪一个的选择功能
+
             if ((inductor[LEFT_V] - inductor[RIGHT_V] > 30) && (inductor[LEFT_H] + inductor[RIGHT_H] > 150) && (inductor[LEFT_H] > 80))
             {
                 round_flag = ROUND_LEFT_TRUN_IN;
@@ -166,4 +168,39 @@ void Round_Turn_Process(void)
     default:
         break;
     }
+}
+
+#define ROUND_NUMBER_MAX 2
+uint8 round_number = 0;
+enum Round_Type
+{
+    ROUND_TYPE_NONE = 0,
+    ROUND_TYPE_LEFT,
+    ROUND_TYPE_RIGHT
+};
+int8 round_type[ROUND_NUMBER_MAX] = {ROUND_TYPE_LEFT, ROUND_TYPE_RIGHT}; // TODO 修改round_type数组值的方法
+
+void Round_Type_Deal(void)
+{
+    if (round_number >= 0 && round_number < ROUND_NUMBER_MAX) // 确保round_number在有效范围内
+    {
+        switch (round_type[round_number])
+        {
+        case ROUND_TYPE_LEFT:
+            round_flag = ROUND_LEFT_PRE;
+            break;
+        case ROUND_TYPE_RIGHT:
+            round_flag = ROUND_RIGHT_PRE;
+            break;
+        case ROUND_TYPE_NONE:
+            round_flag = ROUND_NONE;
+            break;
+        }
+    }
+    else
+    {
+        // 如果round_number超出范围，可以设置一个默认行为或者错误处理
+        round_flag = ROUND_NONE; // 或者其他合适的处理方式
+    }
+    round_number++; // 判别一次后增加圆环计数器
 }

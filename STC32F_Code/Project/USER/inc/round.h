@@ -27,5 +27,6 @@ extern float round_right_proximity_coeff;
 
 void Round_Recognition(void);
 void Round_Turn_Process(void);
+void Round_Type_Deal(void);
 
 #endif
