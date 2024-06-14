@@ -73,7 +73,7 @@ void Position_Loss_Remember(void)
         speed.target = 0;
     }
 
-    if ((inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0) || (inductor[LEFT_H] <= 5 && inductor[RIGHT_H] <= 5)) // 短时间丢线，记忆打角
+    if ((inductor[LEFT_H] <= 5 && inductor[RIGHT_H] <= 5)) // 短时间丢线，记忆打角
     {
         position = position_last;
         if (position_loss_time_counter < 255) // 防止溢出

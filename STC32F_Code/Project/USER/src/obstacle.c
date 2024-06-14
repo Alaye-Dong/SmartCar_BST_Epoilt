@@ -18,10 +18,10 @@ void Obstacle_Recognition(void)
 {
     dl1b_get_distance();
 
-    if (dl1b_distance_mm <= 850 && dl1b_distance_mm >= 300 && inductor[LEFT_H] >= 30 && inductor[RIGHT_H] >= 40) // 障碍识别 可以融合角速度判断（在比较直的赛道才避障）
-    {
-        obstacle_flag = OBSTACLE_PRE;
-    }
+    // if (dl1b_distance_mm <= 850 && dl1b_distance_mm >= 300 && inductor[LEFT_H] >= 30 && inductor[RIGHT_H] >= 40) // 障碍识别 可以融合角速度判断（在比较直的赛道才避障）
+    // {
+    //     obstacle_flag = OBSTACLE_PRE;
+    // }
 }
 
 void Obstacle_Turn_Process(void)

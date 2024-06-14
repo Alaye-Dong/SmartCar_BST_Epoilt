@@ -32,9 +32,9 @@ void Magnet_ADC_Read(void)
     {
         ADC_value[LEFT_H][i] = adc_once(ADC_P06, ADC_12BIT);
         ADC_value[LEFT_V][i] = adc_once(ADC_P11, ADC_12BIT);
-        ADC_value[LEFT_S][i] = 0; // 暂时不考虑斜向
+        ADC_value[LEFT_S][i] = 0; // 暂时不使用斜向
 
-        ADC_value[RIGHT_S][i] = 0; // 暂时不考虑斜向
+        ADC_value[RIGHT_S][i] = 0; // 暂时不使用斜向
         ADC_value[RIGHT_V][i] = adc_once(ADC_P14, ADC_12BIT);
         ADC_value[RIGHT_H][i] = adc_once(ADC_P15, ADC_12BIT);
     }
@@ -78,14 +78,14 @@ void Bubble_Sort_ADC(void)
 }
 
 // 电感归一化
-#define LEFT_V_MAX 3700
-#define LEFT_V_MIN 68
-#define RIGHT_V_MAX 3700
-#define RIGHT_V_MIN 5
-#define LEFT_H_MAX 3000
-#define LEFT_H_MIN 160
-#define RIGHT_H_MAX 3000
-#define RIGHT_H_MIN 25
+#define LEFT_V_MAX 3000
+#define LEFT_V_MIN 25
+#define RIGHT_V_MAX 3000
+#define RIGHT_V_MIN 1
+#define LEFT_H_MAX 2500
+#define LEFT_H_MIN 35
+#define RIGHT_H_MAX 2500
+#define RIGHT_H_MIN 15
 void Inductor_Normal(void)
 {
     // 归一化公式 (x - min) / (max - min) * 100
