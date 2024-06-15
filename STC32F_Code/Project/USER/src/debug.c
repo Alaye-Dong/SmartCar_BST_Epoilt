@@ -64,17 +64,42 @@ void Debug_Parameter_Assignment(uint8 i)
 {
     switch (i)
     {
+        // case 0:
+        //     speed.normal = seekfree_assistant_parameter[i];
+        //     break;
+        // case 1:
+        //     direction.KF = seekfree_assistant_parameter[i];
+        //     break;
+        // case 2:
+        //     motor_left.KF = seekfree_assistant_parameter[i];
+        //     break;
+        // case 3:
+        //     motor_right.KF = seekfree_assistant_parameter[i];
+        //     break;
+        // case 4:
+        //     direction.KP = seekfree_assistant_parameter[i];
+        //     break;
+        // case 5:
+        //     direction.KD = seekfree_assistant_parameter[i];
+        //     break;
+        // case 6:
+        //     direction.KP_2 = seekfree_assistant_parameter[i];
+        //     break;
+        // case 7:
+        //     direction.KD_2 = seekfree_assistant_parameter[i];
+        //     break;
+
     case 0:
         speed.normal = seekfree_assistant_parameter[i];
         break;
     case 1:
-        direction.KF = seekfree_assistant_parameter[i];
+        motor_left.KP = seekfree_assistant_parameter[i];
         break;
     case 2:
-        motor_left.KF = seekfree_assistant_parameter[i];
+        motor_left.KI = seekfree_assistant_parameter[i];
         break;
     case 3:
-        motor_right.KF = seekfree_assistant_parameter[i];
+        motor_right.KP = seekfree_assistant_parameter[i];
         break;
     case 4:
         direction.KP = seekfree_assistant_parameter[i];
@@ -83,11 +108,12 @@ void Debug_Parameter_Assignment(uint8 i)
         direction.KD = seekfree_assistant_parameter[i];
         break;
     case 6:
-        direction.KP_2 = seekfree_assistant_parameter[i];
+        motor_right.KI = seekfree_assistant_parameter[i];
         break;
     case 7:
         direction.KD_2 = seekfree_assistant_parameter[i];
         break;
+
     default:
         break;
     }

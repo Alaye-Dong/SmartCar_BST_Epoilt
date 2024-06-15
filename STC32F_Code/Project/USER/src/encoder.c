@@ -1,7 +1,6 @@
 #include "encoder.h"
 
 EncoderTypeDef encoder_left, encoder_right;
-float car_distance_once = 0;
 float car_distance_real_cm = 0;
 
 // 编码器初始化
@@ -59,10 +58,11 @@ void Read_Encoder(void)
     ctimer_count_clean(CTIM3_P04); // 清除积累
 }
 
+#define ENCODER_FILTER_COEFFICIENT 0.9
 void Encoder_Filter(void)
 {
-    encoder_left.encoder_filtered = Low_Pass_Filter(encoder_left.encoder_now, encoder_left.encoder_last, 0.5);
-    encoder_right.encoder_filtered = Low_Pass_Filter(encoder_right.encoder_now, encoder_right.encoder_last, 0.5);
+    encoder_left.encoder_filtered = Low_Pass_Filter(encoder_left.encoder_now, encoder_left.encoder_last, ENCODER_FILTER_COEFFICIENT);
+    encoder_right.encoder_filtered = Low_Pass_Filter(encoder_right.encoder_now, encoder_right.encoder_last, ENCODER_FILTER_COEFFICIENT);
 }
 
 /*
@@ -74,13 +74,13 @@ void Encoder_Filter(void)
 #define ENCODER_TO_DISTANCE_CM 0.0091 // 系数=固定距离/测试得到的脉冲 测试200cm 脉冲21533 22350 22344
 void Distance_Calculation(void)
 {
-    car_distance_once = (encoder_left.encoder_filtered + encoder_right.encoder_filtered) / 2.0;
+    float car_distance_once = 0.0;
 
+    car_distance_once = (encoder_left.encoder_filtered + encoder_right.encoder_filtered) / 2.0;
     car_distance_real_cm += ENCODER_TO_DISTANCE_CM * car_distance_once; // 实际距离=脉冲*系数
 }
 
 void Distance_Reset(void)
 {
-    car_distance_once = 0;
-    car_distance_real_cm = 0;
+    car_distance_real_cm = 0.0;
 }

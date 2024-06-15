@@ -30,7 +30,7 @@ void main()
 
     // 此处编写用户代码 例如外设初始化代码等
     lcd_init(); // 屏幕初始化
-    display_codename = 4;
+    display_codename = 3;
     // !使用到了未实际连接的P24引脚作spi初始化，该脚与电机控制方向脚引脚冲突
     // 必须lcd_init()后再进行Motor_PWM_Init()中的gpio_mode(P2_4, GPO_PP)， 否则会导致电机控制方向脚输出异常
     // 逐飞在STC32F开源库 V1.2.6(2024-05-07) 后似乎已经修复了这个bug
