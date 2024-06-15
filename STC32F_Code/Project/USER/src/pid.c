@@ -27,9 +27,12 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 // TODO 调节合适的前馈系数
 void PIDType_Init(void)
 {
-    PID_Parameter_Init(&direction, 0.5, 0, 1.2, 0.001, 0.006, 0.1); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
-    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0);    // 一般固定速度P
+    PID_Parameter_Init(&direction, 0, 0, 0, 0, 0, 0);
+    // PID_Parameter_Init(&direction, 0.45, 0, 2, 0.001, 0.006, 0.1); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
+    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0); // 一般固定速度P
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0, 0, 0, 0.0);
+    // PID_Parameter_Init(&motor_left, 27.33, 5, 0, 0, 0, 0.0); // 一般固定速度P
+    // PID_Parameter_Init(&motor_right, 30.28, 5, 0, 0, 0, 0.0);
 
     // // *使用动态P
     // PID_Parameter_Init(&direction, 0.47, 0.0, 1.2, 0.001, 0.003, 0); // 50速
@@ -46,7 +49,7 @@ void PID_Init(void)
 void PID_Process(void)
 {
     Speed_Contrl();
-    Position_Loss_Remember();
+    // Position_Loss_Remember();
 
     if (direction_pid_time_counter != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
@@ -64,10 +67,11 @@ void PID_Process(void)
 }
 
 //  丢线记忆打角
-uint8 position_loss_time_counter = 0;
 uint8 position_loss_flag = 0;
 void Position_Loss_Remember(void)
 {
+    static uint8 position_loss_time_counter = 0;
+
     if (position_loss_time_counter > 200) // 5 * 200 = 1000ms 丢线累计1s停车保护
     {
         speed.target = 0;
@@ -96,7 +100,7 @@ void Direction_PID(void)
 
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
     direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
-    direction_output += position_delta_error * direction.KF; // 合并前馈量
+    // direction_output += position_delta_error * direction.KF; // 合并前馈量
     position_last = position;
 
     speed.target_left = speed.target - direction_output;
@@ -147,36 +151,6 @@ void Speed_Contrl(void)
     // }
 }
 
-// // *************************************并级PID
-
-// // 转向 PD 二次项 PD
-// void Direction_PID(void)
-// {
-//     direction_output = position * direction.KP + (position - position_last) * direction.KD;
-//     // + abs(position) * position * direction.KP_2 + gyro_z_filtered * direction.KD_2; //加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
-//     position_last = position;
-// }
-
-// // 左轮内环 PI
-// void Left_Speed_PID(void)
-// {
-//     motor_left_error = (int16)(speed.target - encoder_left.encoder_now);
-//     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
-//     motor_left_last_error = motor_left_error;
-
-//     motor_left_pwm -= direction_output; // 融合方向控制
-// }
-
-// // 右轮内环 PI
-// void Right_Speed_PID(void)
-// {
-//     motor_right_error = (int16)(speed.target - encoder_right.encoder_now);
-//     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_right.KI;
-//     motor_right_last_error = motor_right_error;
-
-//     motor_right_pwm += direction_output; // 融合方向控制
-// }
-
 /**
  * 动态调整增量PI控制的P参数的函数,计算出的P为理论上最优激活灵敏度最大值
  * 本函数用于根据编码器增量实现对P参数的动态调整
@@ -200,17 +174,17 @@ float Increment_PI_Dynamic_P_MAX(int16 target_speed_encoder, int16 encoder_now)
 
 // *********************************************模糊PID
 
-// 定义模糊集合
-#define NB -3 // Negative Big
-#define NM -2 // Negative Medium
-#define NS -1 // Negative Small
-#define Z 0   // Zero
-#define PS 1  // Positive Small
-#define PM 2  // Positive Medium
-#define PB 3  // Positive Big
+/* 定义模糊子集 */
+#define NB 0 // Negative Big
+#define NM 1 // Negative Medium
+#define NS 2 // Negative Small
+#define ZO 3 // Zero
+#define PS 4 // Positive Small
+#define PM 5 // Positive Medium
+#define PB 6 // Positive Big
 
 // 模糊化函数，将偏差和偏差变化率转换为模糊集合
-int Fuzzify(float value)
+uint8 Fuzzify(float value)
 {
     if (value <= -75)
         return NB;
@@ -219,7 +193,7 @@ int Fuzzify(float value)
     else if (value <= -25)
         return NS;
     else if (value <= 25)
-        return Z;
+        return ZO;
     else if (value <= 50)
         return PS;
     else if (value <= 75)
@@ -228,124 +202,37 @@ int Fuzzify(float value)
         return PB;
 }
 
-// 模糊规则库
-int Fuzzy_Rule(int error, int delta_error)
+// 模糊规则表
+uint8 fuzzy_rule_table[7][7] = {
+    // NB  NM  NS   ZO  PS  PM  PB
+    {PB, PB, PB, PB, PM, ZO, ZO}, // NB
+    {PB, PB, PB, PB, PM, ZO, ZO}, // NM
+    {PB, PM, PM, PS, ZO, NS, NM}, // NS
+    {PM, PM, PS, ZO, NM, NM, NM}, //  ZO
+    {PS, PS, ZO, NM, NM, NB, PB}, // PS
+    {ZO, ZO, ZO, NM, NB, NB, PB}, // PM
+    {ZO, NS, NB, NB, NB, NB, NB}  // PB
+};
+
+// 使用模糊规则表解模糊
+uint8 Fuzzy_Rule(int error, int delta_error)
 {
-    if (error == NB && delta_error == NB)
-        return PB;
-    else if (error == NB && delta_error == NM)
-        return PB;
-    else if (error == NB && delta_error == NS)
-        return PM;
-    else if (error == NB && delta_error == Z)
-        return PM;
-    else if (error == NB && delta_error == PS)
-        return PS;
-    else if (error == NB && delta_error == PM)
-        return Z;
-    else if (error == NB && delta_error == PB)
-        return Z;
+    // 确保错误类型和变化类型在有效范围内
+    if (error < NB || error > PB || delta_error < NB || delta_error > PB)
+    {
+        return ZO; // 默认返回值设为Z，在异常情况下
+    }
 
-    else if (error == NM && delta_error == NB)
-        return PB;
-    else if (error == NM && delta_error == NM)
-        return PM;
-    else if (error == NM && delta_error == NS)
-        return PM;
-    else if (error == NM && delta_error == Z)
-        return PS;
-    else if (error == NM && delta_error == PS)
-        return Z;
-    else if (error == NM && delta_error == PM)
-        return Z;
-    else if (error == NM && delta_error == PB)
-        return NS;
-
-    else if (error == NS && delta_error == NB)
-        return PM;
-    else if (error == NS && delta_error == NM)
-        return PM;
-    else if (error == NS && delta_error == NS)
-        return PS;
-    else if (error == NS && delta_error == Z)
-        return Z;
-    else if (error == NS && delta_error == PS)
-        return Z;
-    else if (error == NS && delta_error == PM)
-        return NS;
-    else if (error == NS && delta_error == PB)
-        return NM;
-
-    else if (error == Z && delta_error == NB)
-        return PM;
-    else if (error == Z && delta_error == NM)
-        return PS;
-    else if (error == Z && delta_error == NS)
-        return Z;
-    else if (error == Z && delta_error == Z)
-        return Z;
-    else if (error == Z && delta_error == PS)
-        return Z;
-    else if (error == Z && delta_error == PM)
-        return NS;
-    else if (error == Z && delta_error == PB)
-        return NM;
-
-    else if (error == PS && delta_error == NB)
-        return PS;
-    else if (error == PS && delta_error == NM)
-        return Z;
-    else if (error == PS && delta_error == NS)
-        return Z;
-    else if (error == PS && delta_error == Z)
-        return NS;
-    else if (error == PS && delta_error == PS)
-        return NM;
-    else if (error == PS && delta_error == PM)
-        return NM;
-    else if (error == PS && delta_error == PB)
-        return NB;
-
-    else if (error == PM && delta_error == NB)
-        return Z;
-    else if (error == PM && delta_error == NM)
-        return NS;
-    else if (error == PM && delta_error == NS)
-        return NM;
-    else if (error == PM && delta_error == Z)
-        return NM;
-    else if (error == PM && delta_error == PS)
-        return NB;
-    else if (error == PM && delta_error == PM)
-        return NB;
-    else if (error == PM && delta_error == PB)
-        return NB;
-
-    else if (error == PB && delta_error == NB)
-        return NS;
-    else if (error == PB && delta_error == NM)
-        return NM;
-    else if (error == PB && delta_error == NS)
-        return NM;
-    else if (error == PB && delta_error == Z)
-        return NB;
-    else if (error == PB && delta_error == PS)
-        return NB;
-    else if (error == PB && delta_error == PM)
-        return NB;
-    else if (error == PB && delta_error == PB)
-        return NB;
-
-    return Z;
+    return fuzzy_rule_table[error][delta_error];
 }
 
 // 模糊 PID 控制器
 void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, float *kp2, float *kd2)
 {
-    int fuzzy_error = Fuzzify(error);             // 模糊化误差
-    int fuzzy_delta_error = Fuzzify(delta_error); // 模糊化误差变化率
+    int16 fuzzy_error = Fuzzify(error);             // 模糊化误差
+    int16 fuzzy_delta_error = Fuzzify(delta_error); // 模糊化误差变化率
 
-    int fuzzy_output = Fuzzy_Rule(fuzzy_error, fuzzy_delta_error);
+    uint8 fuzzy_output = Fuzzy_Rule(fuzzy_error, fuzzy_delta_error);
 
     if (speed.normal <= 70)
     {
@@ -373,7 +260,7 @@ void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, flo
             *kp2 = 0.001;
             *kd2 = 0.005;
             break;
-        case Z:
+        case ZO:
             *kp = 0.42;
             *kd = 1.2;
             *kp2 = 0.001;
@@ -390,28 +277,28 @@ void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, flo
         case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
             *kp = 0.50;
             *kd = 1.2;
-            *kp2 = 0.002;
-            *kd2 = 0.002;
+            *kp2 = 0.001;
+            *kd2 = 0.001;
             break;
         case NM:
         case PM:
             *kp = 0.47;
             *kd = 1.2;
-            *kp2 = 0.0015;
+            *kp2 = 0.001;
             *kd2 = 0.003;
             break;
         case NS:
         case PS:
-            *kp = 0.45;
+            *kp = 0.43;
             *kd = 1.2;
             *kp2 = 0.001;
-            *kd2 = 0.005;
+            *kd2 = 0.003;
             break;
-        case Z:
-            *kp = 0.42;
+        case ZO:
+            *kp = 0.40;
             *kd = 1.2;
             *kp2 = 0.001;
-            *kd2 = 0.006;
+            *kd2 = 0.003;
             break;
         }
     }

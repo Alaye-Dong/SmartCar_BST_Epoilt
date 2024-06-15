@@ -76,7 +76,7 @@ void Insertion_Sort(int16 array[], uint8 size)
 /**
  * @description: 低通滤波
  * @note Y(n)=αX(n) + (1-α)Y(n-1) 式中：α=滤波系数；X(n)=本次采样值；Y(n-1)=上次滤波输出值；Y(n)=本次滤波输出值。
- * @param {float} fliter_factor 滤波系数
+ * @param {float} fliter_factor 滤波系数 滤波系数越大，则更快达到目标开度，灵敏度越高，但曲线平滑性较差，滤波结果越不稳定
  * @param {int16} last_value
  * @param {int16} new_value
  * @return {*}

@@ -33,7 +33,9 @@
 			"seekfree_tsl1401.h": "c",
 			"eeprom.h": "c",
 			"seekfree_function.h": "c",
-			"obstacle.h": "c"
+			"obstacle.h": "c",
+			"math.h": "c",
+			"MATH.H": "cpp"
 		},
 		"files.autoSave": "off"
 	}
