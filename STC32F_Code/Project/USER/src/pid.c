@@ -11,7 +11,7 @@ int16 motor_left_last_error = 0, motor_right_last_error = 0;
 
 uint8 direction_pid_time_counter = 0; // 方向环控制周期标志位 （20ms
 
-SpeedTypeDef speed = {80, 0, 0.004,
+SpeedTypeDef speed = {80, 0, 0.000,
                       0, 0, 0};
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KF)
@@ -27,12 +27,12 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 // TODO 调节合适的前馈系数
 void PIDType_Init(void)
 {
-    PID_Parameter_Init(&direction, 0, 0, 0, 0, 0, 0);
-    // PID_Parameter_Init(&direction, 0.45, 0, 2, 0.001, 0.006, 0.1); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
-    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0); // 一般固定速度P
+    //  PID_Parameter_Init(&direction, 0, 0, 0, 0, 0, 0);
+    //  PID_Parameter_Init(&motor_left, 0, 0, 0, 0, 0, 0);
+    //  PID_Parameter_Init(&motor_right, 0, 0, 0, 0, 0, 0);
+    PID_Parameter_Init(&direction, 0.5, 0, 2, 0.0015, 0.002, 0.1); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
+    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0);   // 一般固定速度P
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0, 0, 0, 0.0);
-    // PID_Parameter_Init(&motor_left, 27.33, 5, 0, 0, 0, 0.0); // 一般固定速度P
-    // PID_Parameter_Init(&motor_right, 30.28, 5, 0, 0, 0, 0.0);
 
     // // *使用动态P
     // PID_Parameter_Init(&direction, 0.47, 0.0, 1.2, 0.001, 0.003, 0); // 50速
@@ -49,7 +49,7 @@ void PID_Init(void)
 void PID_Process(void)
 {
     Speed_Contrl();
-    // Position_Loss_Remember();
+    Position_Loss_Remember();
 
     if (direction_pid_time_counter != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
@@ -72,23 +72,23 @@ void Position_Loss_Remember(void)
 {
     static uint8 position_loss_time_counter = 0;
 
-    if (position_loss_time_counter > 200) // 5 * 200 = 1000ms 丢线累计1s停车保护
-    {
-        speed.target = 0;
-    }
+    // if (position_loss_time_counter > 200) // 5 * 200 = 1000ms 丢线累计1s停车保护
+    // {
+    //     speed.target = 0;
+    // }
 
-    if ((inductor[LEFT_H] <= 5 && inductor[RIGHT_H] <= 5)) // 短时间丢线，记忆打角
+    if ((inductor[LEFT_H] <= 0 && inductor[RIGHT_H] <= 0) && (inductor[LEFT_V] + inductor[RIGHT_V] <= 4)) // 短时间丢线，记忆打角
     {
         position = position_last;
-        if (position_loss_time_counter < 255) // 防止溢出
-        {
-            position_loss_time_counter++;
-        }
+        // if (position_loss_time_counter < 255) // 防止溢出
+        // {
+        //     position_loss_time_counter++;
+        // }
     }
-    else // 寻得线，丢线累计时间标志位清零
-    {
-        position_loss_time_counter = 0;
-    }
+    // else // 寻得线，丢线累计时间标志位清零
+    // {
+    //     position_loss_time_counter = 0;
+    // }
 }
 
 // *******************************串级PID 偏差->>转向环->>速度环->>PWM
@@ -174,6 +174,7 @@ float Increment_PI_Dynamic_P_MAX(int16 target_speed_encoder, int16 encoder_now)
 
 // *********************************************模糊PID
 
+#define FUZZY_SET_NUM 7
 /* 定义模糊子集 */
 #define NB 0 // Negative Big
 #define NM 1 // Negative Medium
@@ -183,9 +184,16 @@ float Increment_PI_Dynamic_P_MAX(int16 target_speed_encoder, int16 encoder_now)
 #define PM 5 // Positive Medium
 #define PB 6 // Positive Big
 
+// 模糊论域
+const int8 fuzzy_domain[FUZZY_SET_NUM] = {-75, -50, -25, 0, 25, 50, 75};
+
+// 最大隶属度法的隶属值匹配表
+const int8 fuzzy_domain_maximum_membership_match[FUZZY_SET_NUM] = {(-75 + -50) / 2, (-50 + -25) / 2, (-25 + 0) / 2, (0 + 25) / 2, (25 + 50) / 2, (50 + 75) / 2, (50 + 75) / 2};
+
 // 模糊化函数，将偏差和偏差变化率转换为模糊集合
 uint8 Fuzzify(float value)
 {
+    // 直接映射到最接近的模糊子集
     if (value <= -75)
         return NB;
     else if (value <= -50)
@@ -200,30 +208,45 @@ uint8 Fuzzify(float value)
         return PM;
     else
         return PB;
+
+    // 隶属度算法
+    // uint8 i;
+    // for (i = 0; i < FUZZY_SET_NUM - 1; i++)
+    // {
+    //     if (value <= fuzzy_domain_maximum_membership_match[i])
+    //     {
+    //         return i;
+    //     }
+    // }
+    // if (value > fuzzy_domain_maximum_membership_match[PB])
+    // {
+    //     return PB;
+    // }
+    // return ZO;
 }
 
 // 模糊规则表
-uint8 fuzzy_rule_table[7][7] = {
-    // NB  NM  NS   ZO  PS  PM  PB
-    {PB, PB, PB, PB, PM, ZO, ZO}, // NB
-    {PB, PB, PB, PB, PM, ZO, ZO}, // NM
-    {PB, PM, PM, PS, ZO, NS, NM}, // NS
-    {PM, PM, PS, ZO, NM, NM, NM}, //  ZO
-    {PS, PS, ZO, NM, NM, NB, PB}, // PS
-    {ZO, ZO, ZO, NM, NB, NB, PB}, // PM
-    {ZO, NS, NB, NB, NB, NB, NB}  // PB
+uint8 fuzzy_rule_table[FUZZY_SET_NUM][FUZZY_SET_NUM] = {
+    // NB NM NS  ZO  PS  PM  PB
+    {NB, NB, NM, NM, NS, ZO, ZO}, // NB
+    {NB, NM, NM, NS, NS, ZO, PS}, // NM
+    {NM, NM, NS, NS, ZO, PS, PS}, // NS
+    {NM, NS, NS, ZO, PS, PS, PM}, //  ZO
+    {NS, NS, ZO, PS, PS, PM, PM}, // PS
+    {NS, ZO, PS, PS, PM, PM, PB}, // PM
+    {ZO, ZO, PS, PM, PM, PB, PB}  // PB
 };
 
 // 使用模糊规则表解模糊
-uint8 Fuzzy_Rule(int error, int delta_error)
+uint8 Fuzzy_Rule(int fuzzy_error, int fuzzy_delta_error)
 {
     // 确保错误类型和变化类型在有效范围内
-    if (error < NB || error > PB || delta_error < NB || delta_error > PB)
+    if (fuzzy_error < NB || fuzzy_error > PB || fuzzy_delta_error < NB || fuzzy_delta_error > PB)
     {
         return ZO; // 默认返回值设为Z，在异常情况下
     }
 
-    return fuzzy_rule_table[error][delta_error];
+    return fuzzy_rule_table[fuzzy_error][fuzzy_delta_error];
 }
 
 // 模糊 PID 控制器
@@ -234,72 +257,104 @@ void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, flo
 
     uint8 fuzzy_output = Fuzzy_Rule(fuzzy_error, fuzzy_delta_error);
 
-    if (speed.normal <= 70)
+    // 根据模糊输出调整 PID 参数
+    switch (fuzzy_output)
     {
-        // 根据模糊输出调整 PID 参数
-        switch (fuzzy_output)
-        {
-        case NB:
-        case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
-            *kp = 0.52;
-            *kd = 1.25;
-            *kp2 = 0.002;
-            *kd2 = 0.002;
-            break;
-        case NM:
-        case PM:
-            *kp = 0.48;
-            *kd = 1.2;
-            *kp2 = 0.0015;
-            *kd2 = 0.003;
-            break;
-        case NS:
-        case PS:
-            *kp = 0.45;
-            *kd = 1.2;
-            *kp2 = 0.001;
-            *kd2 = 0.005;
-            break;
-        case ZO:
-            *kp = 0.42;
-            *kd = 1.2;
-            *kp2 = 0.001;
-            *kd2 = 0.006;
-            break;
-        }
-    }
-    else if (speed.normal <= 80)
-    {
-        // 根据模糊输出调整 PID 参数
-        switch (fuzzy_output)
-        {
-        case NB:
-        case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
-            *kp = 0.50;
-            *kd = 1.2;
-            *kp2 = 0.001;
-            *kd2 = 0.001;
-            break;
-        case NM:
-        case PM:
-            *kp = 0.47;
-            *kd = 1.2;
-            *kp2 = 0.001;
-            *kd2 = 0.003;
-            break;
-        case NS:
-        case PS:
-            *kp = 0.43;
-            *kd = 1.2;
-            *kp2 = 0.001;
-            *kd2 = 0.003;
-            break;
-        case ZO:
-            *kp = 0.40;
-            *kd = 1.2;
-            *kp2 = 0.001;
-            *kd2 = 0.003;
-            break;
-        }
+    case NB:
+    case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
+        *kp = 0.80;
+        *kd = 1.2;
+        *kp2 = 0.002;
+        *kd2 = 0.000;
+        break;
+    case NM:
+    case PM:
+        *kp = 0.6;
+        *kd = 2;
+        *kp2 = 0.0015;
+        *kd2 = 0.0005;
+        break;
+    case NS:
+    case PS:
+        *kp = 0.43;
+        *kd = 1.2;
+        *kp2 = 0.001;
+        *kd2 = 0.001;
+        break;
+    case ZO:
+        *kp = 0.40;
+        *kd = 1.2;
+        *kp2 = 0.001;
+        *kd2 = 0.001;
+        break;
     }
 }
+
+/*
+TODO 隶属度法解模糊
+*/
+// // 定义隶属度函数
+// float Membership_Function(float x, float x0, float x1, float x2, float x3)
+// {
+//     if (x <= x0 || x >= x3)
+//         return 0.0;
+//     else if (x <= x1)
+//         return (x - x0) / (x1 - x0);
+//     else if (x <= x2)
+//         return 1.0;
+//     else
+//         return (x3 - x) / (x3 - x2);
+// }
+
+// // 计算误差和误差变化率的隶属度
+// void Calculate_Membership(float value, float membership[FUZZY_SET_NUM])
+// {
+//     uint8 i;
+//     const float parameters[FUZZY_SET_NUM][4] = {
+//         {-100, -100, -75, -50}, // NB
+//         {-75, -50, -50, -25},   // NM
+//         {-50, -25, -25, 0},     // NS
+//         {-25, 0, 0, 25},        // ZO
+//         {0, 25, 25, 50},        // PS
+//         {25, 50, 50, 75},       // PM
+//         {50, 75, 100, 100}      // PB
+//     };
+
+//     // 清空隶属度数组
+//     for (i = 0; i < FUZZY_SET_NUM; i++)
+//     {
+//         membership[i] = 0.0;
+//     }
+
+//     // 确定需要计算的隶属度区间
+//     for (i = 0; i < FUZZY_SET_NUM; i++)
+//     {
+//         if (value >= parameters[i][0] && value <= parameters[i][3])
+//         {
+//             membership[i] = Membership_Function(value, parameters[i][0], parameters[i][1], parameters[i][2], parameters[i][3]);
+//         }
+//     }
+// }
+
+// // 模糊推理和去模糊化（最大隶属度法）
+// float Fuzzy_Inference(float e_membership[FUZZY_SET_NUM], float ec_membership[FUZZY_SET_NUM])
+// {
+//     uint8 i;
+//     float max_membership = 0.0;
+//     float output = 0.0;
+
+//     for (i = 0; i < FUZZY_SET_NUM; i++)
+//     {
+//         for (int j = 0; j < FUZZY_SET_NUM; j++)
+//         {
+//             float membership = e_membership[i] * ec_membership[j];
+//             if (membership > max_membership)
+//             {
+//                 max_membership = membership;
+//                 output = fuzzy_rule_table[i][j];
+//             }
+//         }
+//     }
+//     return output;
+// }
+// /* 隶属度法解模糊 END*/

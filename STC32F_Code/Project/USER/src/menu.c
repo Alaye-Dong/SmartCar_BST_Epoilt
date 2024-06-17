@@ -451,28 +451,32 @@ void Menu_THREE_Display(uint8 control_line)
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "dPD2");
     lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, direction.KD_2, 2, 3);
 
-    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, direction.KF, 2, 3);
-    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i++, "dF");
+    // lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, direction.KF, 2, 3);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i++, "dF");
 
     lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, motor_left_pwm, 4);
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "PWM");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, motor_right_pwm, 4);
 
-    // lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KP, 2, 3);
-    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MP");
-    // lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KP, 2, 3);
+    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KP, 2, 3);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MP");
+    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KP, 2, 3);
 
-    // lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KI, 2, 3);
-    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MI");
-    // lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KI, 2, 3);
+    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KI, 2, 3);
+    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MI");
+    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KI, 2, 3);
 
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, speed.target_left, 4);
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "MTar");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, speed.target_right, 4);
+    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, speed.target_left, 4);
+    // lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "MTar");
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, speed.target_right, 4);
 
-    lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KF, 2, 3);
-    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MF");
-    lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KF, 2, 3);
+    // lcd_showfloat(1 * CHAR_SCREEN_WIDTH, i, motor_left.KF, 2, 3);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MF");
+    // lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KF, 2, 3);
+
+    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, positon_vector_modulus, 3);
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "VeDi");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, position_difference_weighting, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
@@ -531,6 +535,10 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "Rc");
     lcd_showint32(8 * CHAR_SCREEN_WIDTH, i, round_flag, 1);
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, round_right_proximity_coeff, 4);
+
+    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, positon_vector_modulus, 3);
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "VeDi");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, position_difference_weighting, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }

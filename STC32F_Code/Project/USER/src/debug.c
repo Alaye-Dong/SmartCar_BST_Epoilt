@@ -13,7 +13,7 @@ void Wireless_Debug_Init(void)
 
     // 设置函数指针 Debug_Parameter_Oscilloscope_Send()
     seekfree_assistant_transfer = seekfree_assistant_transfer_callback;
-    // 需要传输通道数
+    // 需要传输虚拟示波器通道数
     seekfree_assistant_oscilloscope_data.channel_num = 8;
 
     seekfree_assistant_init();
@@ -34,23 +34,23 @@ void Wireless_Seekfree_Assistant_Debug(void)
         {
             seekfree_assistant_parameter_update_flag[i] = 0;
 
-            // 发送通道信息
-            sprintf(send_str, "\r\nreceive data channel : %d  ", i);
-            wireless_uart_send_buff((uint8 *)send_str, strlen(send_str));
+            // // 发送通道信息
+            // sprintf(send_str, "\r\nreceive data channel : %d  ", i);
+            // wireless_uart_send_buff((uint8 *)send_str, strlen(send_str));
 
-            // 清空之前存储的字符串
-            memset(send_str, 0, strlen(send_str));
+            // // 清空之前存储的字符串
+            // memset(send_str, 0, strlen(send_str));
 
             // 将接收到的数据赋值给对应变量
             Debug_Parameter_Assignment(i);
 
-            // 发送接收到的数据
-            func_float_to_str(send_str, seekfree_assistant_parameter[i], 2);
-            wireless_uart_send_buff("data : ", strlen("data : "));
-            wireless_uart_send_buff((uint8 *)send_str, strlen(send_str));
+            // // 发送接收到的数据
+            // func_float_to_str(send_str, seekfree_assistant_parameter[i], 2);
+            // wireless_uart_send_buff("data : ", strlen("data : "));
+            // wireless_uart_send_buff((uint8 *)send_str, strlen(send_str));
 
-            // 清空之前存储的字符串
-            memset(send_str, 0, strlen(send_str));
+            // // 清空之前存储的字符串
+            // memset(send_str, 0, strlen(send_str));
         }
     }
 }
@@ -150,15 +150,42 @@ uint32 seekfree_assistant_transfer_callback(const uint8 *buff, uint32 length)
  */
 void Debug_Parameter_Oscilloscope_Send(void)
 {
-    // 设置数据
+    // ! 设置需要传出的数据，最多传输0~7共8个通道的数据
+
+    // 0
     seekfree_assistant_oscilloscope_data.dat[0] = encoder_left.encoder_filtered;
+    // 1
     seekfree_assistant_oscilloscope_data.dat[1] = encoder_right.encoder_filtered;
-    seekfree_assistant_oscilloscope_data.dat[2] = direction_output;
-    seekfree_assistant_oscilloscope_data.dat[3] = inductor[LEFT_V];
-    seekfree_assistant_oscilloscope_data.dat[4] = inductor[RIGHT_V];
-    seekfree_assistant_oscilloscope_data.dat[5] = inductor[LEFT_H];
-    seekfree_assistant_oscilloscope_data.dat[6] = inductor[RIGHT_H];
-    seekfree_assistant_oscilloscope_data.dat[7] = direction.KP;
+    // 2
+    seekfree_assistant_oscilloscope_data.dat[2] = speed.target_left; // direction_output;
+    // 3
+    seekfree_assistant_oscilloscope_data.dat[3] = speed.target_right; // direction.KP;
+    // 4
+    seekfree_assistant_oscilloscope_data.dat[4] = direction.KP;
+    // 5
+    seekfree_assistant_oscilloscope_data.dat[5] = direction_output;
+    // 6
+    seekfree_assistant_oscilloscope_data.dat[6] = position;
+    // 7
+    seekfree_assistant_oscilloscope_data.dat[7] = motor_right.KI;
+
+    // // 4
+    // seekfree_assistant_oscilloscope_data.dat[4] = motor_left.KP;
+    // // 5
+    // seekfree_assistant_oscilloscope_data.dat[5] = motor_left.KI;
+    // // 6
+    // seekfree_assistant_oscilloscope_data.dat[6] = motor_right.KP;
+    // // 7
+    // seekfree_assistant_oscilloscope_data.dat[7] = motor_right.KI;
+
+    // // 4
+    // seekfree_assistant_oscilloscope_data.dat[4] = inductor[LEFT_V];
+    // // 5
+    // seekfree_assistant_oscilloscope_data.dat[5] = inductor[RIGHT_V];
+    // // 6
+    // seekfree_assistant_oscilloscope_data.dat[6] = inductor[LEFT_H];
+    // // 7
+    // seekfree_assistant_oscilloscope_data.dat[7] = inductor[RIGHT_H];
 
     // 通过无线转串口发送虚拟示波器数据
     seekfree_assistant_oscilloscope_send(&seekfree_assistant_oscilloscope_data);
