@@ -11,7 +11,7 @@ int16 motor_left_last_error = 0, motor_right_last_error = 0;
 
 uint8 direction_pid_time_counter = 0; // 方向环控制周期标志位 （20ms
 
-SpeedTypeDef speed = {80, 0, 0.000,
+SpeedTypeDef speed = {90, 0, 0.000,
                       0, 0, 0};
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KF)
@@ -30,7 +30,7 @@ void PIDType_Init(void)
     //  PID_Parameter_Init(&direction, 0, 0, 0, 0, 0, 0);
     //  PID_Parameter_Init(&motor_left, 0, 0, 0, 0, 0, 0);
     //  PID_Parameter_Init(&motor_right, 0, 0, 0, 0, 0, 0);
-    PID_Parameter_Init(&direction, 0.5, 0, 2, 0.0015, 0.002, 0.1); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
+    PID_Parameter_Init(&direction, 0.5, 0, 2, 0.0015, 0.002, 5.6); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
     PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0);   // 一般固定速度P
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0, 0, 0, 0.0);
 
@@ -100,7 +100,7 @@ void Direction_PID(void)
 
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
     direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
-    // direction_output += position_delta_error * direction.KF; // 合并前馈量
+    direction_output += position_delta_error * direction.KF; // 合并前馈量
     position_last = position;
 
     speed.target_left = speed.target - direction_output;

@@ -105,7 +105,7 @@ void Debug_Parameter_Assignment(uint8 i)
         direction.KP = seekfree_assistant_parameter[i];
         break;
     case 5:
-        direction.KD = seekfree_assistant_parameter[i];
+        direction.KF = seekfree_assistant_parameter[i];
         break;
     case 6:
         motor_right.KI = seekfree_assistant_parameter[i];
@@ -165,9 +165,9 @@ void Debug_Parameter_Oscilloscope_Send(void)
     // 5
     seekfree_assistant_oscilloscope_data.dat[5] = direction_output;
     // 6
-    seekfree_assistant_oscilloscope_data.dat[6] = position;
+    seekfree_assistant_oscilloscope_data.dat[6] = direction.KF;
     // 7
-    seekfree_assistant_oscilloscope_data.dat[7] = motor_right.KI;
+    seekfree_assistant_oscilloscope_data.dat[7] = position;
 
     // // 4
     // seekfree_assistant_oscilloscope_data.dat[4] = motor_left.KP;
