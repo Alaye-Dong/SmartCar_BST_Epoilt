@@ -30,14 +30,9 @@ void PIDType_Init(void)
     //  PID_Parameter_Init(&direction, 0, 0, 0, 0, 0, 0);
     //  PID_Parameter_Init(&motor_left, 0, 0, 0, 0, 0, 0);
     //  PID_Parameter_Init(&motor_right, 0, 0, 0, 0, 0, 0);
-    PID_Parameter_Init(&direction, 0.5, 0, 2, 0.0015, 0.002, 5.6); // 70速 // * 如果使用方向环模糊PID，此处参数设置将无效
-    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0);   // 一般固定速度P
+    PID_Parameter_Init(&direction, 0.5, 0, 2, 0.0015, 0.002, 5.6); // * 如果使用方向环模糊PID，此处参数设置将无效
+    PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0);
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0, 0, 0, 0.0);
-
-    // // *使用动态P
-    // PID_Parameter_Init(&direction, 0.47, 0.0, 1.2, 0.001, 0.003, 0); // 50速
-    // PID_Parameter_Init(&motor_left, 0, 2.737, 0.0, 0.0, 0.0, 0); // 初始为0，使用动态P
-    // PID_Parameter_Init(&motor_right, 0, 3.818, 0.0, 0.0, 0.0, 0);
 }
 
 void PID_Init(void)
@@ -100,7 +95,7 @@ void Direction_PID(void)
 
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
     direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
-    direction_output += position_delta_error * direction.KF; // 合并前馈量
+    // direction_output += position_delta_error * direction.KF; // 合并前馈量
     position_last = position;
 
     speed.target_left = speed.target - direction_output;
@@ -263,27 +258,27 @@ void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, flo
     case NB:
     case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
         *kp = 0.80;
-        *kd = 1.2;
+        *kd = 7.6;
         *kp2 = 0.002;
         *kd2 = 0.000;
         break;
     case NM:
     case PM:
         *kp = 0.6;
-        *kd = 2;
+        *kd = 7.6;
         *kp2 = 0.0015;
         *kd2 = 0.0005;
         break;
     case NS:
     case PS:
         *kp = 0.43;
-        *kd = 1.2;
+        *kd = 6.8;
         *kp2 = 0.001;
         *kd2 = 0.001;
         break;
     case ZO:
         *kp = 0.40;
-        *kd = 1.2;
+        *kd = 6.8;
         *kp2 = 0.001;
         *kd2 = 0.001;
         break;
