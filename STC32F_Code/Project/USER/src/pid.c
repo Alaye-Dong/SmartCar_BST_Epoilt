@@ -30,7 +30,7 @@ void PIDType_Init(void)
     //  PID_Parameter_Init(&direction, 0, 0, 0, 0, 0, 0);
     //  PID_Parameter_Init(&motor_left, 0, 0, 0, 0, 0, 0);
     //  PID_Parameter_Init(&motor_right, 0, 0, 0, 0, 0, 0);
-    PID_Parameter_Init(&direction, 0.5, 0, 2, 0.0015, 0.002, 5.6); // * 如果使用方向环模糊PID，此处参数设置将无效
+    PID_Parameter_Init(&direction, 0.5, 0, 6.8, 0.0015, 0.002, 5.6); // * 如果使用方向环模糊PID，此处参数设置将无效
     PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0);
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0, 0, 0, 0.0);
 }
@@ -44,7 +44,7 @@ void PID_Init(void)
 void PID_Process(void)
 {
     Speed_Contrl();
-    Position_Loss_Remember();
+    Position_Loss_Remember_Protect(1);
 
     if (direction_pid_time_counter != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
@@ -61,29 +61,30 @@ void PID_Process(void)
     Right_Speed_PID();
 }
 
-//  丢线记忆打角
-uint8 position_loss_flag = 0;
-void Position_Loss_Remember(void)
+/**
+ * @description: 丢线记忆打角及丢线停车
+ * @param {uint8} protect_mode 为1时开启丢线停车保护 0时关闭
+ * @return {*}
+ */
+void Position_Loss_Remember_Protect(uint8 protect_mode)
 {
-    static uint8 position_loss_time_counter = 0;
-
-    // if (position_loss_time_counter > 200) // 5 * 200 = 1000ms 丢线累计1s停车保护
-    // {
-    //     speed.target = 0;
-    // }
+    static uint16 position_loss_timer = 0;
 
     if ((inductor[LEFT_H] <= 0 && inductor[RIGHT_H] <= 0) && (inductor[LEFT_V] + inductor[RIGHT_V] <= 4)) // 短时间丢线，记忆打角
     {
         position = position_last;
-        // if (position_loss_time_counter < 255) // 防止溢出
-        // {
-        //     position_loss_time_counter++;
-        // }
+        position_loss_timer++;
     }
-    // else // 寻得线，丢线累计时间标志位清零
-    // {
-    //     position_loss_time_counter = 0;
-    // }
+    else // 寻得线，丢线累计时间标志位清零
+    {
+        position_loss_timer = 0;
+    }
+
+    if (protect_mode == 1 && position_loss_timer > 400) // 丢线累计 400 * 5ms = 2s 停车保护
+    {
+        position = 0;
+        speed.target = 0; // 丢线停车保护
+    }
 }
 
 // *******************************串级PID 偏差->>转向环->>速度环->>PWM

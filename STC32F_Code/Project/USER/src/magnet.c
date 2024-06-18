@@ -90,11 +90,6 @@ void Inductor_Normal(void)
     static int16 inductor_normal_value[INDUCTORS] = {0};
     // 归一化公式 (x - min) / (max - min) * 100
 
-    // inductor_normal_value[LEFT_V] = (float)(ADC_filtered_value[LEFT_V] - 10.0) / (3700.0 - 10.0) * 100.0;
-    // inductor_normal_value[RIGHT_V] = (float)(ADC_filtered_value[RIGHT_V] - 10.0) / (3700.0 - 10.0) * 100.0;
-    // inductor_normal_value[LEFT_H] = (float)(ADC_filtered_value[LEFT_H] - 10.0) / (2000.0 - 10.0) * 100.0;
-    // inductor_normal_value[RIGHT_H] = (float)(ADC_filtered_value[RIGHT_H] - 10.0) / (2000.0 - 10.0) * 100.0;
-
     inductor_normal_value[LEFT_V] = (float)(ADC_filtered_value[LEFT_V] - LEFT_V_MIN) / (LEFT_V_MAX - LEFT_V_MIN) * 100;
     inductor_normal_value[RIGHT_V] = (float)(ADC_filtered_value[RIGHT_V] - RIGHT_V_MIN) / (RIGHT_V_MAX - RIGHT_V_MIN) * 100;
     inductor_normal_value[LEFT_H] = (float)(ADC_filtered_value[LEFT_H] - LEFT_H_MIN) / (LEFT_H_MAX - LEFT_H_MIN) * 100;
@@ -121,10 +116,10 @@ int16 position_sum = 0;
 void Position_Analyse(void)
 {
     // ! 向量模差比和算法
-    ////  使用快速平方根
+    //  使用快速平方根
     position_left = My_Sqrt(inductor[LEFT_H] * inductor[LEFT_H] + inductor[LEFT_V] * inductor[LEFT_V]);
     position_right = My_Sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] + inductor[RIGHT_V] * inductor[RIGHT_V]);
-    // 使用系统平方根
+    // //使用系统平方根
     // position_left = sqrt(inductor[LEFT_H] * inductor[LEFT_H] * INDUCTOR_H_GAIN + inductor[LEFT_V] * inductor[LEFT_V] * INDUCTOR_V_GAIN);
     // position_right = sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] * INDUCTOR_H_GAIN + inductor[RIGHT_V] * inductor[RIGHT_V] * INDUCTOR_V_GAIN);
     positon_vector_modulus = (position_left - position_right) * 100 / (position_left + position_right + 1); // 向量差比和，补1防止分母为0

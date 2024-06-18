@@ -33,7 +33,9 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
 void PIDType_Init(void);
 void PID_Init(void);
 void PID_Process(void);
-void Position_Loss_Remember(void);
+
+void Position_Loss_Remember_Protect(uint8 protect_mode);
+
 void Direction_PID(void);
 void Left_Speed_PID(void);
 void Right_Speed_PID(void);

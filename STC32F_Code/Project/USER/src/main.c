@@ -65,12 +65,12 @@ void main()
         // ! 屏幕菜单极耗性能，开启后串口刷新将只有大概5fps，不开启则为250fps
         Keystroke_Menu();
 
-        // if (element_busy_flag != 1)
-        // {
-        //     Right_Angle_Recognition();
-        //     Round_Recognition();
-        //     Obstacle_Recognition();
-        //     // Cross_Recognition();
-        // }
+        if (element_busy_flag != 1)
+        {
+            // Right_Angle_Recognition(); // * 直角通过方法已经融合进转向PID，不需要使用元素处理
+            Round_Recognition();
+            // Obstacle_Recognition();
+            // Cross_Recognition();
+        }
     }
 }
