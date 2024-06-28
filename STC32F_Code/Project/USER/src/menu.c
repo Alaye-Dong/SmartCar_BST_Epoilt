@@ -505,12 +505,12 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showint32(6 * CHAR_SCREEN_WIDTH, i, gyro_z_filtered, 4);
     lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, yaw_angle, 3, 1);
 
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_V][0], 4);
-    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_V][0], 4);
-    lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_H][0], 4);
-    lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_H][0], 4);
+    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_V][0], 4);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_V][0], 4);
+    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_H][0], 4);
+    // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_H][0], 4);
 
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor[LEFT_V], 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");

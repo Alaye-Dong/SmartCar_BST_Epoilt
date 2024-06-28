@@ -145,11 +145,12 @@ void TM4_Isr() interrupt 20
     Position_Analyse();
 
     // 元素时可以覆盖掉计算得的position
-    if (right_angle_flag != RIGHT_ANGLE_NONE)
-    {
-        Right_Angle_Turn_Process();
-    }
-    else if (round_flag != ROUND_NONE)
+    // if (right_angle_flag != RIGHT_ANGLE_NONE)
+    // {
+    //     Right_Angle_Turn_Process();
+    // }
+    // else if (round_flag != ROUND_NONE)
+    if (round_flag != ROUND_NONE)
     {
         Round_Turn_Process();
     }
@@ -157,10 +158,10 @@ void TM4_Isr() interrupt 20
     {
         Obstacle_Turn_Process();
     }
-    else if (cross_flag != CROSS_NONE)
-    {
-        Cross_Turn_Process();
-    }
+    // else if (cross_flag != CROSS_NONE)
+    // {
+    //     Cross_Turn_Process();
+    // }
 
     PID_Process();
     Motor_PWM_Write();

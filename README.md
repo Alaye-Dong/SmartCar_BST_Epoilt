@@ -95,6 +95,18 @@ int main() {
 
 [如何快速理解模糊PID---（二）_模糊pid中的论域是什么-CSDN博客](https://blog.csdn.net/m0_46451722/article/details/113769796?spm=1001.2014.3001.5502)
 
+## 前馈控制
+
+![1718733961648](image/README/1718733961648.png)
+
+![1718734478972](image/README/1718734478972.png)
+
+[【只用PID?加上前馈解决95%的问题！】](https://www.bilibili.com/video/BV19T411t7du/?share_source=copy_web&vd_source=b91af0127331bb4444b9388984a23393&t=394)
+
+[【硬核科普】PID调参番外篇 feed-forward前馈控制 让飞机预判你的预判 无人机穿越机玩家必看】](https://www.bilibili.com/video/BV1SP4y1p7Ht/?share_source=copy_web&vd_source=b91af0127331bb4444b9388984a23393&t=173)
+
+![1718734401317](image/README/1718734401317.png)
+
 ## 注意
 
 ### 编码格式或中文乱码

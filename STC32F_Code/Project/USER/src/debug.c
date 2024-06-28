@@ -153,19 +153,19 @@ void Debug_Parameter_Oscilloscope_Send(void)
     // ! 设置需要传出的数据，最多传输0~7共8个通道的数据
 
     // 0
-    seekfree_assistant_oscilloscope_data.dat[0] = encoder_left.encoder_filtered;
-    // 1
-    seekfree_assistant_oscilloscope_data.dat[1] = encoder_right.encoder_filtered;
+    seekfree_assistant_oscilloscope_data.dat[0] = inductor[LEFT_V]; // encoder_left.encoder_filtered;
+    //  1
+    seekfree_assistant_oscilloscope_data.dat[1] = inductor[RIGHT_V]; // encoder_right.encoder_filtered;
     // 2
-    seekfree_assistant_oscilloscope_data.dat[2] = speed.target_left; // direction_output;
-    // 3
-    seekfree_assistant_oscilloscope_data.dat[3] = speed.target_right; // direction.KP;
+    seekfree_assistant_oscilloscope_data.dat[2] = inductor[LEFT_H]; // speed.target_left;
+    //  3
+    seekfree_assistant_oscilloscope_data.dat[3] = inductor[RIGHT_H]; // speed.target_right;
     // 4
     seekfree_assistant_oscilloscope_data.dat[4] = direction.KP;
     // 5
-    seekfree_assistant_oscilloscope_data.dat[5] = direction_output;
+    seekfree_assistant_oscilloscope_data.dat[5] = direction.KI;
     // 6
-    seekfree_assistant_oscilloscope_data.dat[6] = direction.KF;
+    seekfree_assistant_oscilloscope_data.dat[6] = direction_output;
     // 7
     seekfree_assistant_oscilloscope_data.dat[7] = position;
 

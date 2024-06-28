@@ -24,7 +24,6 @@ void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP
     sptr->KF = KF;
 }
 
-// TODO 调节合适的前馈系数
 void PIDType_Init(void)
 {
     //  PID_Parameter_Init(&direction, 0, 0, 0, 0, 0, 0);
@@ -96,7 +95,7 @@ void Direction_PID(void)
 
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
     direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
-    // direction_output += position_delta_error * direction.KF; // 合并前馈量
+    // direction_output += (position_delta_error / (0.005 * DIRECTION_PID_PERIOD) + position)* direction.KF; // 合并前馈量
     position_last = position;
 
     speed.target_left = speed.target - direction_output;
@@ -109,7 +108,7 @@ void Left_Speed_PID(void)
     motor_left_error = (int16)(speed.target_left - encoder_left.encoder_filtered);
     // motor_left.KP = Increment_PI_Dynamic_P_MAX(speed.target_left, encoder_left.encoder_filtered); // 使用增量式动态P
     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
-    motor_left_pwm += motor_left_error * motor_left.KF; // 合并前馈量
+    // motor_left_pwm += motor_left_error * motor_left.KF; // 合并前馈量
 
     motor_left_last_error = motor_left_error;
 }
@@ -120,10 +119,12 @@ void Right_Speed_PID(void)
     motor_right_error = (int16)(speed.target_right - encoder_right.encoder_filtered);
     // motor_right.KP = Increment_PI_Dynamic_P_MAX(speed.target_right, encoder_right.encoder_filtered); // 使用增量式动态P
     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_right.KI;
-    motor_right_pwm += motor_right_error * motor_right.KF; // 合并前馈量
+    // motor_right_pwm += motor_right_error * motor_right.KF; // 合并前馈量
 
     motor_right_last_error = motor_right_error;
 }
+
+// TODO 前馈PID
 
 /* 速度控制，弯道减速 */
 uint16 straight_time_flag = 0;
