@@ -67,7 +67,7 @@
 #include "cross.h"
 #include "obstacle.h"
 
-#ifndef VSCODE_C251
+#ifndef __VSCODE_C251__
 #define INTERRUPT(x) interrupt x
 #else
 #define INTERRUPT(x)

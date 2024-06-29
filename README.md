@@ -4,6 +4,29 @@
 
 2024年江西科技学院蓝色技术工作室智能车队 折线电磁组 BST-磁驭
 
+## 注意
+
+### 编码格式或中文乱码
+
+Keil原因，使用中文注释必须使用GB2312编码，所以当查看本项目代码出现乱码时，请尝试将编码方式调整为GB2312
+
+### INTERRUPT(x) interrupt x
+
+**`<font color=Red>`如果需要移植代码，请将注意将 `INTERRUPT(x)` 改回 `interrupt x</font>`**
+
+本项目使用到了 `Keil uVision Assistant` 插件进行开发，但是C251项目中 `isr.c` 中的 `interrupt x`（x代表一个数字）会导致VSCode语法分析做出不应该有的报错，所以通过宏定义进行修复，具体请参照[关于 C51/C251 的中断提示问题](https://github.com/jacksonjim/keil-assistant/blob/master/README.md)。本项目已经将所有 `interrupt x` 改为了 `INTERRUPT(x)` 并在公共头文件中加入了用于修复的宏定义。
+
+### 无用设备驱动文件
+
+为节省单片机存储空间，没有使用到的设备驱动文件已经从Keil项目中移出，保存在 `STC32F_Code\Libraries\seekfree_peripheral\Unuse`文件夹中。
+若需要重新添加，请在Keil的Manage Project Items中将需要的文件重新添加到项目中。
+
+![1717048084319](image/README/1717048084319.png)
+
+### 符号链接
+
+本项目使用到了 `Keil uVision Assistant` 插件进行开发，但如果 `.uvprj `文件不在打开的一级子文件夹中，插件将无法自动识别到 `.uvprj `文件，每次都需要手动指定，进行重复的操作。所以可以使用[希望打开vscode时自动打开当前目录下所以子目录的keil工程文件 · Issue #39 · github0null/keil-assistant](https://github.com/github0null/keil-assistant/issues/39)中提到的使用符号链接将深层子文件夹中 `STC32F_Code\Project\MDK\EPOILT.uvproj`文件链接到一级子文件夹中，生成的链接文件为 `SmartCar_BST_Epoilt\EPOILT.symlink.uvproj` ，生成的链接文件将同步目标文件的修改。
+
 ## 电感处理
 
 此处介绍了一种快速计算处理电感处理方案
@@ -115,23 +138,6 @@ int main() {
 [【硬核科普】PID调参番外篇 feed-forward前馈控制 让飞机预判你的预判 无人机穿越机玩家必看】](https://www.bilibili.com/video/BV1SP4y1p7Ht/?share_source=copy_web&vd_source=b91af0127331bb4444b9388984a23393&t=173)
 
 ![1718734401317](image/README/1718734401317.png)
-
-## 注意
-
-### 编码格式或中文乱码
-
-Keil原因，使用中文注释必须使用GB2312编码，所以当查看本项目代码出现乱码时，请尝试将编码方式调整为GB2312
-
-### 无用设备驱动文件
-
-为节省单片机存储空间，没有使用到的设备驱动文件已经从Keil项目中移出，保存在 `STC32F_Code\Libraries\seekfree_peripheral\Unuse`文件夹中。
-若需要重新添加，请在Keil的Manage Project Items中将需要的文件重新添加到项目中。
-
-![1717048084319](image/README/1717048084319.png)
-
-### 符号链接
-
-本项目使用到了 `Keil uVision Assistant` 插件进行开发，但如果 `.uvprj `文件不在打开的一级子文件夹中，插件将无法自动识别到 `.uvprj `文件，每次都需要手动指定，进行重复的操作。所以可以使用[希望打开vscode时自动打开当前目录下所以子目录的keil工程文件 · Issue #39 · github0null/keil-assistant](https://github.com/github0null/keil-assistant/issues/39)中提到的使用符号链接将深层子文件夹中 `STC32F_Code\Project\MDK\EPOILT.uvproj`文件链接到一级子文件夹中，生成的链接文件为 `SmartCar_BST_Epoilt\EPOILT.symlink.uvproj` ，生成的链接文件将同步目标文件的修改。
 
 ## 参考资料
 

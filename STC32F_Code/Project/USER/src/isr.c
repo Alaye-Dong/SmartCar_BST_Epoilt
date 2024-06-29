@@ -19,7 +19,7 @@
 #include "headfile.h"
 
 // UART1中断
-void UART1_Isr() interrupt 4
+void UART1_Isr() INTERRUPT(4)
 {
     uint8 res;
     static uint8 dwon_count;
@@ -46,7 +46,7 @@ void UART1_Isr() interrupt 4
 }
 
 // UART2中断
-void UART2_Isr() interrupt 8
+void UART2_Isr() INTERRUPT(8)
 {
     if (UART2_GET_TX_FLAG)
     {
@@ -69,7 +69,7 @@ void UART2_Isr() interrupt 8
 }
 
 // UART3中断
-void UART3_Isr() interrupt 17
+void UART3_Isr() INTERRUPT(17)
 {
     if (UART3_GET_TX_FLAG)
     {
@@ -84,7 +84,7 @@ void UART3_Isr() interrupt 17
 }
 
 // UART4中断
-void UART4_Isr() interrupt 18
+void UART4_Isr() INTERRUPT(18)
 {
     if (UART4_GET_TX_FLAG)
     {
@@ -99,43 +99,43 @@ void UART4_Isr() interrupt 18
 }
 
 #define LED P52
-void INT0_Isr() interrupt 0
+void INT0_Isr() INTERRUPT(0)
 {
     LED = 0; // 点亮LED
 }
-void INT1_Isr() interrupt 2
+void INT1_Isr() INTERRUPT(2)
 {
 }
-void INT2_Isr() interrupt 10
+void INT2_Isr() INTERRUPT(10)
 {
     INT2_CLEAR_FLAG; // 清除中断标志
 }
-void INT3_Isr() interrupt 11
+void INT3_Isr() INTERRUPT(11)
 {
     INT3_CLEAR_FLAG; // 清除中断标志
 }
 
-void INT4_Isr() interrupt 16
+void INT4_Isr() INTERRUPT(16)
 {
     INT4_CLEAR_FLAG; // 清除中断标志
 }
 
-void TM0_Isr() interrupt 1
+void TM0_Isr() INTERRUPT(1)
 {
 }
-void TM1_Isr() interrupt 3
+void TM1_Isr() INTERRUPT(3)
 {
 }
-void TM2_Isr() interrupt 12
+void TM2_Isr() INTERRUPT(12)
 {
     TIM2_CLEAR_FLAG; // 清除中断标志
 }
-void TM3_Isr() interrupt 19
+void TM3_Isr() INTERRUPT(19)
 {
     TIM3_CLEAR_FLAG; // 清除中断标志
 }
 extern void pit_callback(void);
-void TM4_Isr() interrupt 20
+void TM4_Isr() INTERRUPT(20)
 {
     TIM4_CLEAR_FLAG; // 清除中断标志
 
@@ -169,26 +169,26 @@ void TM4_Isr() interrupt 20
     print_send_flag = 1;
 }
 
-// void  INT0_Isr()  interrupt 0;
-// void  TM0_Isr()   interrupt 1;
-// void  INT1_Isr()  interrupt 2;
-// void  TM1_Isr()   interrupt 3;
-// void  UART1_Isr() interrupt 4;
-// void  ADC_Isr()   interrupt 5;
-// void  LVD_Isr()   interrupt 6;
-// void  PCA_Isr()   interrupt 7;
-// void  UART2_Isr() interrupt 8;
-// void  SPI_Isr()   interrupt 9;
-// void  INT2_Isr()  interrupt 10;
-// void  INT3_Isr()  interrupt 11;
-// void  TM2_Isr()   interrupt 12;
-// void  INT4_Isr()  interrupt 16;
-// void  UART3_Isr() interrupt 17;
-// void  UART4_Isr() interrupt 18;
-// void  TM3_Isr()   interrupt 19;
-// void  TM4_Isr()   interrupt 20;
-// void  CMP_Isr()   interrupt 21;
-// void  I2C_Isr()   interrupt 24;
-// void  USB_Isr()   interrupt 25;
-// void  PWM1_Isr()  interrupt 26;
-// void  PWM2_Isr()  interrupt 27;
+// void  INT0_Isr()  INTERRUPT(0);
+// void  TM0_Isr()   INTERRUPT(1);
+// void  INT1_Isr()  INTERRUPT(2);
+// void  TM1_Isr()   INTERRUPT(3);
+// void  UART1_Isr() INTERRUPT(4);
+// void  ADC_Isr()   INTERRUPT(5);
+// void  LVD_Isr()   INTERRUPT(6);
+// void  PCA_Isr()   INTERRUPT(7);
+// void  UART2_Isr() INTERRUPT(8);
+// void  SPI_Isr()   INTERRUPT(9);
+// void  INT2_Isr()  INTERRUPT(10);
+// void  INT3_Isr()  INTERRUPT(11);
+// void  TM2_Isr()   INTERRUPT(12);
+// void  INT4_Isr()  INTERRUPT(16);
+// void  UART3_Isr() INTERRUPT(17);
+// void  UART4_Isr() INTERRUPT(18);
+// void  TM3_Isr()   INTERRUPT(19);
+// void  TM4_Isr()   INTERRUPT(20);
+// void  CMP_Isr()   INTERRUPT(21);
+// void  I2C_Isr()   INTERRUPT(24);
+// void  USB_Isr()   INTERRUPT(25);
+// void  PWM1_Isr()  INTERRUPT(26);
+// void  PWM2_Isr()  INTERRUPT(27);

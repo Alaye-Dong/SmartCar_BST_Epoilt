@@ -37,6 +37,7 @@
 			"math.h": "c",
 			"MATH.H": "cpp"
 		},
-		"files.autoSave": "off"
+		"files.autoSave": "off",
+		"todo-tree.tree.showBadges": true
 	}
 }
