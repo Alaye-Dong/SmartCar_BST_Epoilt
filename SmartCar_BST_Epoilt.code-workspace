@@ -38,6 +38,9 @@
 			"MATH.H": "cpp"
 		},
 		"files.autoSave": "off",
-		"todo-tree.tree.showBadges": true
+		"todo-tree.tree.showBadges": true,
+		"KeilAssistant.Project.FileLocationList": [
+			"D:\\Alaye\\GitHubDesktop\\SmartCar_BST_Epoilt\\STC32F_Code\\Project\\MDK\\EPOILT.uvproj"
+		]
 	}
 }
