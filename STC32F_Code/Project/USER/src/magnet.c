@@ -7,12 +7,25 @@ int16 position_left = 0, position_right = 0, position = 0; // position´óÓÚ0±íÊ¾³
 
 void Magnet_ADC_Init(void)
 {
+    /* ADCÒý½Å³õÊ¼»¯ */
     adc_init(ADC_P06, ADC_SYSclk_DIV_2);
     adc_init(ADC_P11, ADC_SYSclk_DIV_2);
     adc_init(ADC_P14, ADC_SYSclk_DIV_2);
     adc_init(ADC_P15, ADC_SYSclk_DIV_2);
-
     // Ð±Ïò´ýÌí¼Ó
+
+    /* µç¸Ð»ñÈ¡×Ô¼ì */
+    Encoder_Process();
+    if (inductor[LEFT_H] == 0 && inductor[RIGHT_H] == 0 && inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0)
+    {
+        lcd_clear(RED);
+        lcd_showstr(1 * 8, 2, "MAGNET_ERROR");
+    }
+    else if (inductor[LEFT_H] == 0 || inductor[RIGHT_H] == 0 || inductor[LEFT_V] == 0 || inductor[RIGHT_V] == 0)
+    {
+        lcd_clear(YELLOW);
+        lcd_showstr(1 * 8, 2, "MAGNET_WARNING");
+    }
 }
 
 void Inductor_Process(void)
