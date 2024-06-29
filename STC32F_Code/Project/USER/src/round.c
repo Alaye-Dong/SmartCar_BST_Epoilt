@@ -13,9 +13,9 @@ void Round_Recognition(void)
     // round_left_proximity_coeff = Calculate_Minkowski_Distance(inductor, round_left_target_inductor, 4, 1);
     // round_right_proximity_coeff = Calculate_Minkowski_Distance(inductor, round_right_target_inductor, 4, 1);
 
-    if (inductor[LEFT_H] + inductor[RIGHT_H] > 90 && inductor[LEFT_H] + inductor[RIGHT_H] < 120 && inductor[LEFT_H] > 30 && inductor[RIGHT_H] > 30) //&& position < 0
+    if ((inductor[LEFT_H] + inductor[RIGHT_H] > 90) && (inductor[LEFT_H] + inductor[RIGHT_H] < 120) && (inductor[LEFT_H] > 25 && inductor[RIGHT_H] > 25))
     {
-        if (inductor[LEFT_V] + inductor[RIGHT_V] < 50)
+        if (inductor[LEFT_V] + inductor[RIGHT_V] < 30)
         {
             Beep_Buzzing(5, 3);
             round_flag = ROUND_PRE;
@@ -36,7 +36,7 @@ void Round_Turn_Process(void)
         {
             // Round_Type_Deal(); //  手动指定环类型处理 // TODO 自动识别环类型和指定环类型的使用哪一个的选择功能
 
-            if ((inductor[LEFT_V] - inductor[RIGHT_V] > 30) && (inductor[LEFT_H] + inductor[RIGHT_H] > 150) && (inductor[LEFT_H] > 80))
+            if ((inductor[LEFT_V] - inductor[RIGHT_V] > 20) && (inductor[LEFT_H] + inductor[RIGHT_H] > 140) && (inductor[LEFT_H] > 70))
             {
                 round_flag = ROUND_LEFT_TRUN_IN;
                 Distance_Reset();
@@ -59,6 +59,7 @@ void Round_Turn_Process(void)
         break;
 
     case ROUND_LEFT_TRUN_IN:
+        BEEP_ON();
         position += 40;
         IMU_Yaw_Angle_Get_Control(ON);
         if (FUNC_ABS(yaw_angle) >= 25)
@@ -68,7 +69,6 @@ void Round_Turn_Process(void)
         break;
 
     case ROUND_LEFT_IN:
-        BEEP_ON();
         IMU_Yaw_Angle_Get_Control(ON);
         if (FUNC_ABS(yaw_angle) >= 280)
         {
