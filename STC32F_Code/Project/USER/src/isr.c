@@ -103,6 +103,7 @@ void INT0_Isr() INTERRUPT(0)
 {
     LED = 0; // 点亮LED
 }
+
 void INT1_Isr() INTERRUPT(2)
 {
 }
@@ -110,6 +111,7 @@ void INT2_Isr() INTERRUPT(10)
 {
     INT2_CLEAR_FLAG; // 清除中断标志
 }
+
 void INT3_Isr() INTERRUPT(11)
 {
     INT3_CLEAR_FLAG; // 清除中断标志
@@ -123,18 +125,23 @@ void INT4_Isr() INTERRUPT(16)
 void TM0_Isr() INTERRUPT(1)
 {
 }
+
 void TM1_Isr() INTERRUPT(3)
 {
 }
+
 void TM2_Isr() INTERRUPT(12)
 {
     TIM2_CLEAR_FLAG; // 清除中断标志
 }
+
 void TM3_Isr() INTERRUPT(19)
 {
     TIM3_CLEAR_FLAG; // 清除中断标志
 }
+
 extern void pit_callback(void);
+
 void TM4_Isr() INTERRUPT(20)
 {
     TIM4_CLEAR_FLAG; // 清除中断标志

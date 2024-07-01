@@ -35,7 +35,8 @@
 			"seekfree_function.h": "c",
 			"obstacle.h": "c",
 			"math.h": "c",
-			"MATH.H": "cpp"
+			"MATH.H": "cpp",
+			"algorithm": "c"
 		},
 		"files.autoSave": "off",
 		"todo-tree.tree.showBadges": true,

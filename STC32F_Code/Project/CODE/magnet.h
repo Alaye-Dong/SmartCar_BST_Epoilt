@@ -25,19 +25,19 @@ enum Inductor_Type
 // #define LEFT_S 4
 // #define RIGHT_S 5
 
-extern int16 ADC_value[INDUCTORS][SAMPLES];
+extern int16 ADC_values[INDUCTORS][SAMPLES];
 extern int16 ADC_filtered_value[];
 
 extern int16 inductor[];
-extern int16 positon_vector_modulus, position_difference_weighting, position; // position大于0表示车偏右应左转，小于0表示车偏左应右转
+extern int16 position_vector_modulus, position_difference_weighted, position_normal, position; // position大于0表示车偏右应左转，小于0表示车偏左应右转
 
 void Magnet_ADC_Init(void);
 void Magnet_ADC_Read(void);
 void Inductor_Process(void);
 void Magnet_ADC_Filter(void);
+void Fast_De_Extremum_Averaging(int16 input_array[], uint8 array_length, int16 *output_avage);
 void Bubble_Sort_ADC(void);
 void Inductor_Normal(void);
 void Position_Analyse(void);
-void Magnet_ADC_Print(void);
 
 #endif

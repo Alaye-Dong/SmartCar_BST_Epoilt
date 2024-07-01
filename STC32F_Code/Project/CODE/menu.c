@@ -474,9 +474,10 @@ void Menu_THREE_Display(uint8 control_line)
     // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "MF");
     // lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, motor_right.KF, 2, 3);
 
-    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, positon_vector_modulus, 3);
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "VeDi");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, position_difference_weighting, 3);
+    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, position_vector_modulus, 3);
+    lcd_showint32(6 * CHAR_SCREEN_WIDTH, i, position_normal, 3);
+    // lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "VeDi");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, position_difference_weighted, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
@@ -505,12 +506,12 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showint32(6 * CHAR_SCREEN_WIDTH, i, gyro_z_filtered, 4);
     lcd_showfloat(10 * CHAR_SCREEN_WIDTH, i++, yaw_angle, 3, 1);
 
-    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_V][0], 4);
+    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_values[LEFT_V][0], 4);
     // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
-    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_V][0], 4);
-    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_value[LEFT_H][0], 4);
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_values[RIGHT_V][0], 4);
+    // lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, ADC_values[LEFT_H][0], 4);
     // lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "-");
-    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_value[RIGHT_H][0], 4);
+    // lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, ADC_values[RIGHT_H][0], 4);
 
     lcd_showint32(1 * CHAR_SCREEN_WIDTH, i, inductor[LEFT_V], 4);
     lcd_showstr(8 * CHAR_SCREEN_WIDTH, i, "|");
@@ -536,9 +537,10 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showint32(8 * CHAR_SCREEN_WIDTH, i, round_flag, 1);
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, round_right_proximity_coeff, 4);
 
-    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, positon_vector_modulus, 3);
-    lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "VeDi");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, position_difference_weighting, 3);
+    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, position_vector_modulus, 3);
+    lcd_showint32(6 * CHAR_SCREEN_WIDTH, i, position_normal, 3);
+    // lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "VeDi");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, position_difference_weighted, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }

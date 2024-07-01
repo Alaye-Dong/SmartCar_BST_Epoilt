@@ -151,6 +151,8 @@ int main() {
 
 ### 博客教程
 
+[智能车电感差比和差加权算法研究_差比和算法的原理-CSDN博客](https://blog.csdn.net/zhuoqingjoking97298/article/details/108993827)
+
 [基于简化KNN的模板匹配的智能车电磁元素识别算法_基于knn实现内容匹配-CSDN博客](https://blog.csdn.net/qq_20545625/article/details/126010928)
 
 [增量式PID的P和I怎么理解（一）_i增大动态性能-CSDN博客](https://blog.csdn.net/fangchenglia/article/details/109518121)

@@ -29,7 +29,7 @@ void PIDType_Init(void)
     //  PID_Parameter_Init(&direction, 0, 0, 0, 0, 0, 0);
     //  PID_Parameter_Init(&motor_left, 0, 0, 0, 0, 0, 0);
     //  PID_Parameter_Init(&motor_right, 0, 0, 0, 0, 0, 0);
-    PID_Parameter_Init(&direction, 0.5, 0, 6.8, 0.0015, 0.002, 5.6); // * 如果使用方向环模糊PID，此处参数设置将无效
+    PID_Parameter_Init(&direction, 0.5, 0, 6.8, 0.0015, 0.002, 5.6); // * 如果使用方向环模糊PID，此处的P、I、D参数设置将无效
     PID_Parameter_Init(&motor_left, 27.33, 2.737, 0, 0, 0, 0.0);
     PID_Parameter_Init(&motor_right, 30.28, 3.818, 0, 0, 0, 0.0);
 }
@@ -69,7 +69,7 @@ void Position_Loss_Remember_Protect(uint8 protect_mode)
 {
     static uint16 position_loss_timer = 0;
 
-    if ((inductor[LEFT_H] <= 0 && inductor[RIGHT_H] <= 0) && (inductor[LEFT_V] + inductor[RIGHT_V] <= 4)) // 短时间丢线，记忆打角
+    if (inductor[LEFT_V] + inductor[RIGHT_V] < 3) // 短时间丢线，记忆打角
     {
         position = position_last;
         position_loss_timer++;
@@ -259,28 +259,28 @@ void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, flo
     {
     case NB:
     case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
-        *kp = 0.80;
-        *kd = 7.6;
-        *kp2 = 0.002;
+        *kp = 0.90;
+        *kd = 5.8;
+        *kp2 = 0.004;
         *kd2 = 0.000;
         break;
     case NM:
     case PM:
-        *kp = 0.6;
-        *kd = 7.6;
-        *kp2 = 0.0015;
+        *kp = 0.8;
+        *kd = 5.8;
+        *kp2 = 0.004;
         *kd2 = 0.0005;
         break;
     case NS:
     case PS:
-        *kp = 0.43;
-        *kd = 6.8;
+        *kp = 0.5;
+        *kd = 5.8;
         *kp2 = 0.001;
         *kd2 = 0.001;
         break;
     case ZO:
         *kp = 0.40;
-        *kd = 6.8;
+        *kd = 5.8;
         *kp2 = 0.001;
         *kd2 = 0.001;
         break;

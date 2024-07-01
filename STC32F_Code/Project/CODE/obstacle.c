@@ -18,10 +18,10 @@ void Obstacle_Recognition(void)
 {
     dl1b_get_distance();
 
-    if (dl1b_distance_mm <= 850 && dl1b_distance_mm >= 300 && inductor[LEFT_H] > 10 && inductor[RIGHT_H] > 10 && position <= 30) // 障碍识别 可以融合角速度判断（在比较直的赛道才避障）
-    {
-        obstacle_flag = OBSTACLE_PRE;
-    }
+    // if (dl1b_distance_mm <= 850 && dl1b_distance_mm >= 300 && inductor[LEFT_H] > 10 && inductor[RIGHT_H] > 10 && position <= 50) // 障碍识别 可以融合角速度判断（在比较直的赛道才避障）
+    // {
+    //     obstacle_flag = OBSTACLE_PRE;
+    // }
 }
 
 void Obstacle_Turn_Process(void)
@@ -35,7 +35,7 @@ void Obstacle_Turn_Process(void)
         break;
 
     case OBSTACLE_TURN_RIGHT:
-        position = -70;
+        position = -150;
         IMU_Yaw_Angle_Get_Control(ON);
         Distance_Calculation();
         if (car_distance_real_cm > 30 && FUNC_ABS(yaw_angle) > 50)
@@ -47,7 +47,7 @@ void Obstacle_Turn_Process(void)
         break;
 
     case OBSTACLE_TURN_LEFT_BACK:
-        position = 70;
+        position = 150;
         IMU_Yaw_Angle_Get_Control(ON);
         Distance_Calculation();
         if (car_distance_real_cm > 50 && FUNC_ABS(yaw_angle) > 50)

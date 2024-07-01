@@ -1,9 +1,13 @@
 #include "magnet.h"
 
-int16 ADC_value[INDUCTORS][SAMPLES] = {0};
+int16 ADC_values[INDUCTORS][SAMPLES] = {0};
 int16 ADC_filtered_value[INDUCTORS] = {0};
 int16 inductor[INDUCTORS] = {0};
-int16 position_left = 0, position_right = 0, position = 0; // position大于0表示车偏右应左转，小于0表示车偏左应右转
+
+int16 position_vector_modulus = 0;
+int16 position_difference_weighted = 0;
+int16 position_normal = 0;
+int16 position = 0; // position大于0表示车偏右应左转，小于0表示车偏左应右转
 
 void Magnet_ADC_Init(void)
 {
@@ -14,18 +18,19 @@ void Magnet_ADC_Init(void)
     adc_init(ADC_P15, ADC_SYSclk_DIV_2);
     // 斜向待添加
 
-    /* 电感获取自检 */
-    Encoder_Process();
-    if (inductor[LEFT_H] == 0 && inductor[RIGHT_H] == 0 && inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0)
-    {
-        lcd_clear(RED);
-        lcd_showstr(1 * 8, 2, "MAGNET_ERROR");
-    }
-    else if (inductor[LEFT_H] == 0 || inductor[RIGHT_H] == 0 || inductor[LEFT_V] == 0 || inductor[RIGHT_V] == 0)
-    {
-        lcd_clear(YELLOW);
-        lcd_showstr(1 * 8, 2, "MAGNET_WARNING");
-    }
+    // /* 电感获取自检 */
+    // Inductor_Process();
+
+    // if (inductor[LEFT_H] == 0 && inductor[RIGHT_H] == 0 && inductor[LEFT_V] == 0 && inductor[RIGHT_V] == 0)
+    // {
+    //     lcd_clear(YELLOW);
+    //     lcd_showstr(1 * 8, 2, "MAGNET_WARNING");
+    // }
+    // else if (inductor[LEFT_H] == 0 || inductor[RIGHT_H] == 0 || inductor[LEFT_V] == 0 || inductor[RIGHT_V] == 0)
+    // {
+    //     lcd_clear(RED);
+    //     lcd_showstr(1 * 8, 2, "MAGNET_ERROR");
+    // }
 }
 
 void Inductor_Process(void)
@@ -38,54 +43,86 @@ void Inductor_Process(void)
 void Magnet_ADC_Read(void)
 {
     uint8 i;
-    // 牛爷爷的车队 [左横 3] [左斜 4] [左竖 0] || [右竖 5] [右斜 1] [右横 2]
+
     for (i = 0; i < SAMPLES; i++)
     {
-        ADC_value[LEFT_H][i] = adc_once(ADC_P06, ADC_12BIT);
-        ADC_value[LEFT_V][i] = adc_once(ADC_P11, ADC_12BIT);
-        ADC_value[LEFT_S][i] = 0; // 暂时不使用斜向
+        ADC_values[LEFT_H][i] = adc_once(ADC_P06, ADC_12BIT);
+        ADC_values[LEFT_V][i] = adc_once(ADC_P11, ADC_12BIT);
+        ADC_values[LEFT_S][i] = 0; // 暂时不使用斜向
 
-        ADC_value[RIGHT_S][i] = 0; // 暂时不使用斜向
-        ADC_value[RIGHT_V][i] = adc_once(ADC_P14, ADC_12BIT);
-        ADC_value[RIGHT_H][i] = adc_once(ADC_P15, ADC_12BIT);
+        ADC_values[RIGHT_S][i] = 0; // 暂时不使用斜向
+        ADC_values[RIGHT_V][i] = adc_once(ADC_P14, ADC_12BIT);
+        ADC_values[RIGHT_H][i] = adc_once(ADC_P15, ADC_12BIT);
     }
 }
 
 void Magnet_ADC_Filter(void)
 {
-    uint8 i;
-    int16 ADC_median_value[INDUCTORS];
+    uint8 inductor_index;
+    int16 ADC_mean_value[INDUCTORS];
     static int16 ADC_old_filtered_value[INDUCTORS] = {0};
 
-    // 冒泡排序
-    Bubble_Sort_ADC();
+    // // 冒泡排序
+    // Bubble_Sort_ADC();
 
-    for (i = 0; i < INDUCTORS; i++)
+    for (inductor_index = 0; inductor_index < INDUCTORS; inductor_index++)
     {
-        ADC_old_filtered_value[i] = ADC_filtered_value[i];
+        ADC_old_filtered_value[inductor_index] = ADC_filtered_value[inductor_index];
 
-        Trimmed_Mean_Filter(&ADC_value[i], INDUCTORS, EXTREME_NUMBER, &ADC_median_value[i]);
+        // Trimmed_Mean_Filter(&ADC_values[i], INDUCTORS, EXTREME_NUMBER, &ADC_mean_value[i]);
+        Fast_De_Extremum_Averaging(&ADC_values[inductor_index], SAMPLES, &ADC_mean_value[inductor_index]);
 
-        ADC_filtered_value[i] = (int16)(ADC_median_value[i] / 10 * 10); // 将数值中个位数除掉
+        ADC_filtered_value[inductor_index] = (int16)(ADC_mean_value[inductor_index] / 10 * 10); // 将数值中个位数除掉
 
-        // 梯度平滑
-        if (ADC_filtered_value[i] - ADC_old_filtered_value[i] > 50)
-        {
-            ADC_filtered_value[i] = ADC_old_filtered_value[i] + 50;
-        }
-        else if (ADC_filtered_value[i] - ADC_old_filtered_value[i] < -60)
-        {
-            ADC_filtered_value[i] = ADC_old_filtered_value[i] - 60;
-        }
+        // // 梯度平滑
+        // if (ADC_filtered_value[inductor_index] - ADC_old_filtered_value[inductor_index] > 50)
+        // {
+        //     ADC_filtered_value[inductor_index] = ADC_old_filtered_value[inductor_index] + 50;
+        // }
+        // else if (ADC_filtered_value[inductor_index] - ADC_old_filtered_value[inductor_index] < -60)
+        // {
+        //     ADC_filtered_value[inductor_index] = ADC_old_filtered_value[inductor_index] - 60;
+        // }
     }
+}
+
+/**
+ * @description: 快速去除极值求平均滤波
+ * @param {int16} input_array
+ * @param {uint8} array_length
+ * @param {int16} *output_avage
+ * @return {*}
+ * ! @note: 此方面相对于冒泡排序再舍弃极值求平均，省去了对于中间的数即非极值不必要的排序，计算更快速。
+ * * 但是舍弃的极值个数只能为各一个最大和最小值，但是不能控制舍弃的极值个数。
+ */
+void Fast_De_Extremum_Averaging(int16 input_array[], uint8 array_length, int16 *output_avage)
+{
+    uint8 i;
+    int16 extremum_max = 0;
+    int16 extremum_min = 0;
+    int16 sum = 0;
+
+    for (i = 0; i < array_length; i++)
+    {
+        if (input_array[i] > extremum_max)
+        {
+            extremum_max = input_array[i];
+        }
+        if (input_array[i] < extremum_min)
+        {
+            extremum_min = input_array[i];
+        }
+        sum += input_array[i];
+    }
+    *output_avage = (sum - extremum_max - extremum_min) / (array_length - 2);
 }
 
 void Bubble_Sort_ADC(void)
 {
-    uint8 k;
-    for (k = 0; k < INDUCTORS; k++)
+    uint8 inductor_index;
+    for (inductor_index = 0; inductor_index < INDUCTORS; inductor_index++)
     {
-        Bubble_Sort_Int16(ADC_value[k], SAMPLES);
+        Bubble_Sort_Int16(ADC_values[inductor_index], SAMPLES);
     }
 }
 
@@ -119,42 +156,32 @@ void Inductor_Normal(void)
     // inductor[RIGHT_S] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_S], 0, 100);
 }
 
-#define INDUCTOR_V_GAIN 1 // 垂直方向的增益
-#define INDUCTOR_H_GAIN 1
-int16 positon_vector_modulus = 0;
-int16 position_difference_weighting = 0;
+#define V_GAIN 2 // 垂直方向的增益
+#define H_GAIN 1
 
-int16 position_difference = 0;
-int16 position_sum = 0;
 void Position_Analyse(void)
 {
+    int16 temp_left = 0;
+    int16 temp_right = 0;
+
+    int16 temp_difference = 0;
+    int16 temp_sum_difference_weighted = 0;
+
+    int16 temp_sum = 0;
+
     // ! 向量模差比和算法
-    //  使用快速平方根
-    position_left = My_Sqrt(inductor[LEFT_H] * inductor[LEFT_H] + inductor[LEFT_V] * inductor[LEFT_V]);
-    position_right = My_Sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] + inductor[RIGHT_V] * inductor[RIGHT_V]);
-    // //使用系统平方根
-    // position_left = sqrt(inductor[LEFT_H] * inductor[LEFT_H] * INDUCTOR_H_GAIN + inductor[LEFT_V] * inductor[LEFT_V] * INDUCTOR_V_GAIN);
-    // position_right = sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] * INDUCTOR_H_GAIN + inductor[RIGHT_V] * inductor[RIGHT_V] * INDUCTOR_V_GAIN);
-    positon_vector_modulus = (position_left - position_right) * 100 / (position_left + position_right + 1); // 向量差比和，补1防止分母为0
+    temp_left = My_Sqrt(inductor[LEFT_H] * inductor[LEFT_H] + inductor[LEFT_V] * inductor[LEFT_V]); // TODO 测试对竖电感加权加权
+    temp_right = My_Sqrt(inductor[RIGHT_H] * inductor[RIGHT_H] + inductor[RIGHT_V] * inductor[RIGHT_V]);
+    position_vector_modulus = (temp_left - temp_right) * 100 / (temp_left + temp_right + 1); // 向量差比和，补1防止分母为0 //TODO : 测试改成差加权会不会更好用
 
     // * 差比和差加权算法
-    position_difference = (inductor[LEFT_H] - inductor[RIGHT_H]) + (inductor[LEFT_V] - inductor[RIGHT_V]);
-    position_sum = (inductor[LEFT_H] + inductor[RIGHT_H]) + FUNC_ABS((inductor[LEFT_V] - inductor[RIGHT_V]));
-    if (position_sum == 0)
-    {
-        position_sum = 1;
-    }
-    position_difference_weighting = (position_difference * 100) / position_sum;
+    temp_difference = H_GAIN * (inductor[LEFT_H] - inductor[RIGHT_H]) + V_GAIN * (inductor[LEFT_V] - inductor[RIGHT_V]); // TODO 测试加权系数
+    temp_sum_difference_weighted = H_GAIN * (inductor[LEFT_H] + inductor[RIGHT_H]) + abs((inductor[LEFT_V] - inductor[RIGHT_V]));
+    position_difference_weighted = (temp_difference * 100) / (temp_sum_difference_weighted + 1);
 
-    // position = (positon_vector_modulus + position_difference_weighting) / 2;
-    position = position_difference_weighting;
-}
+    //  普通差比和
+    temp_sum = (inductor[LEFT_H] + inductor[RIGHT_H]) + (inductor[LEFT_V] - inductor[RIGHT_V]);
+    position_normal = (temp_difference * 100) / (temp_sum + 1);
 
-void Magnet_ADC_Print(void)
-{
-    // uint8 i;
-    // for (i = 0; i < INDUCTORS; i++)
-    // {
-    printf("%d,%d\n", ADC_filtered_value[LEFT_H], inductor[LEFT_H]);
-    // }
+    position = position_difference_weighted;
 }
