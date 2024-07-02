@@ -197,11 +197,17 @@ uint16 position_loss_timer = 0;
 uint16 position_remember = 0;
 uint8 position_loss_flag = 0;
 uint8 loss_protect_flag = 0;
+uint8 position_get_timer = 0;
+
+#define SHORT_TIME_THRESHOLD 200 // 短时间内丢线的阈值
+#define TRANSITION_TIME 20       // 位置过渡的缓冲时间（单位同position_loss_timer的计数周期）
+
 void Position_Loss_Remember_Protect(uint8 protect_mode)
 {
-    // static uint16 position_loss_timer = 0;
+    static uint16 transition_counter = 0; // 新增：用于过渡缓冲的计数器
+    float transition_ratio = 0;
 
-    if (inductor[LEFT_V] + inductor[RIGHT_V] <= 15 && inductor[LEFT_H] + inductor[RIGHT_H] <= 5) // 短时间丢线，记忆打角
+    if (inductor[LEFT_H] + inductor[RIGHT_H] <= 5) // 短时间丢线，记忆打角
     {
         if (position_loss_timer == 0)
         { // 首次检测到丢线，记录当前位置
@@ -210,11 +216,28 @@ void Position_Loss_Remember_Protect(uint8 protect_mode)
         position_loss_timer++;
         position = position_remember;
     }
-    else // if (inductor[LEFT_V] + inductor[RIGHT_V] > 3) // 寻得线，丢线累计时间标志位清零
+    else if ((inductor[LEFT_V] + inductor[RIGHT_V] + inductor[LEFT_H] + inductor[RIGHT_H] >= 20))
     {
         position_loss_timer = 0;
-        loss_protect_flag = 0;
     }
+
+    // if (position_loss_timer != 0) // 寻得线，丢线累计时间标志位清零
+    // {
+    //     // 无论丢线时间长短，都启动过渡过程，以平滑位置变化
+    //     if (transition_counter == 0)
+    //     {
+    //         transition_counter = TRANSITION_TIME;
+    //     }
+    //     transition_ratio = (float)(TRANSITION_TIME - transition_counter) / TRANSITION_TIME;
+    //     if (position_loss_timer >= SHORT_TIME_THRESHOLD)
+    //     {
+    //         // 长时间丢线后寻得线，从记忆位置过渡到当前实际位置
+    //         position = position_remember * transition_ratio + position * (1 - transition_ratio);
+    //     }
+
+    //     transition_counter--;    // 减少计数器，直至过渡完成
+    //     position_loss_timer = 0; // 重置丢线计时器
+    // }
 
     if (protect_mode == 1 && position_loss_timer > 400) // 丢线累计 400 * 5ms = 2s 停车保护
     {
