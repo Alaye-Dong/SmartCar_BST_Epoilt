@@ -43,7 +43,7 @@ void PID_Init(void)
 void PID_Process(void)
 {
     Speed_Contrl();
-    Position_Loss_Remember_Protect(1);
+    // Position_Loss_Remember_Protect(1);
 
     if (direction_pid_time_counter != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
@@ -58,32 +58,6 @@ void PID_Process(void)
 
     Left_Speed_PID();
     Right_Speed_PID();
-}
-
-/**
- * @description: 丢线记忆打角及丢线停车
- * @param {uint8} protect_mode 为1时开启丢线停车保护 0时关闭
- * @return {*}
- */
-void Position_Loss_Remember_Protect(uint8 protect_mode)
-{
-    static uint16 position_loss_timer = 0;
-
-    if (inductor[LEFT_V] + inductor[RIGHT_V] < 3) // 短时间丢线，记忆打角
-    {
-        position = position_last;
-        position_loss_timer++;
-    }
-    else // 寻得线，丢线累计时间标志位清零
-    {
-        position_loss_timer = 0;
-    }
-
-    if (protect_mode == 1 && position_loss_timer > 400) // 丢线累计 400 * 5ms = 2s 停车保护
-    {
-        position = 0;
-        speed.target = 0; // 丢线停车保护
-    }
 }
 
 // *******************************串级PID 偏差->>转向环->>速度环->>PWM
@@ -132,6 +106,11 @@ void Speed_Contrl(void)
 {
     // TODO 利用陀螺仪进行直道弯道判断
     speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor); // 速度控制，弯道减速
+
+    if (loss_protect_flag == 1)
+    {
+        speed.target = 0; // 丢线停车保护
+    }
 
     // //长直道加速
     // if (FUNC_ABS(gyro_z_filtered) < 500)

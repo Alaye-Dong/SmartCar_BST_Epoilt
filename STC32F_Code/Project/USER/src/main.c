@@ -63,7 +63,10 @@ void main()
         Debug_Parameter_Oscilloscope_Send();
 
         // ! 屏幕菜单极耗性能，开启后串口刷新将只有大概5fps，不开启则为250fps
-        Keystroke_Menu();
+        if (lcd_on_flag == 1)
+        {
+            Keystroke_Menu();
+        }
 
         if (element_busy_flag != 1)
         {

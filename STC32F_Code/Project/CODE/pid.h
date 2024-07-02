@@ -29,12 +29,12 @@ extern PIDTypeDef direction, motor_left, motor_right;
 
 extern float direction_output;
 
+extern uint16 position_loss_timer;
+
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KF);
 void PIDType_Init(void);
 void PID_Init(void);
 void PID_Process(void);
-
-void Position_Loss_Remember_Protect(uint8 protect_mode);
 
 void Direction_PID(void);
 void Left_Speed_PID(void);

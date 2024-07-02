@@ -163,7 +163,7 @@ void Debug_Parameter_Oscilloscope_Send(void)
     // 4
     seekfree_assistant_oscilloscope_data.dat[4] = direction.KP;
     // 5
-    seekfree_assistant_oscilloscope_data.dat[5] = direction.KI;
+    seekfree_assistant_oscilloscope_data.dat[5] = position_loss_timer;
     // 6
     seekfree_assistant_oscilloscope_data.dat[6] = direction_output;
     // 7

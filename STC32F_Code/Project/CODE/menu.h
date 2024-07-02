@@ -3,6 +3,8 @@
 
 #include "headfile.h"
 
+extern uint8 lcd_on_flag;
+
 extern int16 display_codename; // ÏÔÊ¾Ò³Ãæ´úºÅ
 
 extern int16 start_flag, garage_out_direction;

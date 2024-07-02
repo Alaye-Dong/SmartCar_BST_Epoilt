@@ -29,6 +29,8 @@
 
 #define EEPROM_MODE 1 // eeporm读写开启则为1
 
+uint8 lcd_on_flag = 1;
+
 int16 display_codename = 0;       // 显示页面代号
 int8 cursor_row = 0;              // 光标所在行号
 int8 previous_cursor_row = -1;    // 上一次光标所在列号
@@ -313,6 +315,8 @@ void Keystroke_Menu_HOME(void) // 0
 
         BEEP_ON_ms(100);
         lcd_clear(WHITE);
+
+        lcd_on_flag = 0;
     }
 
     menu_next_flag = 0; // 切换完页面，标志位归0
