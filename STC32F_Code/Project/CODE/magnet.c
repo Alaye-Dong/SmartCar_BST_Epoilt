@@ -216,7 +216,7 @@ void Position_Loss_Remember_Protect(uint8 protect_mode)
         position_loss_timer++;
         position = position_remember;
     }
-    else if ((inductor[LEFT_V] + inductor[RIGHT_V] + inductor[LEFT_H] + inductor[RIGHT_H] >= 20))
+    else if ((inductor[LEFT_V] + inductor[RIGHT_V] + inductor[LEFT_H] + inductor[RIGHT_H] >= 30))
     {
         position_loss_timer = 0;
     }

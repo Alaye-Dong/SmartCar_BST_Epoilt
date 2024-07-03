@@ -11,7 +11,7 @@ int16 motor_left_last_error = 0, motor_right_last_error = 0;
 
 uint8 direction_pid_time_counter = 0; // 方向环控制周期标志位 （20ms
 
-SpeedTypeDef speed = {90, 0, 0.000,
+SpeedTypeDef speed = {100, 0, 0.01,
                       0, 0, 0};
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KF)
