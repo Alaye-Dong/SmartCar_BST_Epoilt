@@ -109,7 +109,7 @@ void Speed_Contrl(void)
     // TODO 利用陀螺仪进行直道弯道判断
     speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor); // 速度控制，弯道减速
 
-    if (loss_protect_flag == 1)
+    if (position_loss_stop_protect_flag == 1)
     {
         speed.target = 0; // 丢线停车保护
     }

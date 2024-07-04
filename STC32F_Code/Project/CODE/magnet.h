@@ -31,7 +31,7 @@ extern int16 ADC_filtered_value[];
 extern int16 inductor[];
 extern int16 position_vector_modulus, position_difference_weighted, position_normal, position; // position大于0表示车偏右应左转，小于0表示车偏左应右转
 
-extern uint8 loss_protect_flag;
+extern uint8 position_loss_stop_protect_flag;
 
 void Magnet_ADC_Init(void);
 void Magnet_ADC_Read(void);

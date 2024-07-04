@@ -193,27 +193,31 @@ void Position_Analyse(void)
  * @return {*}
  */
 uint16 position_loss_timer = 0;
-uint8 loss_protect_flag = 0;
+uint8 position_loss_stop_protect_flag = 0;
 void Position_Loss_Remember_Protect(uint8 protect_mode)
 {
     static uint16 position_remember = 0;
-    if (inductor[LEFT_H] + inductor[RIGHT_H] <= 5) // 短时间丢线，记忆打角
+
+    if (position_loss_timer == 0 && (inductor[LEFT_H] + inductor[RIGHT_H]) <= 5) // 短时间丢线，记忆打角
     {
-        if (position_loss_timer == 0)
-        { // 首次检测到丢线，记录当前位置
-            position_remember = position;
-        }
+        // 首次检测到丢线，记录当前位置
+        position_remember = position;
+        position_loss_timer++;
+    }
+
+    if (position_loss_timer != 0 && (inductor[LEFT_V] + inductor[RIGHT_V] + inductor[LEFT_H] + inductor[RIGHT_H] <= 30))
+    {
         position_loss_timer++;
         position = position_remember;
     }
-    else if ((inductor[LEFT_V] + inductor[RIGHT_V] + inductor[LEFT_H] + inductor[RIGHT_H] >= 30))
+    else
     {
         position_loss_timer = 0;
     }
 
     if (protect_mode == 1 && position_loss_timer > 400) // 丢线累计 400 * 5ms = 2s 停车保护
     {
-        loss_protect_flag = 1;
+        position_loss_stop_protect_flag = 1;
         position = 0;
     }
 }
