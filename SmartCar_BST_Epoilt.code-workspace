@@ -36,7 +36,8 @@
 			"obstacle.h": "c",
 			"math.h": "c",
 			"MATH.H": "cpp",
-			"algorithm": "c"
+			"algorithm": "c",
+			"zf_delay.h": "c"
 		},
 		"files.autoSave": "off",
 		"todo-tree.tree.showBadges": true,

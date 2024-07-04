@@ -198,26 +198,28 @@ void Position_Loss_Remember_Protect(uint8 protect_mode)
 {
     static uint16 position_remember = 0;
 
-    if (position_loss_timer == 0 && (inductor[LEFT_H] + inductor[RIGHT_H]) <= 5) // 短时间丢线，记忆打角
+    if (position_loss_timer == 0 && (inductor[LEFT_H] + inductor[RIGHT_H]) <= 5) // 首次检测到丢线，记录当前位置的偏差
     {
-        // 首次检测到丢线，记录当前位置
         position_remember = position;
         position_loss_timer++;
     }
 
-    if (position_loss_timer != 0 && (inductor[LEFT_V] + inductor[RIGHT_V] + inductor[LEFT_H] + inductor[RIGHT_H] <= 30))
+    if (position_loss_timer != 0 && (inductor[LEFT_V] + inductor[RIGHT_V] + inductor[LEFT_H] + inductor[RIGHT_H] <= 30)) // 处于丢线状态，使用记忆打角
     {
         position_loss_timer++;
         position = position_remember;
+        BEEP_ON();
     }
-    else
+    else // 非丢线状态，清除记忆
     {
         position_loss_timer = 0;
+        BEEP_OFF();
     }
 
-    if (protect_mode == 1 && position_loss_timer > 400) // 丢线累计 400 * 5ms = 2s 停车保护
+    if (protect_mode == 1 && position_loss_timer > TIMER_COUNT_MS(2000)) // 丢线累计 400 * 5ms = 2s 停车保护
     {
         position_loss_stop_protect_flag = 1;
         position = 0;
+        BEEP_OFF();
     }
 }

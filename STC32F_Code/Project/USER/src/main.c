@@ -52,7 +52,7 @@ void main()
     eeprom_init(); // eeprom初始化
     PID_Init();
 
-    pit_timer_ms(TIM_4, 5); // 设置中断定时
+    pit_timer_ms(TIM_4, PIT_TIME_MS); // 设置中断定时
 
     Beep_Buzzing(100, 3); // 开机提示蜂鸣
 
