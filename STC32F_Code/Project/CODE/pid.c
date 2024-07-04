@@ -4,12 +4,6 @@ PIDTypeDef direction, motor_left, motor_right;
 
 int16 position_delta_error = 0; // 用于方向环模糊PID的偏差变化量
 float direction_output = 0;
-int16 position_last = 0;
-
-int16 motor_left_error = 0, motor_right_error = 0;
-int16 motor_left_last_error = 0, motor_right_last_error = 0;
-
-uint8 direction_pid_time_counter = 0; // 方向环控制周期标志位 （20ms
 
 SpeedTypeDef speed = {100, 0, 0.01,
                       0, 0, 0};
@@ -42,8 +36,9 @@ void PID_Init(void)
 #define DIRECTION_PID_PERIOD 4 // 定义20ms的周期，即4个5ms周期
 void PID_Process(void)
 {
+    static uint8 direction_pid_time_counter = 0; // 方向环控制周期标志位 （20ms
+
     Speed_Contrl();
-    // Position_Loss_Remember_Protect(1);
 
     if (direction_pid_time_counter != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
@@ -64,6 +59,8 @@ void PID_Process(void)
 //  转向外环 PD 二次项 PD
 void Direction_PID(void)
 {
+    static int16 position_last = 0;
+
     position_delta_error = position - position_last;                                                                   // 计算误差变化量
     Fuzzy_PID_Control(position, position_delta_error, &direction.KP, &direction.KD, &direction.KP_2, &direction.KD_2); // 模糊PID计算赋值
 
@@ -79,6 +76,9 @@ void Direction_PID(void)
 // 左轮内环 PI
 void Left_Speed_PID(void)
 {
+    static int16 motor_left_last_error = 0;
+    int16 motor_left_error = 0;
+
     motor_left_error = (int16)(speed.target_left - encoder_left.encoder_filtered);
     // motor_left.KP = Increment_PI_Dynamic_P_MAX(speed.target_left, encoder_left.encoder_filtered); // 使用增量式动态P
     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
@@ -90,6 +90,9 @@ void Left_Speed_PID(void)
 // 右轮内环 PI
 void Right_Speed_PID(void)
 {
+    static int16 motor_right_last_error = 0;
+    int16 motor_right_error = 0;
+
     motor_right_error = (int16)(speed.target_right - encoder_right.encoder_filtered);
     // motor_right.KP = Increment_PI_Dynamic_P_MAX(speed.target_right, encoder_right.encoder_filtered); // 使用增量式动态P
     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_right.KI;
@@ -101,7 +104,6 @@ void Right_Speed_PID(void)
 // TODO 前馈PID
 
 /* 速度控制，弯道减速 */
-uint16 straight_time_flag = 0;
 void Speed_Contrl(void)
 {
     // TODO 利用陀螺仪进行直道弯道判断
@@ -113,6 +115,7 @@ void Speed_Contrl(void)
     }
 
     // //长直道加速
+    // uint16 straight_time_flag = 0;
     // if (FUNC_ABS(gyro_z_filtered) < 500)
     // {
     //     straight_time_flag++;
