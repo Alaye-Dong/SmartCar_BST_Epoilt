@@ -86,37 +86,6 @@ void Magnet_ADC_Filter(void)
     }
 }
 
-/**
- * @description: 快速去除极值求平均滤波
- * @param {int16} input_array
- * @param {uint8} array_length
- * @param {int16} *output_avage
- * @return {*}
- * ! @note: 此方面相对于冒泡排序再舍弃极值求平均，省去了对于中间的数即非极值不必要的排序，计算更快速。
- * * 但是舍弃的极值个数只能为各一个最大和最小值，但是不能控制舍弃的极值个数。
- */
-void Fast_De_Extremum_Averaging(int16 input_array[], uint8 array_length, int16 *output_avage)
-{
-    uint8 i;
-    int16 extremum_max = 0;
-    int16 extremum_min = 0;
-    int16 sum = 0;
-
-    for (i = 0; i < array_length; i++)
-    {
-        if (input_array[i] > extremum_max)
-        {
-            extremum_max = input_array[i];
-        }
-        if (input_array[i] < extremum_min)
-        {
-            extremum_min = input_array[i];
-        }
-        sum += input_array[i];
-    }
-    *output_avage = (sum - extremum_max - extremum_min) / (array_length - 2);
-}
-
 void Bubble_Sort_ADC(void)
 {
     uint8 inductor_index;

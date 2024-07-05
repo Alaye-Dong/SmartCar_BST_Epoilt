@@ -61,8 +61,8 @@ void Direction_PID(void)
 {
     static int16 position_last = 0;
 
-    position_delta_error = position - position_last;                                                                   // 计算误差变化量
-    Fuzzy_PID_Control(position, position_delta_error, &direction.KP, &direction.KD, &direction.KP_2, &direction.KD_2); // 模糊PID计算赋值
+    position_delta_error = position - position_last;               // 计算误差变化量
+    Fuzzy_PID_Control(position, position_delta_error, &direction); // 模糊PID计算赋值
 
     // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
     direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
@@ -102,12 +102,11 @@ void Right_Speed_PID(void)
 }
 
 // TODO 前馈PID
-
-/* 速度控制，弯道减速 */
+#define DELTA_DECELERATION_FACTOR 1 // TODO 待调试
 void Speed_Contrl(void)
 {
     // TODO 利用陀螺仪进行直道弯道判断
-    speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor); // 速度控制，弯道减速
+    speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor) - FUNC_ABS(position_delta_error * DELTA_DECELERATION_FACTOR); // 速度控制，弯道减速
 
     if (position_loss_stop_protect_flag == 1)
     {
@@ -205,7 +204,7 @@ uint8 Fuzzify(float value)
 }
 
 // 模糊规则表
-uint8 fuzzy_rule_table[FUZZY_SET_NUM][FUZZY_SET_NUM] = {
+const uint8 fuzzy_rule_table[FUZZY_SET_NUM][FUZZY_SET_NUM] = {
     // NB NM NS  ZO  PS  PM  PB
     {NB, NB, NM, NM, NS, ZO, ZO}, // NB
     {NB, NM, NM, NS, NS, ZO, PS}, // NM
@@ -229,7 +228,7 @@ uint8 Fuzzy_Rule(int fuzzy_error, int fuzzy_delta_error)
 }
 
 // 模糊 PID 控制器
-void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, float *kp2, float *kd2)
+void Fuzzy_PID_Control(float error, float delta_error, PIDTypeDef *sptr)
 {
     int16 fuzzy_error = Fuzzify(error);             // 模糊化误差
     int16 fuzzy_delta_error = Fuzzify(delta_error); // 模糊化误差变化率
@@ -241,30 +240,30 @@ void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, flo
     {
     case NB:
     case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
-        *kp = 0.90;
-        *kd = 5.8;
-        *kp2 = 0.004;
-        *kd2 = 0.000;
+        sptr->KP = 0.9;
+        sptr->KD = 5.8;
+        sptr->KP_2 = 0.004;
+        sptr->KD_2 = 0.000;
         break;
     case NM:
     case PM:
-        *kp = 0.8;
-        *kd = 5.8;
-        *kp2 = 0.004;
-        *kd2 = 0.0005;
+        sptr->KP = 0.8;
+        sptr->KD = 5.8;
+        sptr->KP_2 = 0.004;
+        sptr->KD_2 = 0.0005;
         break;
     case NS:
     case PS:
-        *kp = 0.5;
-        *kd = 5.8;
-        *kp2 = 0.001;
-        *kd2 = 0.001;
+        sptr->KP = 0.5;
+        sptr->KD = 5.8;
+        sptr->KP_2 = 0.001;
+        sptr->KD_2 = 0.001;
         break;
     case ZO:
-        *kp = 0.40;
-        *kd = 5.8;
-        *kp2 = 0.001;
-        *kd2 = 0.001;
+        sptr->KP = 0.4;
+        sptr->KD = 5.8;
+        sptr->KP_2 = 0.001;
+        sptr->KD_2 = 0.001;
         break;
     }
 }

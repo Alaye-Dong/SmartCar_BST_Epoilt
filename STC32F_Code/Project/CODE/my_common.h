@@ -44,6 +44,7 @@ typedef unsigned char bool;
 extern int8 element_busy_flag;
 
 void Bubble_Sort_Int16(int16 data_array[], uint8 length);
+void Fast_De_Extremum_Averaging(int16 input_array[], uint8 array_length, int16 *output_avage);
 void Trimmed_Mean_Filter(int16 data_array[], uint8 size, uint8 extreme_number, int16 *filtered_value);
 void Insertion_Sort(int16 array[], uint8 size);
 int16 Low_Pass_Filter(int16 new_value, int16 last_value, float fliter_factor);

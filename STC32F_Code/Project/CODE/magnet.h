@@ -37,7 +37,6 @@ void Magnet_ADC_Init(void);
 void Magnet_ADC_Read(void);
 void Inductor_Process(void);
 void Magnet_ADC_Filter(void);
-void Fast_De_Extremum_Averaging(int16 input_array[], uint8 array_length, int16 *output_avage);
 void Bubble_Sort_ADC(void);
 void Inductor_Normal(void);
 void Position_Analyse(void);
