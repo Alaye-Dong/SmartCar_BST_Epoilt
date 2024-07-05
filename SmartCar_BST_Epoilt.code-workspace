@@ -38,7 +38,8 @@
 			"MATH.H": "cpp",
 			"algorithm": "c",
 			"zf_delay.h": "c",
-			"key.h": "c"
+			"key.h": "c",
+			"intrins.h": "c"
 		},
 		"files.autoSave": "off",
 		"todo-tree.tree.showBadges": true,

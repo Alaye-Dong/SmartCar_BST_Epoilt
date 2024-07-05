@@ -49,6 +49,7 @@ void PID_Process(void)
         direction_pid_time_counter = 0; // 重置周期计数器
 
         Direction_PID();
+        // Direction_PID_Incomplete_D();
     }
 
     Left_Speed_PID();
@@ -97,9 +98,37 @@ void Direction_PID(void)
     position_delta_error = position - position_last;               // 计算误差变化量
     Fuzzy_PID_Control(position, position_delta_error, &direction); // 模糊PID计算赋值
 
-    // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
-    direction_output = position * direction.KP + (position - position_last) * direction.KD + abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2;
+    direction_output = position * direction.KP + (position - position_last) * direction.KD +
+                       abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2; // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
     // direction_output += (position_delta_error / (0.005 * DIRECTION_PID_PERIOD) + position)* direction.KF; // 合并前馈量
+    position_last = position;
+
+    speed.target_left = speed.target - direction_output;
+    speed.target_right = speed.target + direction_output;
+}
+
+/* TODO 实验中 不完全微分PID */
+#define TF T * 0.05
+#define T 0.02
+void Direction_PID_Incomplete_D(void)
+{
+    static int16 position_last = 0;
+    static float D_value_last = 0;
+    const float alpha = 0.05; // TF / (TF + T);
+    float D_value = 0;
+
+    position_delta_error = position - position_last;               // 计算误差变化量
+    Fuzzy_PID_Control(position, position_delta_error, &direction); // 模糊PID计算赋值
+    D_value = direction.KD * (1 - alpha) * position_delta_error + alpha * D_value_last;
+    direction_output = position * direction.KP +
+                       D_value +
+                       abs(position) * position * direction.KP_2 - gyro_z_filtered * direction.KD_2; // 加入二次项，转向更迅速，直道灵敏度降低。融合陀螺仪，转向增加阻尼，更平稳。
+
+    // D_value = direction.KD * (1 - alpha) * position + alpha * D_value_last - direction.KD * (1 - alpha) * position_last;
+
+    // 更新D值，结合当前位置差和上一D值的加权和
+
+    D_value_last = D_value;
     position_last = position;
 
     speed.target_left = speed.target - direction_output;

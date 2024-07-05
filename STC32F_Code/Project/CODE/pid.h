@@ -38,6 +38,7 @@ void PID_Process(void);
 
 void Speed_Contrl(void);
 void Direction_PID(void);
+void Direction_PID_Incomplete_D(void);
 void Left_Speed_PID(void);
 void Right_Speed_PID(void);
 

@@ -9,7 +9,7 @@ typedef enum ROUND_STATE // RIGHT_ANGLE_STATEÊÇÒ»¸ö±êÊ¶·û£¬¿ÉÒÔ¿´³ÉÕâ¸ö¼¯ºÏµÄÃû×
     ROUND_PRE,
 
     ROUND_LEFT_PRE,     // Ô¤Èë»·
-    ROUND_LEFT_TRUN_IN, // Èë»·
+    ROUND_LEFT_TURN_IN, // Èë»·
     ROUND_LEFT_IN,      // »·ÄÚ
     ROUND_LEFT_TURN_OUT,
     ROUND_LEFT_OUT,
@@ -27,6 +27,7 @@ extern float round_right_proximity_coeff;
 
 void Round_Recognition(void);
 void Round_Turn_Process(void);
-void Round_Type_Deal(void);
+void Round_Type_Auto_Deal(void);
+void Round_Type_Manual_Deal(void);
 
 #endif
