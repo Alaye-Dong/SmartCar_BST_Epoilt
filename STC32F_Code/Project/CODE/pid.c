@@ -5,7 +5,7 @@ PIDTypeDef direction, motor_left, motor_right;
 int16 position_delta_error = 0; // 用于方向环模糊PID的偏差变化量
 float direction_output = 0;
 
-SpeedTypeDef speed = {100, 0, 0.01,
+SpeedTypeDef speed = {110, 0, 0.01,
                       0, 0, 0};
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KF)
@@ -55,6 +55,39 @@ void PID_Process(void)
     Right_Speed_PID();
 }
 
+// TODO 前馈PID
+#define DELTA_DECELERATION_FACTOR 2 // TODO 待调试
+void Speed_Contrl(void)
+{
+    // TODO 利用陀螺仪进行直道弯道判断
+    speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor) - FUNC_ABS(position_delta_error * DELTA_DECELERATION_FACTOR); // 速度控制，弯道减速
+
+    if (speed.target < 0)
+    {
+        speed.target = 0;
+    }
+
+    if (position_loss_stop_protect_flag == 1)
+    {
+        speed.target = 0; // 丢线停车保护
+    }
+
+    // //长直道加速
+    // uint16 straight_time_flag = 0;
+    // if (FUNC_ABS(gyro_z_filtered) < 500)
+    // {
+    //     straight_time_flag++;
+    // }
+    // if (straight_time_flag > 200) // 200 * 5 = 1000ms
+    // {
+    //     speed.target = speed.target + speed.target * speed.boost_factor;
+    // }
+    // else
+    // {
+    //     straight_time_flag = 0;
+    // }
+}
+
 // *******************************串级PID 偏差->>转向环->>速度环->>PWM
 //  转向外环 PD 二次项 PD
 void Direction_PID(void)
@@ -99,34 +132,6 @@ void Right_Speed_PID(void)
     // motor_right_pwm += motor_right_error * motor_right.KF; // 合并前馈量
 
     motor_right_last_error = motor_right_error;
-}
-
-// TODO 前馈PID
-#define DELTA_DECELERATION_FACTOR 1 // TODO 待调试
-void Speed_Contrl(void)
-{
-    // TODO 利用陀螺仪进行直道弯道判断
-    speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor) - FUNC_ABS(position_delta_error * DELTA_DECELERATION_FACTOR); // 速度控制，弯道减速
-
-    if (position_loss_stop_protect_flag == 1)
-    {
-        speed.target = 0; // 丢线停车保护
-    }
-
-    // //长直道加速
-    // uint16 straight_time_flag = 0;
-    // if (FUNC_ABS(gyro_z_filtered) < 500)
-    // {
-    //     straight_time_flag++;
-    // }
-    // if (straight_time_flag > 200) // 200 * 5 = 1000ms
-    // {
-    //     speed.target = speed.target + speed.target * speed.boost_factor;
-    // }
-    // else
-    // {
-    //     straight_time_flag = 0;
-    // }
 }
 
 /**

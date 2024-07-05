@@ -36,10 +36,11 @@ void PIDType_Init(void);
 void PID_Init(void);
 void PID_Process(void);
 
+void Speed_Contrl(void);
 void Direction_PID(void);
 void Left_Speed_PID(void);
 void Right_Speed_PID(void);
-void Speed_Contrl(void);
+
 float Increment_PI_Dynamic_P_MAX(int16 target_speed_encoder, int16 encoder_now);
 
 uint8 Fuzzify(float value);
