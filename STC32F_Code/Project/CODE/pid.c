@@ -38,8 +38,6 @@ void PID_Process(void)
 {
     static uint8 direction_pid_time_counter = 0; // 方向环控制周期标志位 （20ms
 
-    Speed_Contrl();
-
     if (direction_pid_time_counter != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
         direction_pid_time_counter++;
@@ -47,7 +45,7 @@ void PID_Process(void)
     else
     {
         direction_pid_time_counter = 0; // 重置周期计数器
-
+        Speed_Contrl();
         Direction_PID();
         // Direction_PID_Incomplete_D();
     }

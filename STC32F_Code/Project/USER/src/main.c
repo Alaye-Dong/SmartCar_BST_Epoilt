@@ -75,5 +75,6 @@ void main()
             Obstacle_Recognition();
             // Cross_Recognition();
         }
+        Round_Proximity_Coeff_Calculate();
     }
 }

@@ -156,8 +156,8 @@ void TM4_Isr() INTERRUPT(20)
     // {
     //     Right_Angle_Turn_Process();
     // }
-    // else if (round_flag != ROUND_NONE)
-    if (round_flag != ROUND_NONE)
+    // else if (round_flag != ROUND_STATE_NONE)
+    if (round_flag != ROUND_STATE_NONE)
     {
         Round_Turn_Process();
     }

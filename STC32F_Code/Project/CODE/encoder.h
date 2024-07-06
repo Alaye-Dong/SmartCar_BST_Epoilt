@@ -14,7 +14,7 @@ typedef struct
 } EncoderTypeDef;
 
 extern EncoderTypeDef encoder_left, encoder_right;
-extern float car_distance_real_cm;
+extern float car_distance_cm;
 
 void Encoder_Init(void);
 

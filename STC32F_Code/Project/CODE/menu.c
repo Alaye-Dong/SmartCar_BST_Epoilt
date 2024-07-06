@@ -109,7 +109,7 @@ int16 Have_Sub_Menu(int16 menu_id)
 {
     uint8 i = 0;
     // sizeof(menu_have_sub) / sizeof(menu_have_sub [0]) 计算数组长度
-    for (i = 0; i <= sizeof(menu_have_sub) / sizeof(menu_have_sub[0]); i++)
+    for (i = 0; i < sizeof(menu_have_sub) / sizeof(menu_have_sub[0]); i++)
     {
         if (menu_have_sub[i] == menu_id)
         {
@@ -534,7 +534,7 @@ void Menu_FOUR_Display(uint8 control_line)
 
     lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, dl1b_distance_mm, 5);
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "ToDs");
-    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, car_distance_real_cm, 4);
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, car_distance_cm, 4);
 
     lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, round_left_proximity_coeff, 4);
     lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "Rc");
@@ -545,6 +545,10 @@ void Menu_FOUR_Display(uint8 control_line)
     lcd_showint32(6 * CHAR_SCREEN_WIDTH, i, position_normal, 3);
     // lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "VeDi");
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, position_difference_weighted, 3);
+
+    lcd_showint32(0 * CHAR_SCREEN_WIDTH, i, round_left_turn_in_proximity_coeff, 4);
+    lcd_showstr(6 * CHAR_SCREEN_WIDTH, i, "TI");
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, i++, round_right_turn_in_proximity_coeff, 4);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }

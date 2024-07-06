@@ -159,6 +159,10 @@ int main() {
 
 [增量式PID的P和I怎么理解（二）_pi增大不是减少超调量吗?为什么会使超调量增加-CSDN博客](https://blog.csdn.net/fangchenglia/article/details/109534127?spm=1001.2014.3001.5502)
 
+### 论文期刊
+
+[一种基于电磁传感器的智能车循线算法](https://www.c-s-a.org.cn/csa/article/pdf/20140320 "")
+
 ## TODO
 
 * [X] 前馈PID
