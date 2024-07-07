@@ -62,9 +62,9 @@
 #include "gyro.h"
 #include "key.h"
 #include "menu.h"
-#include "right_angle.h"
+// #include "right_angle.h"
 #include "round.h"
-#include "cross.h"
+// #include "cross.h"
 #include "obstacle.h"
 
 #ifndef __VSCODE_C251__

@@ -575,16 +575,6 @@
               <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_IMU660RA.h</FilePath>
             </File>
             <File>
-              <FileName>SEEKFREE_VIRSCO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_VIRSCO.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_VIRSCO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_VIRSCO.h</FilePath>
-            </File>
-            <File>
               <FileName>SEEKFREE_WIRELESS.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_WIRELESS.c</FilePath>
@@ -618,11 +608,6 @@
               <FileName>beep.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CODE\beep.h</FilePath>
-            </File>
-            <File>
-              <FileName>cross.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODE\cross.h</FilePath>
             </File>
             <File>
               <FileName>debug.h</FileName>
@@ -680,11 +665,6 @@
               <FilePath>..\CODE\pid.h</FilePath>
             </File>
             <File>
-              <FileName>right_angle.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODE\right_angle.h</FilePath>
-            </File>
-            <File>
               <FileName>round.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CODE\round.h</FilePath>
@@ -708,11 +688,6 @@
               <FileName>beep.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CODE\beep.c</FilePath>
-            </File>
-            <File>
-              <FileName>cross.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CODE\cross.c</FilePath>
             </File>
             <File>
               <FileName>debug.c</FileName>
@@ -768,11 +743,6 @@
               <FileName>pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CODE\pid.c</FilePath>
-            </File>
-            <File>
-              <FileName>right_angle.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CODE\right_angle.c</FilePath>
             </File>
             <File>
               <FileName>round.c</FileName>
