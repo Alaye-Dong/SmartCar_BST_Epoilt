@@ -33,11 +33,8 @@ uint8 lcd_on_flag = 1;
 
 int16 display_codename = 0;       // 显示页面代号
 int8 cursor_row = 0;              // 光标所在行号
-int8 previous_cursor_row = -1;    // 上一次光标所在列号
 int8 menu_next_flag = 0;          // 光标所指菜单进入标志位
-float change_unit = 0;            // 单次修改的单位值
 int16 change_unit_multiplier = 1; // 修改单位倍数
-uint8 keystroke_three_count = 0;  // 定义一个全局变量记录KEYSTROKE_THREE的触发次数
 
 // 需要被修改的参数示例
 int16 start_flag = 0, garage_out_direction = 0;
@@ -52,6 +49,8 @@ int16 menu_have_sub[] = {
 // 菜单箭头标识
 void Cursor(void)
 {
+    static int8 previous_cursor_row = -1; // 上一次光标所在列号
+
     menu_next_flag = 0;
     switch (keystroke_label)
     {
@@ -119,9 +118,11 @@ int16 Have_Sub_Menu(int16 menu_id)
     return 0;
 }
 
-// 处理按键扫描返回页与参数修改倍数逻辑
+// 处理子页面按键扫描返回页与参数修改倍数逻辑
 void HandleKeystroke(int16 keystroke_label)
 {
+    static uint8 keystroke_three_count = 0; // 记录KEYSTROKE_THREE的触发次数
+
     switch (keystroke_label)
     {
     case KEYSTROKE_FOUR:

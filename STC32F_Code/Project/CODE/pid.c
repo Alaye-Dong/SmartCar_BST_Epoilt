@@ -289,14 +289,14 @@ void Fuzzy_PID_Control(float error, float delta_error, PIDTypeDef *sptr)
     {
     case NB:
     case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
-        sptr->KP = 1.7;
+        sptr->KP = 1.8;
         sptr->KD = 6.8;
         sptr->KP_2 = 0.006;
         sptr->KD_2 = 0.001;
         break;
     case NM:
     case PM:
-        sptr->KP = 1.6;
+        sptr->KP = 1.7;
         sptr->KD = 6.8;
         sptr->KP_2 = 0.006;
         sptr->KD_2 = 0.001;
