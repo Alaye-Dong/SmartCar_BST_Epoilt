@@ -5,7 +5,7 @@ PIDTypeDef direction, motor_left, motor_right;
 int16 position_delta_error = 0; // 用于方向环模糊PID的偏差变化量
 float direction_output = 0;
 
-SpeedTypeDef speed = {110, 0, 0.01,
+SpeedTypeDef speed = {105, 0, 0.01,
                       0, 0, 0};
 
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KF)
@@ -34,9 +34,10 @@ void PID_Init(void)
 }
 
 #define DIRECTION_PID_PERIOD 4 // 定义20ms的周期，即4个5ms周期
+// PID串级控制中，外环周期应该大于等于内环周期，使得内环可以有足够的时间响应外环的输入
 void PID_Process(void)
 {
-    static uint8 direction_pid_time_counter = 0; // 方向环控制周期标志位 （20ms
+    static uint8 direction_pid_time_counter = 0; // 方向环控制周期标志位
 
     if (direction_pid_time_counter != DIRECTION_PID_PERIOD - 1) // 方向环控制周期为20ms，即3次5ms中断标志位后，再下一次中断时即20ms
     {
@@ -59,7 +60,9 @@ void PID_Process(void)
 void Speed_Contrl(void)
 {
     // TODO 利用陀螺仪进行直道弯道判断
-    speed.target = speed.normal - FUNC_ABS(gyro_z_filtered * speed.deceleration_factor) - FUNC_ABS(position_delta_error * DELTA_DECELERATION_FACTOR); // 速度控制，弯道减速
+    speed.target = speed.normal -
+                   FUNC_ABS(gyro_z_filtered * speed.deceleration_factor) -
+                   FUNC_ABS(position_delta_error * DELTA_DECELERATION_FACTOR); // 速度控制，弯道减速
 
     if (speed.target < 0)
     {
@@ -87,7 +90,7 @@ void Speed_Contrl(void)
     // }
 }
 
-// *******************************串级PID 偏差->>转向环->>速度环->>PWM
+// *******************************串级PID 偏差->>转向环->>角速度环（待实现）->>速度环->>PWM
 //  转向外环 PD 二次项 PD
 void Direction_PID(void)
 {
@@ -133,6 +136,22 @@ void Direction_PID_Incomplete_D(void)
     speed.target_right = speed.target + direction_output;
 }
 
+// void ACC_PID(void)
+// {
+//     static int16 acc_last_error = 0;
+//     static float acc_output = 0;
+//     int16 acc_error = 0;
+
+//     acc_error = (int16)(direction_output - gyro_z_filtered);
+
+//     acc_output += (acc_error - acc_last_error) * acc.KP + acc_error * acc.KI;
+
+//     acc_last_error = acc_error;
+
+//     speed.target_left = speed.target - acc_output;
+//     speed.target_right = speed.target + acc_output;
+// }
+
 // 左轮内环 PI
 void Left_Speed_PID(void)
 {
@@ -142,7 +161,6 @@ void Left_Speed_PID(void)
     motor_left_error = (int16)(speed.target_left - encoder_left.encoder_filtered);
     // motor_left.KP = Increment_PI_Dynamic_P_MAX(speed.target_left, encoder_left.encoder_filtered); // 使用增量式动态P
     motor_left_pwm += (motor_left_error - motor_left_last_error) * motor_left.KP + motor_left_error * motor_left.KI;
-    // motor_left_pwm += motor_left_error * motor_left.KF; // 合并前馈量
 
     motor_left_last_error = motor_left_error;
 }
@@ -156,7 +174,6 @@ void Right_Speed_PID(void)
     motor_right_error = (int16)(speed.target_right - encoder_right.encoder_filtered);
     // motor_right.KP = Increment_PI_Dynamic_P_MAX(speed.target_right, encoder_right.encoder_filtered); // 使用增量式动态P
     motor_right_pwm += (motor_right_error - motor_right_last_error) * motor_right.KP + motor_right_error * motor_right.KI;
-    // motor_right_pwm += motor_right_error * motor_right.KF; // 合并前馈量
 
     motor_right_last_error = motor_right_error;
 }
@@ -164,7 +181,7 @@ void Right_Speed_PID(void)
 /**
  * 动态调整增量PI控制的P参数的函数,计算出的P为理论上最优激活灵敏度最大值
  * 本函数用于根据编码器增量实现对P参数的动态调整
- *
+ * @note 实测效果不理想，待研究优化
  * @param encoder_now 上一周期的实际速度（int16类型）
  * @param encoder_increment 增域，即编码器增量（int16类型）：（编码器读值与目标值的差）encoder_target - encoder_now
  * @param ENCODER_MAX 限幅值
@@ -272,17 +289,17 @@ void Fuzzy_PID_Control(float error, float delta_error, PIDTypeDef *sptr)
     {
     case NB:
     case PB: // 因为车左右转向是完全对称，所以这里可以将两种模糊结果得同一个值
-        sptr->KP = 0.9;
-        sptr->KD = 5.8;
-        sptr->KP_2 = 0.004;
-        sptr->KD_2 = 0.000;
+        sptr->KP = 1.7;
+        sptr->KD = 6.8;
+        sptr->KP_2 = 0.006;
+        sptr->KD_2 = 0.001;
         break;
     case NM:
     case PM:
-        sptr->KP = 0.8;
-        sptr->KD = 5.8;
-        sptr->KP_2 = 0.004;
-        sptr->KD_2 = 0.0005;
+        sptr->KP = 1.6;
+        sptr->KD = 6.8;
+        sptr->KP_2 = 0.006;
+        sptr->KD_2 = 0.001;
         break;
     case NS:
     case PS:

@@ -60,14 +60,14 @@ void Magnet_ADC_Filter(void)
 {
     uint8 inductor_index;
     int16 ADC_mean_value[INDUCTORS];
-    static int16 ADC_old_filtered_value[INDUCTORS] = {0};
+    // static int16 ADC_old_filtered_value[INDUCTORS] = {0};
 
     // // 冒泡排序
     // Bubble_Sort_ADC();
 
     for (inductor_index = 0; inductor_index < INDUCTORS; inductor_index++)
     {
-        ADC_old_filtered_value[inductor_index] = ADC_filtered_value[inductor_index];
+        // ADC_old_filtered_value[inductor_index] = ADC_filtered_value[inductor_index];
 
         // Trimmed_Mean_Filter(&ADC_values[i], INDUCTORS, EXTREME_NUMBER, &ADC_mean_value[i]);
         Fast_De_Extremum_Averaging(&ADC_values[inductor_index], SAMPLES, &ADC_mean_value[inductor_index]);
@@ -96,9 +96,9 @@ void Bubble_Sort_ADC(void)
 }
 
 // 电感归一化
-#define LEFT_V_MAX 3000
+#define LEFT_V_MAX 3600 // 4600 5000
 #define LEFT_V_MIN 25
-#define RIGHT_V_MAX 3000
+#define RIGHT_V_MAX 3600
 #define RIGHT_V_MIN 1
 #define LEFT_H_MAX 2300
 #define LEFT_H_MIN 35
@@ -106,7 +106,7 @@ void Bubble_Sort_ADC(void)
 #define RIGHT_H_MIN 15
 void Inductor_Normal(void)
 {
-    static int16 inductor_normal_value[INDUCTORS] = {0};
+    int16 inductor_normal_value[INDUCTORS] = {0};
     // 归一化公式 (x - min) / (max - min) * 100
 
     inductor_normal_value[LEFT_V] = (float)(ADC_filtered_value[LEFT_V] - LEFT_V_MIN) / (LEFT_V_MAX - LEFT_V_MIN) * 100;
@@ -114,8 +114,8 @@ void Inductor_Normal(void)
     inductor_normal_value[LEFT_H] = (float)(ADC_filtered_value[LEFT_H] - LEFT_H_MIN) / (LEFT_H_MAX - LEFT_H_MIN) * 100;
     inductor_normal_value[RIGHT_H] = (float)(ADC_filtered_value[RIGHT_H] - RIGHT_H_MIN) / (RIGHT_H_MAX - RIGHT_H_MIN) * 100;
 
-    inductor[LEFT_V] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_V], 0, 100);
-    inductor[RIGHT_V] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_V], 0, 100);
+    inductor[LEFT_V] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_V], 0, 200);
+    inductor[RIGHT_V] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_V], 0, 200);
     inductor[LEFT_H] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_H], 0, 100);
     inductor[RIGHT_H] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_H], 0, 100);
 
@@ -125,7 +125,7 @@ void Inductor_Normal(void)
     // inductor[RIGHT_S] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_S], 0, 100);
 }
 
-#define V_GAIN 2 // 垂直方向的增益
+#define V_GAIN 2 // 垂直方向的增益 2.5
 #define H_GAIN 1
 void Position_Analyse(void)
 {
@@ -143,7 +143,7 @@ void Position_Analyse(void)
     position_vector_modulus = (temp_left - temp_right) * 100 / (temp_left + temp_right + 1); // 向量差比和，补1防止分母为0 //TODO : 测试改成差加权会不会更好用
 
     // * 差比和差加权算法
-    temp_difference = H_GAIN * (inductor[LEFT_H] - inductor[RIGHT_H]) + V_GAIN * (inductor[LEFT_V] - inductor[RIGHT_V]); // TODO 测试加权系数
+    temp_difference = H_GAIN * (inductor[LEFT_H] - inductor[RIGHT_H]) + V_GAIN * (inductor[LEFT_V] - inductor[RIGHT_V]); // TODO 竖直电感饱和偏差失真问题
     temp_sum_difference_weighted = H_GAIN * (inductor[LEFT_H] + inductor[RIGHT_H]) + abs((inductor[LEFT_V] - inductor[RIGHT_V]));
     position_difference_weighted = (temp_difference * 100) / (temp_sum_difference_weighted + 1);
 
@@ -167,13 +167,16 @@ void Position_Loss_Remember_Protect(uint8 protect_mode)
 {
     static uint16 position_remember = 0;
 
-    if (position_loss_timer == 0 && (inductor[LEFT_H] + inductor[RIGHT_H]) <= 5) // 首次检测到丢线，记录当前位置的偏差
+    if (position_loss_timer == 0 && (inductor[LEFT_H] + inductor[RIGHT_H] <= 5) &&
+        (inductor[LEFT_H] <= 2 || inductor[RIGHT_H] <= 2) &&
+        (inductor[LEFT_V] <= 2 || inductor[RIGHT_V] <= 2) &&
+        (inductor[LEFT_V] + inductor[RIGHT_V] <= 5)) // 首次检测到丢线，记录当前位置的偏差
     {
         position_remember = position;
         position_loss_timer++;
     }
 
-    if (position_loss_timer != 0 && (inductor[LEFT_V] + inductor[RIGHT_V] + inductor[LEFT_H] + inductor[RIGHT_H] <= 30)) // 处于丢线状态，使用记忆打角
+    if (position_loss_timer != 0 && (inductor[LEFT_V] + inductor[RIGHT_V] + inductor[LEFT_H] + inductor[RIGHT_H] <= 20)) // 处于丢线状态，使用记忆打角
     {
         position_loss_timer++;
         position = position_remember;
