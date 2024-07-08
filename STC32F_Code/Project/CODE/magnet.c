@@ -168,7 +168,10 @@ void Position_Analyse(void)
 
     position = position_difference_weighted;
 
-    Position_Loss_Remember_Protect(1);
+    if (obstacle_flag == OBSTACLE_NONE)
+    {
+        Position_Loss_Remember_Protect(1);
+    }
 }
 
 /**
