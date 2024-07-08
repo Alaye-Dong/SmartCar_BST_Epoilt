@@ -40,7 +40,7 @@ int16 change_unit_multiplier = 1; // 修改单位倍数
 int16 start_flag = 0, garage_out_direction = 0;
 
 // 将有菜单页面的代号填入该数组中，防止由箭头所在行号所决定进入不存在的菜单
-int16 menu_have_sub[] = {
+const int16 menu_have_sub[] = {
     0,
     1, 11, 12,
     2, 21, 22, 23, 24, 25, 26,

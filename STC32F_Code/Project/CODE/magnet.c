@@ -9,6 +9,8 @@ int16 position_difference_weighted = 0;
 int16 position_normal = 0;
 int16 position = 0; // position大于0表示车偏右应左转，小于0表示车偏左应右转
 
+InductorMathTypeDef inductor_math;
+
 void Magnet_ADC_Init(void)
 {
     /* ADC引脚初始化 */
@@ -38,6 +40,7 @@ void Inductor_Process(void)
     Magnet_ADC_Read();
     Magnet_ADC_Filter();
     Inductor_Normal();
+    Inductor_Math_Pre_Calculate(&inductor_math);
 }
 
 void Magnet_ADC_Read(void)
@@ -86,14 +89,14 @@ void Magnet_ADC_Filter(void)
     }
 }
 
-void Bubble_Sort_ADC(void)
-{
-    uint8 inductor_index;
-    for (inductor_index = 0; inductor_index < INDUCTORS; inductor_index++)
-    {
-        Bubble_Sort_Int16(ADC_values[inductor_index], SAMPLES);
-    }
-}
+// void Bubble_Sort_ADC(void)
+// {
+//     uint8 inductor_index;
+//     for (inductor_index = 0; inductor_index < INDUCTORS; inductor_index++)
+//     {
+//         Bubble_Sort_Int16(ADC_values[inductor_index], SAMPLES);
+//     }
+// }
 
 // 电感归一化
 #define LEFT_V_MAX 3600 // 4600 5000
@@ -114,7 +117,7 @@ void Inductor_Normal(void)
     inductor_normal_value[LEFT_H] = (float)(ADC_filtered_value[LEFT_H] - LEFT_H_MIN) / (LEFT_H_MAX - LEFT_H_MIN) * 100;
     inductor_normal_value[RIGHT_H] = (float)(ADC_filtered_value[RIGHT_H] - RIGHT_H_MIN) / (RIGHT_H_MAX - RIGHT_H_MIN) * 100;
 
-    inductor[LEFT_V] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_V], 0, 200);
+    inductor[LEFT_V] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_V], 0, 200); // 放大归一化范围到200，防止竖直电感提前饱和造成偏差计算错误
     inductor[RIGHT_V] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_V], 0, 200);
     inductor[LEFT_H] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_H], 0, 100);
     inductor[RIGHT_H] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_H], 0, 100);
@@ -123,6 +126,18 @@ void Inductor_Normal(void)
     // inductor_normal_value[RIGHT_S] = (float)(ADC_filtered_value[RIGHT_S] - 10.0) / (2280.0 - 10.0) * 100.0;
     // inductor[LEFT_S] = FUNC_LIMIT_AB(inductor_normal_value[LEFT_S], 0, 100);
     // inductor[RIGHT_S] = FUNC_LIMIT_AB(inductor_normal_value[RIGHT_S], 0, 100);
+}
+
+void Inductor_Math_Pre_Calculate(InductorMathTypeDef *sptr)
+{
+    sptr->H_difference = inductor[LEFT_H] - inductor[RIGHT_H];
+    sptr->H_sum = inductor[LEFT_H] + inductor[RIGHT_H];
+
+    sptr->V_difference = inductor[LEFT_V] - inductor[RIGHT_V];
+    sptr->V_sum = inductor[LEFT_V] + inductor[RIGHT_V];
+
+    sptr->S_difference = inductor[LEFT_S] - inductor[RIGHT_S];
+    sptr->S_sum = inductor[LEFT_S] + inductor[RIGHT_S];
 }
 
 #define V_GAIN 2 // 垂直方向的增益 2.5
@@ -143,12 +158,12 @@ void Position_Analyse(void)
     position_vector_modulus = (temp_left - temp_right) * 100 / (temp_left + temp_right + 1); // 向量差比和，补1防止分母为0 //TODO : 测试改成差加权会不会更好用
 
     // * 差比和差加权算法
-    temp_difference = H_GAIN * (inductor[LEFT_H] - inductor[RIGHT_H]) + V_GAIN * (inductor[LEFT_V] - inductor[RIGHT_V]); // TODO 竖直电感饱和偏差失真问题
-    temp_sum_difference_weighted = H_GAIN * (inductor[LEFT_H] + inductor[RIGHT_H]) + abs((inductor[LEFT_V] - inductor[RIGHT_V]));
+    temp_difference = H_GAIN * (inductor_math.H_difference) + V_GAIN * (inductor_math.V_difference); // TODO 竖直电感饱和偏差失真问题
+    temp_sum_difference_weighted = H_GAIN * (inductor_math.H_sum) + abs((inductor_math.V_difference));
     position_difference_weighted = (temp_difference * 100) / (temp_sum_difference_weighted + 1);
 
     //  普通差比和
-    temp_sum = (inductor[LEFT_H] + inductor[RIGHT_H]) + (inductor[LEFT_V] - inductor[RIGHT_V]);
+    temp_sum = (inductor_math.H_sum) + (inductor_math.V_difference);
     position_normal = (temp_difference * 100) / (temp_sum + 1);
 
     position = position_difference_weighted;
