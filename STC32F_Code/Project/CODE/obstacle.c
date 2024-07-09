@@ -16,12 +16,14 @@ void ToF_Init(void)
 
 void Obstacle_Recognition(void)
 {
+    static obstacle_number = 0;
     dl1b_get_distance();
 
-    if (dl1b_distance_mm <= 850 && dl1b_distance_mm >= 300 && inductor_math.V_sum < 30) // 障碍识别 可以融合角速度判断（在比较直的赛道才避障）
+    if (obstacle_number < 1 && dl1b_distance_mm <= 850 && dl1b_distance_mm >= 300 && inductor_math.V_sum < 30) // 障碍识别 可以融合角速度判断（在比较直的赛道才避障）
     {
         element_busy_flag = ELEMENT_OBSTACLE;
         obstacle_flag = OBSTACLE_PRE;
+        obstacle_number++;
     }
 }
 
@@ -35,13 +37,26 @@ void Obstacle_Turn_Process(void)
         break;
 
     case OBSTACLE_TURN_RIGHT:
-        position = -150;
+        position = -80;
         IMU_Yaw_Angle_Get_Control(ON);
         Distance_Calculation();
-        if (car_distance_cm > 50 && FUNC_ABS(yaw_angle) > 50)
+        if (car_distance_cm > 60 && FUNC_ABS(yaw_angle) > 60)
         {
             IMU_Yaw_Angle_Get_Control(RESET);
             Distance_Reset();
+            obstacle_flag = OBSTACLE_TURN_LEFT_BACK;
+        }
+        break;
+
+    case OBSTACLE_TURN_LEFT_BACK:
+        position = 80;
+        IMU_Yaw_Angle_Get_Control(ON);
+        Distance_Calculation();
+        if (FUNC_ABS(yaw_angle) > 90)
+        {
+            IMU_Yaw_Angle_Get_Control(RESET);
+            Distance_Reset();
+            BEEP_OFF();
             obstacle_flag = OBSTACLE_STRAIGHT;
         }
         break;
@@ -49,22 +64,9 @@ void Obstacle_Turn_Process(void)
     case OBSTACLE_STRAIGHT:
         position = 0;
         Distance_Calculation();
-        if (car_distance_cm > 30)
+        if (car_distance_cm > 50)
         {
             Distance_Reset();
-            obstacle_flag = OBSTACLE_TURN_LEFT_BACK;
-        }
-        break;
-
-    case OBSTACLE_TURN_LEFT_BACK:
-        position = 150;
-        IMU_Yaw_Angle_Get_Control(ON);
-        Distance_Calculation();
-        if (car_distance_cm > 50 && FUNC_ABS(yaw_angle) > 50)
-        {
-            IMU_Yaw_Angle_Get_Control(RESET);
-            Distance_Reset();
-            BEEP_OFF();
             obstacle_flag = OBSTACLE_NONE;
         }
         break;
