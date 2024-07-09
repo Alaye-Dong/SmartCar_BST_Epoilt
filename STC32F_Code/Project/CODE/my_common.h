@@ -3,6 +3,22 @@
 
 #include "headfile.h"
 
+typedef unsigned char bool;
+#define true 1
+#define false 0
+
+#define PIT_TIME_MS 5
+#define TIMER_COUNT_MS(real_time_ms) (real_time_ms / PIT_TIME_MS)
+
+typedef enum ELEMENT_TYPE_FLAG
+{
+    ELEMENT_NONE = 0,
+    ELEMENT_ROUND,    // 环岛
+    ELEMENT_OBSTACLE, // 障碍
+    ELEMENT_RAMP,     // 坡道
+} ELEMENT_FLAG_enmu;
+extern ELEMENT_FLAG_enmu element_busy_flag;
+
 //====================================================宏定义函数区====================================================
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     绝对值函数 数据范围是 [-32767,32767]
@@ -34,9 +50,8 @@
 //-------------------------------------------------------------------------------------------------------------------
 #define FUNC_LIMIT_AB(x, a, b) ((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
 
-extern int8 element_busy_flag;
-
 void Bubble_Sort_Int16(int16 data_array[], uint8 length);
+void Fast_De_Extremum_Averaging(int16 input_array[], uint8 array_length, int16 *output_avage);
 void Trimmed_Mean_Filter(int16 data_array[], uint8 size, uint8 extreme_number, int16 *filtered_value);
 void Insertion_Sort(int16 array[], uint8 size);
 int16 Low_Pass_Filter(int16 new_value, int16 last_value, float fliter_factor);

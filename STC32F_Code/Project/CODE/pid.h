@@ -29,21 +29,24 @@ extern PIDTypeDef direction, motor_left, motor_right;
 
 extern float direction_output;
 
+extern uint16 position_loss_timer;
+
 void PID_Parameter_Init(PIDTypeDef *sptr, float KP, float KI, float KD, float KP_2, float KD_2, float KF);
 void PIDType_Init(void);
 void PID_Init(void);
 void PID_Process(void);
 
-void Position_Loss_Remember_Protect(uint8 protect_mode);
-
+void Speed_Contrl(void);
 void Direction_PID(void);
+void Direction_PID_Incomplete_D(void);
 void Left_Speed_PID(void);
 void Right_Speed_PID(void);
-void Speed_Contrl(void);
+
 float Increment_PI_Dynamic_P_MAX(int16 target_speed_encoder, int16 encoder_now);
 
 uint8 Fuzzify(float value);
 uint8 Fuzzy_Rule(int error, int delta_error);
-void Fuzzy_PID_Control(float error, float delta_error, float *kp, float *kd, float *kp2, float *kd2);
+
+void Fuzzy_PID_Control(float error, float delta_error, PIDTypeDef *sptr);
 
 #endif

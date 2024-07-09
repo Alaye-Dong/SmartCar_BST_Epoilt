@@ -34,7 +34,23 @@ Keil原因，使用中文注释必须使用GB2312编码，所以当查看本项�
 
 ![1719679345237](image/README/1719679345237.png)
 
-## 增量式PI的特殊意义
+### 直角时竖直电感饱和带来的影响
+
+![1720287273364](image/README/1720287273364.png)
+
+图示，为正在进行右直角转弯时的上位机值，观测的数据通道1、2为左、右竖直电感的值，通道7为差比和差加权算法的偏差计算结果。可见右直角时竖直电感会增大，偏差也会随直增大，但是若竖直电感出现饱和，偏差值将会错误的变小（竖虚线位置）。
+
+```c
+// * 差比和差加权算法  
+temp_difference = H_GAIN * (inductor[LEFT_H] - inductor[RIGHT_H]) + V_GAIN * (inductor[LEFT_V] - inductor[RIGHT_V]);
+temp_sum_difference_weighted = H_GAIN * (inductor[LEFT_H] + inductor[RIGHT_H]) + abs((inductor[LEFT_V] - inductor[RIGHT_V]));
+position_difference_weighted = (temp_difference * 100) / (temp_sum_difference_weighted + 1);
+```
+
+其原因是因为右竖直电感达到饱和时，左竖直点感仍在增加。即 `inductor[LEFT_V]-inductor[RIGHT_V]`变小了，所以依据差比和差加权算法，其偏差值会变小甚至会出现错误的偏差值指向另外一个方向的情况。
+为了避免这种影响，应该调整归一化使得电感不饱和，即让竖直电感最大时恰好为100或逼近100，但不是提前饱和。或者也可以在右电感过饱和的起始处保持 `inductor[LEFT_V]-inductor[RIGHT_V]`的值，降低这种情况的影响（这种方法待验证）。
+
+## 增量式PI的特殊意义与动态P
 
 增量式PI不能直接以“增大P响应快，增大I弥补误差”来理解。详情可以看一下这两篇博客。
 
@@ -158,6 +174,14 @@ int main() {
 [增量式PID的P和I怎么理解（一）_i增大动态性能-CSDN博客](https://blog.csdn.net/fangchenglia/article/details/109518121)
 
 [增量式PID的P和I怎么理解（二）_pi增大不是减少超调量吗?为什么会使超调量增加-CSDN博客](https://blog.csdn.net/fangchenglia/article/details/109534127?spm=1001.2014.3001.5502)
+
+[三轮控制之串级pid（后续）——By 小学生_恩智浦(飞思卡尔)智能车竞赛_智能车制作 - Powered by Discuz! (znczz.com)](http://www.znczz.com/thread-282313-1-1.html)
+
+[机器人差速轮运动学模型 (Differential Drive Kinematics) - 简书 (jianshu.com)](https://www.jianshu.com/p/5e512065e947)
+
+### 论文期刊
+
+[一种基于电磁传感器的智能车循线算法](https://www.c-s-a.org.cn/csa/article/pdf/20140320)
 
 ## TODO
 

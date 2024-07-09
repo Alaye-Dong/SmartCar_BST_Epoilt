@@ -52,7 +52,7 @@ void main()
     eeprom_init(); // eeprom初始化
     PID_Init();
 
-    pit_timer_ms(TIM_4, 5); // 设置中断定时
+    pit_timer_ms(TIM_4, PIT_TIME_MS); // 设置中断定时
 
     Beep_Buzzing(100, 3); // 开机提示蜂鸣
 
@@ -63,14 +63,19 @@ void main()
         Debug_Parameter_Oscilloscope_Send();
 
         // ! 屏幕菜单极耗性能，开启后串口刷新将只有大概5fps，不开启则为250fps
-        Keystroke_Menu();
-
-        if (element_busy_flag != 1)
+        if (start_flag == 0)
         {
-            // Right_Angle_Recognition(); // * 直角通过方法已经融合进转向PID，不需要使用元素处理
+            Keystroke_Menu();
+        }
+
+        if (element_busy_flag == ELEMENT_NONE)
+        {
+            // * 直角已经融合进转向PID，不需要使用元素处理
             // Round_Recognition();
-            Obstacle_Recognition();
-            // Cross_Recognition();
+            if (obstacle_on == 1)
+            {
+                Obstacle_Recognition();
+            }
         }
     }
 }
