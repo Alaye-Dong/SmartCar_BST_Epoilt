@@ -1,7 +1,6 @@
 #include "my_common.h"
 
-int8 element_busy_flag = 0; // 赛道元素检测忙标志位。防止在成功元素检测后进行对应动作过程中检测到新的赛道元素，导致运行错乱。
-
+ELEMENT_FLAG_enmu element_busy_flag = ELEMENT_NONE; // 赛道元素检测忙标志位
 // 冒泡排序函数
 void Bubble_Sort_Int16(int16 data_array[], uint8 length)
 {

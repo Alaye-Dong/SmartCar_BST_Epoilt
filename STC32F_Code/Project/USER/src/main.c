@@ -68,12 +68,11 @@ void main()
             Keystroke_Menu();
         }
 
-        if (element_busy_flag != 1)
+        if (element_busy_flag == ELEMENT_NONE)
         {
             // * 直角已经融合进转向PID，不需要使用元素处理
             // Round_Recognition();
             Obstacle_Recognition();
         }
-        Round_Proximity_Coeff_Calculate();
     }
 }

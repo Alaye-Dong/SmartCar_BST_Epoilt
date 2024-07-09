@@ -31,6 +31,6 @@ void Round_Recognition(void);
 void Round_Proximity_Coeff_Calculate(void);
 void Round_Turn_Process(void);
 void Round_Type_Auto_Deal(void);
-void Round_Type_Manual_Deal(void);
+void Round_Type_Manual_Deal(uint16 turn_wait_distance);
 
 #endif

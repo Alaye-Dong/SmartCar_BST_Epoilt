@@ -152,14 +152,24 @@ void TM4_Isr() INTERRUPT(20)
     Position_Analyse();
 
     // 元素时可以覆盖掉计算得的position
-
-    if (round_flag != ROUND_STATE_NONE)
+    switch (element_busy_flag)
     {
-        Round_Turn_Process();
-    }
-    else if (obstacle_flag != OBSTACLE_NONE)
-    {
+    case ELEMENT_NONE:
+        break;
+    case ELEMENT_OBSTACLE:
         Obstacle_Turn_Process();
+        break;
+
+    case ELEMENT_ROUND:
+        Round_Turn_Process();
+        break;
+
+    case ELEMENT_RAMP:
+        // TODO Ramp_Process();
+        break;
+
+    default:
+        break;
     }
 
     PID_Process();

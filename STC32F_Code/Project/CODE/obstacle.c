@@ -20,13 +20,13 @@ void Obstacle_Recognition(void)
 
     if (dl1b_distance_mm <= 850 && dl1b_distance_mm >= 300 && inductor_math.V_sum < 30) // 障碍识别 可以融合角速度判断（在比较直的赛道才避障）
     {
+        element_busy_flag = ELEMENT_OBSTACLE;
         obstacle_flag = OBSTACLE_PRE;
     }
 }
 
 void Obstacle_Turn_Process(void)
 {
-    element_busy_flag = 1;
     switch (obstacle_flag)
     {
     case OBSTACLE_PRE:
@@ -66,8 +66,14 @@ void Obstacle_Turn_Process(void)
             Distance_Reset();
             BEEP_OFF();
             obstacle_flag = OBSTACLE_NONE;
-            element_busy_flag = 0;
         }
+        break;
+
+    case OBSTACLE_NONE:
+        element_busy_flag = ELEMENT_NONE;
+        break;
+
+    default:
         break;
     }
 }
