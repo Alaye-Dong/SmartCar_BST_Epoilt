@@ -173,7 +173,10 @@ void TM4_Isr() INTERRUPT(20)
     }
 
     PID_Process();
-    Motor_PWM_Write();
+    if (start_flag == 1)
+    {
+        Motor_PWM_Write();
+    }
 
     print_send_flag = 1;
 }

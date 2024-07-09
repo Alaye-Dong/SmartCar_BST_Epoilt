@@ -29,8 +29,6 @@
 
 #define EEPROM_MODE 1 // eeporm读写开启则为1
 
-uint8 lcd_on_flag = 1;
-
 int16 display_codename = 0;       // 显示页面代号
 int8 cursor_row = 0;              // 光标所在行号
 int8 menu_next_flag = 0;          // 光标所指菜单进入标志位
@@ -196,7 +194,7 @@ void Keystroke_Special_Value(int16 *parameter)
     switch (keystroke_label)
     {
     case KEYSTROKE_ONE:
-        *parameter = -1;
+        *parameter = 0;
         break;
     case KEYSTROKE_TWO:
         *parameter = 1;
@@ -317,7 +315,7 @@ void Keystroke_Menu_HOME(void) // 0
         BEEP_ON_ms(100);
         lcd_clear(WHITE);
 
-        lcd_on_flag = 0;
+        start_flag = 1;
     }
 
     menu_next_flag = 0; // 切换完页面，标志位归0
@@ -333,9 +331,13 @@ void Menu_ONE_Display(uint8 control_line)
 
     lcd_showstr(1 * CHAR_SCREEN_WIDTH, 1, "Start_Flag");
     lcd_showstr(1 * CHAR_SCREEN_WIDTH, 2, "Out_Dir");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 3, "Speed");
+    lcd_showstr(1 * CHAR_SCREEN_WIDTH, 4, "Obsta_On");
 
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, 1, start_flag, 3); // “1” 应该与该函数被调用时control_line参数一致，才能正确显示&表示在调整的变量
     lcd_showint32(11 * CHAR_SCREEN_WIDTH, 2, garage_out_direction, 3);
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, 3, speed.normal, 3);
+    lcd_showint32(11 * CHAR_SCREEN_WIDTH, 4, obstacle_on, 3);
 
     lcd_showstr(0, control_line, "&"); //&标志提示
 }
@@ -362,6 +364,13 @@ void Keystroke_Menu_ONE(void) // 1 11 12
         Menu_ONE_Display(2);
         Keystroke_Special_Value(&garage_out_direction);
         break;
+    case 13:
+        Menu_ONE_Display(3);
+        Keystroke_int(&speed.normal, 1);
+        break;
+    case 14:
+        Menu_ONE_Display(4);
+        Keystroke_Special_Value(&obstacle_on);
     }
 }
 

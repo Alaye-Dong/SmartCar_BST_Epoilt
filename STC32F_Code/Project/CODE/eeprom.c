@@ -20,16 +20,16 @@ void eeprom_init()
     }
     else // 非初次启动，读取eeprom用于赋值变量
     {
-        start_flag = read_int(ADDRESS_START_FLAG);
         garage_out_direction = read_int(ADDRESS_GARAGE_OUT_DIRECTION);
+        speed.normal = read_int(ADDRESS_SPEED_NORMAL);
     }
 }
 
 // 刷写保存数据到eeprom
 void eeprom_flash()
 {
-    save_int(start_flag, ADDRESS_START_FLAG);
     save_int(garage_out_direction, ADDRESS_GARAGE_OUT_DIRECTION);
+    save_int(speed.normal, ADDRESS_SPEED_NORMAL);
 }
 
 /**

@@ -1,6 +1,7 @@
 #include "obstacle.h"
 
 OBSTACLE_STATE_enmu obstacle_flag = OBSTACLE_NONE;
+int16 obstacle_on = 1;
 //! dl1b_distance_mm TOF返回的距离，由逐飞库SEEKFREE_DL1B.c定义
 
 // TODO 具体阈值待实验得出

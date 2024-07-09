@@ -14,6 +14,8 @@ typedef enum OBSTACLE_STATE
 
 extern OBSTACLE_STATE_enmu obstacle_flag;
 
+extern int16 obstacle_on;
+
 void ToF_Init(void);
 void Obstacle_Recognition(void);
 void Obstacle_Turn_Process(void);

@@ -63,7 +63,7 @@ void main()
         Debug_Parameter_Oscilloscope_Send();
 
         // ! 屏幕菜单极耗性能，开启后串口刷新将只有大概5fps，不开启则为250fps
-        if (lcd_on_flag == 1)
+        if (start_flag == 0)
         {
             Keystroke_Menu();
         }
@@ -72,7 +72,10 @@ void main()
         {
             // * 直角已经融合进转向PID，不需要使用元素处理
             // Round_Recognition();
-            Obstacle_Recognition();
+            if (obstacle_on == 1)
+            {
+                Obstacle_Recognition();
+            }
         }
     }
 }
