@@ -39,7 +39,8 @@
 			"algorithm": "c",
 			"zf_delay.h": "c",
 			"key.h": "c",
-			"intrins.h": "c"
+			"intrins.h": "c",
+			"seekfree_font.h": "c"
 		},
 		"files.autoSave": "off",
 		"todo-tree.tree.showBadges": true,

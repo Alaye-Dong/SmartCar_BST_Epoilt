@@ -39,21 +39,21 @@
 #include "common.h"
 #include "board.h"
 
-//--------------------软件SPI--------------------
+// //--------------------软件SPI--------------------
 
-#define TFT_SCL_SIMSPI_PIN P25	// 定义SPI_SCK引脚
-#define TFT_SDA_SIMSPI_PIN P23	// 定义SPI_MOSI引脚
-#define TFT_REST_SIMSPI_PIN P20 // 定义复位引脚
-#define TFT_DC_SIMSPI_PIN P21	// 液晶命令位引脚定义
-#define TFT_CS_SIMSPI_PIN P22	// 定义SPI_CS引脚
-#define TFT_BL_SIMSPI_PIN P27	// 液晶背光引脚定义
+// #define TFT_SCL_SIMSPI_PIN P25	// 定义SPI_SCK引脚
+// #define TFT_SDA_SIMSPI_PIN P23	// 定义SPI_MOSI引脚
+// #define TFT_REST_SIMSPI_PIN P20 // 定义复位引脚
+// #define TFT_DC_SIMSPI_PIN P21	// 液晶命令位引脚定义
+// #define TFT_CS_SIMSPI_PIN P22	// 定义SPI_CS引脚
+// #define TFT_BL_SIMSPI_PIN P27	// 液晶背光引脚定义
 
-#define TFT_SCL_SIMSPI(x) (TFT_SCL_SIMSPI_PIN = x)
-#define TFT_SDA_SIMSPI(x) (TFT_SDA_SIMSPI_PIN = x)
-#define TFT_REST_SIMSPI(x) (TFT_REST_SIMSPI_PIN = x)
-#define TFT_DC_SIMSPI(x) (TFT_DC_SIMSPI_PIN = x)
-#define TFT_CS_SIMSPI(x) (TFT_CS_SIMSPI_PIN = x)
-#define TFT_BL_SIMSPI(x) (TFT_BL_SIMSPI_PIN = x)
+// #define TFT_SCL_SIMSPI(x) (TFT_SCL_SIMSPI_PIN = x)
+// #define TFT_SDA_SIMSPI(x) (TFT_SDA_SIMSPI_PIN = x)
+// #define TFT_REST_SIMSPI(x) (TFT_REST_SIMSPI_PIN = x)
+// #define TFT_DC_SIMSPI(x) (TFT_DC_SIMSPI_PIN = x)
+// #define TFT_CS_SIMSPI(x) (TFT_CS_SIMSPI_PIN = x)
+// #define TFT_BL_SIMSPI(x) (TFT_BL_SIMSPI_PIN = x)
 
 //--------------------硬件SPI--------------------
 
