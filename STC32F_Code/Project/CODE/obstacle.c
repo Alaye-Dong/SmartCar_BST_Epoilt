@@ -41,11 +41,22 @@ void Obstacle_Turn_Process(void)
         position = -76;
         IMU_Yaw_Angle_Get_Control(ON);
         Distance_Calculation();
-        if (car_distance_cm > 60 && FUNC_ABS(yaw_angle) > 60)
+        // car_distance_cm > 65 &&
+        if (FUNC_ABS(yaw_angle) > 50)
         {
             IMU_Yaw_Angle_Get_Control(RESET);
             Distance_Reset();
-            obstacle_flag = OBSTACLE_TURN_LEFT_BACK;
+            obstacle_flag = OBSTACLE_TURN_LEFT_PRE;
+        }
+        break;
+
+    case OBSTACLE_TURN_LEFT_PRE:
+        position = 76;
+        Distance_Calculation();
+        if (car_distance_cm > 40)
+        {
+            Distance_Reset();
+            obstacle_flag = OBSTACLE_STRAIGHT;
         }
         break;
 
@@ -53,7 +64,7 @@ void Obstacle_Turn_Process(void)
         position = 76;
         IMU_Yaw_Angle_Get_Control(ON);
         Distance_Calculation();
-        if (FUNC_ABS(yaw_angle) > 60)
+        if (FUNC_ABS(yaw_angle) > 50)
         {
             IMU_Yaw_Angle_Get_Control(RESET);
             Distance_Reset();
