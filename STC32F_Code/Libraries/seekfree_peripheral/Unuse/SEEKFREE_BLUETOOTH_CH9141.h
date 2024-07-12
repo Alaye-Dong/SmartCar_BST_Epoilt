@@ -50,10 +50,10 @@
 #define BLUETOOTH_CH9141_TIMEOUT_COUNT      500
 
 
-
-void        bluetooth_ch9141_uart_callback      (void);
 uint8       bluetooth_ch9141_init               (void);
+void 		bluetooth_ch9141_uart_callback 		(uint8 dat);
 
+uint8 		bluetooth_ch9141send_byte			(uint8 dat);
 uint32      bluetooth_ch9141_send_buff          (uint8 *buff, uint32 len);
 uint32      bluetooth_ch9141_read_buff          (uint8 *buff, uint32 len);
 

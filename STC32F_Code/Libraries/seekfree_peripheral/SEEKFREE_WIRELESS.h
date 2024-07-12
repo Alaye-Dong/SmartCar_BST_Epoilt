@@ -37,8 +37,6 @@
 #define WIRELESS_UART_RX_PIN    	UART2_RX_P46
 #define WIRELESS_TIMER_N    		TIM_2
 #define WIRELESS_UART_BAUD   		115200
-#define WIRELESS_DATA_BUF           S2BUF
-
 
 
 #define WIRELESS_RTS_PIN P07 			//定义流控位引脚  指示当前模块是否可以接受数据  0可以继续接收  1不可以继续接收
@@ -49,9 +47,10 @@
 
 
 void wireless_uart_init(void);
-void wireless_uart_callback(void);
+void wireless_uart_callback(uint8 dat);
 
+uint8  wireless_uart_send_byte(uint8 dat);
 uint32 wireless_uart_send_buff(uint8 *buff, uint32 len);
 uint32 wireless_uart_read_buff(uint8 *buff, uint32 len);
-void   wireless_uart_send_byte(uint8 dat);
+
 #endif 

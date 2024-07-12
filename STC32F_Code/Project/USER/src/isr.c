@@ -57,14 +57,12 @@ void UART2_Isr() INTERRUPT(8)
     {
         UART2_CLEAR_RX_FLAG;
         // 接收数据寄存器为：S2BUF
-        if (wireless_type == WIRELESS_SI24R1)
+        if (wireless_module_uart_handler != NULL)
         {
-            wireless_uart_callback(); // 无线转串口回调函数
+            // 该函数为函数指针
+            // 再初始化无线模块的时候，设置该函数地址
+            wireless_module_uart_handler(S2BUF);
         }
-        // else if (wireless_type == WIRELESS_CH9141)
-        // {
-        //     bluetooth_ch9141_uart_callback(); // 蓝牙转串口回调函数
-        // }
     }
 }
 

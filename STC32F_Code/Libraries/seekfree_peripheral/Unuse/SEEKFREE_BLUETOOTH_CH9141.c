@@ -15,16 +15,16 @@
  * @Target core		STC32F12K
  * @Taobao   		https://seekfree.taobao.com/
  * @date       		2021-08-27
- * @note		
+ * @note
 					接线定义：
-					------------------------------------ 
-					蓝牙转串口      单片机                        
+					------------------------------------
+					蓝牙转串口      单片机
 					RX              查看SEEKFREE_BLUETOOTH_CH9141.h文件中的BLUETOOTH_CH9141_UART_TX宏定义
 					TX              查看SEEKFREE_BLUETOOTH_CH9141.h文件中的BLUETOOTH_CH9141_UART_RX宏定义
 					RTS             查看SEEKFREE_BLUETOOTH_CH9141.h文件中的BLUETOOTH_CH9141_RTS_PIN宏定义
 					CTS             悬空
 					CMD             悬空或者上拉
-					------------------------------------ 
+					------------------------------------
  ********************************************************************************************************************/
 #include "stdio.h"
 #include "string.h"
@@ -37,19 +37,6 @@
 
 #include "SEEKFREE_BLUETOOTH_CH9141.h"
 
-
-//uint8 uart_data;
-//uint8 uart_flag;
-
-//vuint8 at_mode = 0;         //0:蓝牙透传模式 1:AT模式 2:模块复位中
-//vuint8 at_mode_num;         //at模式时用于指示数据接收的数量
-//vuint8 at_mode_data[30];    //接收at命令的缓存
-//vuint8 at_mode_cmd_flag;    //OK应答命令接收成功的标志位
-
-//uint8 mac_address[17];      //本机mac地址
-
-
-//uint8 bluetooth_ch9141_rx_buffer;
 
 
 static  fifo_struct     bluetooth_ch9141_fifo;
@@ -64,30 +51,11 @@ static          uint8   bluetooth_ch9141_data;
 //  Sample usage:
 //  @note       该函数在ISR文件 串口中断程序被调用
 //-------------------------------------------------------------------------------------------------------------------
-void bluetooth_ch9141_uart_callback (void)
+void bluetooth_ch9141_uart_callback (uint8 dat)
 {
-    // 读取无线串口的数据 并且置位接收标志
-    bluetooth_ch9141_data = BLUETOOTH_CH9141_DATA_BUF;
-    fifo_write_buffer(&bluetooth_ch9141_fifo, &bluetooth_ch9141_data, 1);       // 存入 FIFO
+    // 接到一个字节后单片机将会进入串口中断，通过在此处读取dat可以取走数据
+    fifo_write_buffer(&bluetooth_ch9141_fifo, &dat, 1);       // 存入 FIFO
 }
-
-//-------------------------------------------------------------------------------------------------------------------
-//  @brief      蓝牙转串口模块初始化
-//  @param      mode            蓝牙模式 MASTER_MODE(主机)或者SLAVE_MODE(从机)
-// @return      uint8           初始化状态 0-成功 1-失败
-//  Sample usage:
-//-------------------------------------------------------------------------------------------------------------------
-uint8 bluetooth_ch9141_init (void)
-{
-	BLUETOOTH_CH9141_RTS_PIN = 0;
-    wireless_type = WIRELESS_CH9141;
-    // 本函数使用的波特率为115200 为蓝牙转串口模块的默认波特率 如需其他波特率请使用上位机修改模块参数
-    fifo_init(&bluetooth_ch9141_fifo, FIFO_DATA_8BIT, bluetooth_ch9141_buffer, BLUETOOTH_CH9141_BUFFER_SIZE);
-    uart_init(BLUETOOTH_CH9141_INDEX, BLUETOOTH_CH9141_RX_PIN, BLUETOOTH_CH9141_TX_PIN, BLUETOOTH_CH9141_BUAD_RATE, BLUETOOTH_CH9141_TIMER);
-    return 0;
-}
-
-
 
 //-------------------------------------------------------------------------------------------------------------------
 //  @brief      无线转串口模块 发送函数
@@ -107,19 +75,35 @@ uint32 bluetooth_ch9141_send_buff (uint8 *buff, uint32 len)
         if(time_count >= BLUETOOTH_CH9141_TIMEOUT_COUNT)
             return len;                                                         // 模块忙,如果允许当前程序使用while等待 则可以使用后面注释的while等待语句替换本if语句
         uart_putbuff(BLUETOOTH_CH9141_INDEX, buff, 30);
-
         buff += 30;                                                             // 地址偏移
         len -= 30;                                                              // 数量
     }
-
     time_count = 0;
     while(BLUETOOTH_CH9141_RTS_PIN && time_count++ < BLUETOOTH_CH9141_TIMEOUT_COUNT)      // 如果RTS为低电平，则继续发送数据
         delay_ms(1);
     if(time_count >= BLUETOOTH_CH9141_TIMEOUT_COUNT)
         return len;                                                             // 模块忙,如果允许当前程序使用while等待 则可以使用后面注释的while等待语句替换本if语句
     uart_putbuff(BLUETOOTH_CH9141_INDEX, buff, (uint16)len);                            // 发送最后的数据
-
     return 0;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      ch9141蓝牙模块发送一个字节
+//  @param      dat 	需要发送的字节长度
+//  @return     uint8	0成功，1失败				
+//  @since      v1.0
+//  Sample usage:	
+//  @note       
+//-------------------------------------------------------------------------------------------------------------------
+uint8 bluetooth_ch9141send_byte(uint8 dat)
+{
+	if(BLUETOOTH_CH9141_RTS_PIN == 1)  
+	{
+		return 1;//模块忙,如果允许当前程序使用while等待 则可以使用后面注释的while等待语句替换本if语句
+	}
+	
+	uart_putchar(BLUETOOTH_CH9141_INDEX, dat);
+	return 0;
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -136,7 +120,22 @@ uint32 bluetooth_ch9141_read_buff (uint8 *buff, uint32 len)
     return data_len;
 }
 
-
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      蓝牙转串口模块初始化
+//  @param      mode            蓝牙模式 MASTER_MODE(主机)或者SLAVE_MODE(从机)
+// @return      uint8           初始化状态 0-成功 1-失败
+//  Sample usage:
+//-------------------------------------------------------------------------------------------------------------------
+uint8 bluetooth_ch9141_init (void)
+{
+    BLUETOOTH_CH9141_RTS_PIN = 0;
+    wireless_type = WIRELESS_CH9141;
+    wireless_module_uart_handler = bluetooth_ch9141_uart_callback;
+    // 本函数使用的波特率为115200 为蓝牙转串口模块的默认波特率 如需其他波特率请使用上位机修改模块参数
+    fifo_init(&bluetooth_ch9141_fifo, FIFO_DATA_8BIT, bluetooth_ch9141_buffer, BLUETOOTH_CH9141_BUFFER_SIZE);
+    uart_init(BLUETOOTH_CH9141_INDEX, BLUETOOTH_CH9141_RX_PIN, BLUETOOTH_CH9141_TX_PIN, BLUETOOTH_CH9141_BUAD_RATE, BLUETOOTH_CH9141_TIMER);
+    return 0;
+}
 
 
 

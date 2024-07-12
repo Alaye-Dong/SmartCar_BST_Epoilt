@@ -50,13 +50,19 @@ typedef volatile uint32 vuint32;	// 32 bits
 
 typedef enum //无线模块
 {
-    NO_WIRELESS_MODE = 0,   //没有无线模块
-    WIRELESS_SI24R1 = 1,    //无线转串口
-    WIRELESS_CH9141 = 2,    //蓝牙转串口
-    WIRELESS_CH573 = 3      //CH573模块
+    NO_WIRELESS_MODE = 0,   // 没有无线模块
+    WIRELESS_SI24R1 = 1,    // 无线转串口
+    WIRELESS_CH9141 = 2,    // 蓝牙转串口
+    WIRELESS_CH573 = 3,     // CH573模块
+	WIRELESS_BLE6A20 = 4,   // BLE6A20蓝牙模块
+	
 }WIRELESS_TYPE_enum;
 
+
+
 extern WIRELESS_TYPE_enum wireless_type;
+
+extern void (*wireless_module_uart_handler)(uint8 dat);
 
 
 //typedef enum

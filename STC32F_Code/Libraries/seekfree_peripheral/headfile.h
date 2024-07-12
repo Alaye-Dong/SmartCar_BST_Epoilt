@@ -46,6 +46,7 @@
 // #include "SEEKFREE_DL1A.h"
 #include "SEEKFREE_DL1B.h"
 // #include "SEEKFREE_IPS200_SPI.h"
+// #include "SEEKFREE_BLE6A20.h"
 
 //------逐飞科技组件层头文件
 #include "seekfree_assistant.h"

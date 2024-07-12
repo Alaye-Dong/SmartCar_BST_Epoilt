@@ -17,13 +17,10 @@
  * @date       		2020-4-14
  ********************************************************************************************************************/
 
-
 #ifndef __ZF_EEPROM_H
 #define __ZF_EEPROM_H
 
 #include "common.h"
-
-
 
 void iap_init(void);
 void iap_idle(void);
@@ -34,7 +31,4 @@ void iap_write_bytes(uint32 addr, uint8 *buf, uint16 len);
 void iap_erase_page(uint32 addr);
 void extern_iap_write_bytes(uint16 addr, uint8 *buf, uint16 len);
 
-
 #endif
-
-
