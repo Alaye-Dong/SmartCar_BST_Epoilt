@@ -158,7 +158,7 @@ void Position_Analyse(void)
     position_vector_modulus = (temp_left - temp_right) * 100 / (temp_left + temp_right + 1); // 向量差比和，补1防止分母为0 //TODO : 测试改成差加权会不会更好用
 
     // * 差比和差加权算法
-    temp_difference = H_GAIN * (inductor_math.H_difference) + V_GAIN * (inductor_math.V_difference); // TODO 竖直电感饱和偏差失真问题
+    temp_difference = H_GAIN * (inductor_math.H_difference) + V_GAIN * (inductor_math.V_difference);
     temp_sum_difference_weighted = H_GAIN * (inductor_math.H_sum) + abs((inductor_math.V_difference));
     position_difference_weighted = (temp_difference * 100) / (temp_sum_difference_weighted + 1);
 
