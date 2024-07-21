@@ -868,6 +868,21 @@ void lcd_showchar(uint16 x, uint16 y, const int8 dat)
             temp >>= 1;
         }
     }
+
+    // 使用6x8字体
+    // for (i = 0; i < 6; i++)
+    // {
+    //     lcd_set_region(x + i, y, x + i, y + 7);
+    //     temp = ascii_font_6x8[dat - 32][i]; // 减32因为是取模是从空格开始取得 空格在ascii中序号是32
+    //     for (j = 0; j < 8; j++)
+    //     {
+    //         if (temp & 0x01)
+    //             lcd_writedata_16bit(TFT_PENCOLOR);
+    //         else
+    //             lcd_writedata_16bit(TFT_BGCOLOR);
+    //         temp >>= 1;
+    //     }
+    // }
 }
 
 //-------------------------------------------------------------------------------------------------------------------
