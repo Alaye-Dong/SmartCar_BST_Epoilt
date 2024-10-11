@@ -67,7 +67,7 @@ typedef enum
 
 
 //此枚举定义不允许用户修改
-typedef enum    // 枚举ADC通道
+typedef enum 
 {
 
     ADC_12BIT=0,    //12位分辨率

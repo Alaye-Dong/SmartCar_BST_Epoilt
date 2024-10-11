@@ -20,13 +20,13 @@
 
 #include "seekfree_assistant.h"
 
-static seekfree_assistant_camera_struct         seekfree_assistant_camera_data;   
-seekfree_assistant_oscilloscope_struct          seekfree_assistant_oscilloscope_data;                         // 虚拟示波器数据
-static seekfree_assistant_camera_dot_struct     seekfree_assistant_camera_dot_data;                                 // 图像上位机打点协议数据
-static seekfree_assistant_camera_buffer_struct  seekfree_assistant_camera_buffer;                                   // 图像以及边界缓冲区信息
+static seekfree_assistant_camera_struct         seekfree_assistant_camera_data = {0};   
+seekfree_assistant_oscilloscope_struct          seekfree_assistant_oscilloscope_data = {0};                         // 虚拟示波器数据
+static seekfree_assistant_camera_dot_struct     seekfree_assistant_camera_dot_data = {0};                                 // 图像上位机打点协议数据
+static seekfree_assistant_camera_buffer_struct  seekfree_assistant_camera_buffer = {0};                                   // 图像以及边界缓冲区信息
 
-static fifo_struct      seekfree_assistant_fifo;
-static uint8            seekfree_assistant_buffer[SEEKFREE_ASSISTANT_BUFFER_SIZE];              		// 数据存放数组
+static fifo_struct      seekfree_assistant_fifo = {0};
+static uint8            seekfree_assistant_buffer[SEEKFREE_ASSISTANT_BUFFER_SIZE] = {0};              		// 数据存放数组
 float                   seekfree_assistant_parameter[SEEKFREE_ASSISTANT_SET_PARAMETR_COUNT] = {0};    	// 保存接收到的参数
 vuint8					seekfree_assistant_parameter_update_flag[SEEKFREE_ASSISTANT_SET_PARAMETR_COUNT] = {0};
 //-------------------------------------------------------------------------------------------------------------------

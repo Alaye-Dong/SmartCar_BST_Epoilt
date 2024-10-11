@@ -45,29 +45,30 @@ static          uint8   wireless_uart_data;
 //  Sample usage:	
 //  @note       
 //-------------------------------------------------------------------------------------------------------------------
-void wireless_uart_callback(void)
+void wireless_uart_callback(uint8 dat)
 {
-    //接到一个字节后单片机将会进入串口中断，通过在此处读取wireless_uart_data可以取走数据
-	wireless_uart_data = WIRELESS_DATA_BUF;
-    fifo_write_buffer(&wireless_uart_fifo, &wireless_uart_data, 1);       // 存入 FIFO
+    // 接到一个字节后单片机将会进入串口中断，通过在此处读取dat可以取走数据
+    fifo_write_buffer(&wireless_uart_fifo, &dat, 1);       // 存入 FIFO
 }
-
 //-------------------------------------------------------------------------------------------------------------------
-//  @brief      无线转串口模块 发送函数
-//  @param      buff        需要发送的数据地址
-//  @param      len         发送长度
-//  @return     uint32      剩余未发送的字节数   
+//  @brief      无线转串口模块 发送一个字节
+//  @param      dat        需要发送的字节
+//  @return     uint8      0-成功 1-失败
 //  @since      v1.0
 //  Sample usage:	
 //  @note       
 //-------------------------------------------------------------------------------------------------------------------
-void wireless_uart_send_byte(uint8 dat)
+uint8 wireless_uart_send_byte(uint8 dat)
 {
-	if(WIRELESS_RTS_PIN == 0)  
+	if(WIRELESS_RTS_PIN == 1)  
 	{
-		uart_putbuff(WIRELESS_UART, &dat, 1);
+		return 1;
 	}
-}
+	
+	uart_putbuff(WIRELESS_UART, &dat, 1);
+	
+	return 0;
+}	
 
 //-------------------------------------------------------------------------------------------------------------------
 //  @brief      无线转串口模块 发送函数
@@ -134,6 +135,7 @@ void wireless_uart_init(void)
 {
     WIRELESS_RTS_PIN = 0;
     wireless_type = WIRELESS_SI24R1;
+	wireless_module_uart_handler = wireless_uart_callback;
     //本函数使用的波特率为115200，为无线转串口模块的默认波特率，如需其他波特率请自行配置模块并修改串口的波特率
     fifo_init(&wireless_uart_fifo, FIFO_DATA_8BIT, wireless_uart_buffer, WIRELESS_BUFFER_SIZE);
 	uart_init(WIRELESS_UART, WIRELESS_UART_RX_PIN, WIRELESS_UART_TX_PIN, WIRELESS_UART_BAUD, WIRELESS_TIMER_N);	//初始化串口    

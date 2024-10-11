@@ -22,8 +22,7 @@
 // 关于内核频率的设定，可以查看board.h文件
 // 在board_init中,已经将P54引脚设置为复位
 // 如果需要使用P54引脚,可以在board.c文件中的board_init()函数中删除SET_P54_RESRT即可
-char print_send_str[32] = {0};
-uint8 send_flag = 0;
+
 void main()
 {
     clock_init(SYSTEM_CLOCK_52M); // 初始化系统频率,勿删除此句代码。
@@ -31,15 +30,16 @@ void main()
 
     // 此处编写用户代码 例如外设初始化代码等
     lcd_init(); // 屏幕初始化
-    display_codename = 3;
+    display_codename = 4;
+    // !使用到了未实际连接的P24引脚作spi初始化，该脚与电机控制方向脚引脚冲突
+    // !必须lcd_init()后再进行Motor_PWM_Init()中的gpio_mode(P2_4, GPO_PP)， 否则会导致电机控制方向脚输出异常
+    // *逐飞在STC32F开源库 V1.2.6(2024-05-07) 后似乎已经修复了这个bug
 
-    Wireless_Debug_Init();
-    // 初始化无线转串口
-
+    Wireless_Debug_Init(); // 初始化无线转串口
 
     Magnet_ADC_Init(); // 电磁ADC初始化
 
-    IMU_Init();
+    IMU_Init(); // 姿态传感器初始化
 
     Motor_PWM_Init(); // PWM初始化
 
@@ -47,39 +47,35 @@ void main()
 
     BEEP_Init(); // 蜂鸣器初始化
 
-    eeprom_init(); // eeprom初始化
+    ToF_Init(); // ToF DL1B初始化
 
+    eeprom_init(); // eeprom初始化
     PID_Init();
 
-    pit_timer_ms(TIM_4, 5); // 设置中断定时
+    pit_timer_ms(TIM_4, PIT_TIME_MS); // 设置中断定时
 
-    BEEP_ON_ms(100);
+    Beep_Buzzing(100, 3); // 开机提示蜂鸣
 
     while (1)
     {
         // 此处编写需要循环执行的代码
         Wireless_Seekfree_Assistant_Debug();
         Debug_Parameter_Oscilloscope_Send();
-        // if (send_flag)
-        // {
-        //     send_flag = 0;
-        //     printf("%d,", encoder_left.encoder_now);
-        //     printf("%d\n", encoder_right.encoder_now);
-        //     // sprintf(print_send_str,"%d\n", encoder_left.encoder_now);
-        //     // wireless_uart_send_buff((uint8 *)print_send_str,strlen(print_send_str));
-        // }
 
-        // func_int_to_str(test_str, encoder_left.encoder_now);
-        // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);
+        // ! 屏幕菜单极耗性能，开启后串口刷新将只有大概5fps，不开启则为250fps
+        if (start_flag == 0)
+        {
+            Keystroke_Menu();
+        }
 
-        Menu_THREE_Display(-1);
-        //Keystroke_Menu();
-
-        //uint8 test_str[] = "\r\n seekfree.taobao.com. \r\n";
-        // wireless_uart_send_buff(test_str, sizeof(test_str) - 1);
-        // // 读取fifo中的内容
-        // dat_len = wireless_uart_read_buff(read_buf, 10);
-        // // 如果读取到数据
-        // if (dat_len != 0)
+        if (element_busy_flag == ELEMENT_NONE)
+        {
+            // * 直角已经融合进转向PID，不需要使用元素处理
+            // Round_Recognition();
+            if (obstacle_on == 1)
+            {
+                Obstacle_Recognition();
+            }
+        }
     }
 }

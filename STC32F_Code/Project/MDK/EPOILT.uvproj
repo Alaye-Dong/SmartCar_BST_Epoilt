@@ -525,26 +525,6 @@
               <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_18TFT.h</FilePath>
             </File>
             <File>
-              <FileName>SEEKFREE_ABSOLUTE_ENCODER.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_ABSOLUTE_ENCODER.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_ABSOLUTE_ENCODER.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_ABSOLUTE_ENCODER.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_BLUETOOTH_CH9141.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_BLUETOOTH_CH9141.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_BLUETOOTH_CH9141.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_BLUETOOTH_CH9141.h</FilePath>
-            </File>
-            <File>
               <FileName>SEEKFREE_CONFIG.LIB</FileName>
               <FileType>4</FileType>
               <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_CONFIG.LIB</FilePath>
@@ -553,16 +533,6 @@
               <FileName>SEEKFREE_CONFIG.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_CONFIG.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_DL1A.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_DL1A.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_DL1A.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_DL1A.h</FilePath>
             </File>
             <File>
               <FileName>SEEKFREE_DL1B.c</FileName>
@@ -595,16 +565,6 @@
               <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_FUNCTION.h</FilePath>
             </File>
             <File>
-              <FileName>SEEKFREE_ICM20602.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_ICM20602.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_ICM20602.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_ICM20602.h</FilePath>
-            </File>
-            <File>
               <FileName>SEEKFREE_IMU660RA.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_IMU660RA.c</FilePath>
@@ -613,76 +573,6 @@
               <FileName>SEEKFREE_IMU660RA.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_IMU660RA.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_IMU963RA.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_IMU963RA.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_IMU963RA.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_IMU963RA.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_IPS114_SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_IPS114_SPI.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_IPS114_SPI.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_IPS114_SPI.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_IPS200_SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_IPS200_SPI.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_IPS200_SPI.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_IPS200_SPI.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_MPU6050.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_MPU6050.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_MPU6050.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_MPU6050.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_OLED.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_OLED.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_OLED.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_OLED.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_TSL1401.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_TSL1401.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_TSL1401.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_TSL1401.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_VIRSCO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_VIRSCO.c</FilePath>
-            </File>
-            <File>
-              <FileName>SEEKFREE_VIRSCO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\seekfree_peripheral\SEEKFREE_VIRSCO.h</FilePath>
             </File>
             <File>
               <FileName>SEEKFREE_WIRELESS.c</FileName>
@@ -715,59 +605,69 @@
               <FilePath>..\USER\inc\isr.h</FilePath>
             </File>
             <File>
-              <FileName>eeprom.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\eeprom.h</FilePath>
-            </File>
-            <File>
-              <FileName>key.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\key.h</FilePath>
-            </File>
-            <File>
-              <FileName>menu.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\menu.h</FilePath>
-            </File>
-            <File>
               <FileName>beep.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\inc\beep.h</FilePath>
-            </File>
-            <File>
-              <FileName>motor.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\motor.h</FilePath>
-            </File>
-            <File>
-              <FileName>encoder.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\encoder.h</FilePath>
-            </File>
-            <File>
-              <FileName>magnet.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\magnet.h</FilePath>
-            </File>
-            <File>
-              <FileName>pid.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\pid.h</FilePath>
-            </File>
-            <File>
-              <FileName>gyro.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\gyro.h</FilePath>
-            </File>
-            <File>
-              <FileName>my_common.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\inc\my_common.h</FilePath>
+              <FilePath>..\CODE\beep.h</FilePath>
             </File>
             <File>
               <FileName>debug.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\inc\debug.h</FilePath>
+              <FilePath>..\CODE\debug.h</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\eeprom.h</FilePath>
+            </File>
+            <File>
+              <FileName>encoder.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\encoder.h</FilePath>
+            </File>
+            <File>
+              <FileName>gyro.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\gyro.h</FilePath>
+            </File>
+            <File>
+              <FileName>key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\key.h</FilePath>
+            </File>
+            <File>
+              <FileName>magnet.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\magnet.h</FilePath>
+            </File>
+            <File>
+              <FileName>menu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\menu.h</FilePath>
+            </File>
+            <File>
+              <FileName>motor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\motor.h</FilePath>
+            </File>
+            <File>
+              <FileName>my_common.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\my_common.h</FilePath>
+            </File>
+            <File>
+              <FileName>obstacle.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\obstacle.h</FilePath>
+            </File>
+            <File>
+              <FileName>pid.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\pid.h</FilePath>
+            </File>
+            <File>
+              <FileName>round.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\round.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -785,59 +685,69 @@
               <FilePath>..\USER\src\main.c</FilePath>
             </File>
             <File>
-              <FileName>eeprom.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\eeprom.c</FilePath>
-            </File>
-            <File>
-              <FileName>key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\key.c</FilePath>
-            </File>
-            <File>
-              <FileName>menu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\menu.c</FilePath>
-            </File>
-            <File>
               <FileName>beep.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\src\beep.c</FilePath>
-            </File>
-            <File>
-              <FileName>motor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\motor.c</FilePath>
-            </File>
-            <File>
-              <FileName>encoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\encoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>magnet.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\magnet.c</FilePath>
-            </File>
-            <File>
-              <FileName>pid.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\pid.c</FilePath>
-            </File>
-            <File>
-              <FileName>gyro.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\gyro.c</FilePath>
-            </File>
-            <File>
-              <FileName>my_common.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\my_common.c</FilePath>
+              <FilePath>..\CODE\beep.c</FilePath>
             </File>
             <File>
               <FileName>debug.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\src\debug.c</FilePath>
+              <FilePath>..\CODE\debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\encoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>gyro.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\gyro.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>magnet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\magnet.c</FilePath>
+            </File>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\motor.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\my_common.c</FilePath>
+            </File>
+            <File>
+              <FileName>obstacle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\obstacle.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>round.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\round.c</FilePath>
             </File>
           </Files>
         </Group>

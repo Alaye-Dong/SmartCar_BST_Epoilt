@@ -25,9 +25,28 @@
 			"my_common.h": "c",
 			"motor.h": "c",
 			"pid.h": "c",
-			"debug.h": "c"
+			"debug.h": "c",
+			"encoder.h": "c",
+			"right_angle.h": "c",
+			"round.h": "c",
+			"beep.h": "c",
+			"seekfree_tsl1401.h": "c",
+			"eeprom.h": "c",
+			"seekfree_function.h": "c",
+			"obstacle.h": "c",
+			"math.h": "c",
+			"MATH.H": "cpp",
+			"algorithm": "c",
+			"zf_delay.h": "c",
+			"key.h": "c",
+			"intrins.h": "c",
+			"seekfree_font.h": "c"
 		},
-		
-		"files.autoSave": "off"
+		"files.autoSave": "off",
+		"todo-tree.tree.showBadges": true,
+		"KeilAssistant.Project.FileLocationList": [
+			"D:\\Alaye\\GitHubDesktop\\SmartCar_BST_Epoilt\\STC32F_Code\\Project\\MDK\\EPOILT.uvproj"
+		],
+		"editor.codeActionsOnSave": {},
 	}
 }
