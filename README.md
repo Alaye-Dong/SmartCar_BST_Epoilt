@@ -1,8 +1,11 @@
-![1719673397544](image/README/1719673397544.png)
+<p align="center">
+  <img src="image/README/1719673397544.png" alt="1719673397544">
+</p>
 
-# STC32F12K_BST_Epoilt
-
-2024 年江西科技学院蓝色技术工作室智能车队 折线电磁组 BST-磁驭
+<h1 align="center"> STC32F12K_BST_Epoilt </h1>
+<p align="center">
+  2024 年江西科技学院蓝色技术工作室智能车队 折线电磁组 BST-磁驭
+</p>
 
 ## 写在最前
 
@@ -29,7 +32,8 @@ Keil 原因，使用中文注释必须使用 GB2312 编码，所以当查看本�
 
 ### INTERRUPT(x) interrupt x
 
-**`<font color=Red>`如果需要移植代码，请将注意将 `INTERRUPT(x)` 改回 `interrupt x</font>`**
+> [!WARNING]
+> **如果想移植代码，请注意根据情况将 `INTERRUPT(x)` 改回 `interrupt x`**
 
 本项目使用到了 `Keil uVision Assistant` 插件进行开发，但是 C251 项目中 `isr.c` 中的 `interrupt x`（x 代表一个数字）会导致 VSCode 语法分析做出不应该有的报错，所以通过宏定义进行修复，具体请参照 [关于 C51/C251 的中断提示问题](https://github.com/jacksonjim/keil-assistant/blob/master/README.md)。本项目已经将所有 `interrupt x` 改为了 `INTERRUPT(x)` 并在公共头文件中加入了用于修复的宏定义。
 
